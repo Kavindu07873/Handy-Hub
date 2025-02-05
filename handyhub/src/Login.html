@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="auth-wrapper auth-cover">
+  <div class="auth-inner m-0">
+    <a class="brand-logo" href="#" onclick="event.preventDefault()">
+      <svg viewBox="0 0 139 95" version="1.1" height="28">
+        <defs>
+          <linearGradient x1="100%" y1="10.5120544%" x2="50%" y2="89.4879456%" id="linearGradient-1">
+            <stop stop-color="#000000" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+          </linearGradient>
+          <linearGradient x1="64.0437835%" y1="46.3276743%" x2="37.373316%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#EEEEEE" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+          </linearGradient>
+        </defs>
+        <g fill="none" fill-rule="evenodd">
+          <g transform="translate(-400, -178)">
+            <g transform="translate(400, 178)">
+              <path d="M0,0 L39.18,0 L69.34,32.25 L101.42,0 L138.78,0 L138.78,29.80 C137.95,37.35 135.78,42.55 132.26,45.41 C128.73,48.28 112.33,64.52 83.06,94.14 L56.27,94.14 L6.71,44.41 C2.46,39.98 0.34,35.10 0.34,29.80 C0.34,24.49 0.23,14.56 0,0 Z" fill="currentColor"></path>
+              <path d="M69.34,32.25 L101.42,0 L138.78,0 L138.78,29.80 C137.95,37.35 135.78,42.55 132.26,45.41 C128.73,48.28 112.33,64.52 83.06,94.14 L56.27,94.14 L32.84,70.50 L69.34,32.25 Z" fill="url(#linearGradient-1)" opacity="0.2"></path>
+            </g>
+          </g>
+        </g>
+      </svg>
+      <h2 class="brand-text text-primary ms-1">Vuexy</h2>
+    </a>
+    <div class="d-none d-lg-flex align-items-center p-5" style="width: 50%;">
+      <div class="w-100 d-lg-flex align-items-center justify-content-center px-5">
+        <img class="img-fluid" src="source.jpg" alt="Login Cover">
+      </div>
+    </div>
+    <div class="d-flex align-items-center auth-bg px-2 p-lg-5" style="width: 50%;">
+      <div class="px-xl-2 mx-auto" style="max-width: 400px;">
+        <h2 class="fw-bold mb-1">Welcome to Vuexy! 👋</h2>
+        <p class="mb-2">Please sign-in to your account and start the adventure</p>
+        <form class="auth-login-form mt-2" onsubmit="event.preventDefault()">
+          <div class="mb-1">
+            <label class="form-label" for="login-email">Email</label>
+            <input type="email" id="login-email" class="form-control" placeholder="john@example.com" autofocus>
+          </div>
+          <div class="mb-1">
+            <div class="d-flex justify-content-between">
+              <label class="form-label" for="login-password">Password</label>
+              <a href="forgot-password.html"><small>Forgot Password?</small></a>
+            </div>
+            <input type="password" id="login-password" class="form-control">
+          </div>
+          <div class="form-check mb-1">
+            <input type="checkbox" id="remember-me" class="form-check-input">
+            <label class="form-check-label" for="remember-me">Remember Me</label>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Sign in</button>
+        </form>
+        <p class="text-center mt-2">
+          <span class="me-25">New on our platform?</span>
+          <a href="register.html"><span>Create an account</span></a>
+        </p>
+        <div class="divider my-2">
+          <div class="divider-text">or</div>
+        </div>
+        <div class="auth-footer-btn d-flex justify-content-center">
+          <button class="btn btn-facebook">F</button>
+          <button class="btn btn-twitter">T</button>
+          <button class="btn btn-google">G</button>
+          <button class="btn btn-github">GH</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
