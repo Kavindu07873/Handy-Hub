@@ -1,4 +1,4 @@
-import { Mail, Home } from "react-feather";
+import { Mail, Home, Users, Briefcase, Circle } from "react-feather";
 
 export default [
   {
@@ -9,14 +9,21 @@ export default [
   },
   {
     id: "secondPage",
-    title: "Second Page",
-    icon: <Mail size={20} />,
+    title: "Manage Customers",
+    icon: <Users size={20} />,
     navLink: "/second-page",
   },
   {
-    id: "thirdPage",
-    title: "Third Page",
-    icon: <Mail size={20} />,
+    id: "Workers",
+    title: "Manage Workers",
+    icon: <Briefcase size={20} />,
     navLink: "/third-page",
+  },
+  {
+    id: 'accountSettings',
+    title: 'Account Settings',
+    icon: <Circle size={12} />,
+    permissions: ['admin', 'editor'],
+    navLink: '/account-setting'
   }
 ];
