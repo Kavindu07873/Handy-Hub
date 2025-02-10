@@ -24,14 +24,18 @@ const TemplateTitle = "%s - Vuexy React Admin Template"
 
 // ** Default Route
 const DefaultRoute = "/home"
+// const DefaultRoute = "/customerdashboard"
+// const DefaultRoute = "/workerdashboard"
 
 const Home = lazy(() => import("../../views/admin/home/Home"))
 const SecondPage = lazy(() => import("../../views/admin/secondPage/list/SecondPage"))
 const ThirdPage = lazy(() => import("../../views/admin/adminWorkers/list/adminWorkers"))
-const AccountSetting = lazy(() => import("../../views/admin/adminWorkers/account-settings"))
+const AccountSetting = lazy(() => import("../../views/admin/adminProfie/account-settings"))
 const Login = lazy(() => import("../../views/Login"))
 const Register = lazy(() => import("../../views/Register"))
 const ForgotPassword = lazy(() => import("../../views/ForgotPassword"))
+const CustomerDashboard = lazy(() => import("../../views/customer/dashboard/DashBoardCustomer"))
+const WorkerDashboard = lazy(() => import("../../views/worker/dashboard/DashBoardWorkers"))
 const Error = lazy(() => import("../../views/Error"))
 
 // ** Merge Routes
@@ -84,6 +88,14 @@ const Routes = [
     meta: {
       layout: "blank"
     }
+  },
+  {
+    path: "/customerdashboard",
+    element: <CustomerDashboard />
+  },
+  {
+    path: "/workerdashboard",
+    element: <WorkerDashboard />
   }
 ]
 
