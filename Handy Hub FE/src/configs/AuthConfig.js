@@ -24,3 +24,24 @@ export const loginWithOAuth = async (username, password) => {
     return null
   }
 }
+
+
+export const getTokenData = () => {
+  const token = localStorage.getItem("token")
+  if (!token) return null // Return null if no token
+
+  try {
+    const payload = token.split(".")[1] // Extract payload (Base64)
+    const decodedPayload = JSON.parse(atob(payload))// Decode Base64
+    return decodedPayload // Return decoded object
+  } catch (error) {
+    console.error("Invalid token:", error)
+    return null
+  }
+}
+
+export const getUserRole = () => {
+  const tokenData = getTokenData()
+  console.log("userRole authorities " ,tokenData?.authorities?.[0])
+  return tokenData?.authorities?.[0] || "GUEST" // Default role: GUEST
+}

@@ -63,7 +63,8 @@ const Login = () => {
     const user = await loginWithOAuth(username, password)
     if (user) {
       alert("Login successful!")
-      console.log(user.role)
+      navigate("/home")
+      console.log("user.role  : ",user.role)
     } else {
       alert("Invalid credentials")
     }
