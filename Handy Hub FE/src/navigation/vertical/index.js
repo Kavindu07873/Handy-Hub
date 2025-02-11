@@ -1,4 +1,15 @@
-import { Mail, Home, Users, Briefcase, Circle } from "react-feather";
+import {
+  Mail,
+  Home,
+  Users,
+  Briefcase,
+  Circle,
+  CheckCircle,
+  Clock,
+  MoreHorizontal,
+  Calendar,
+  Search
+} from "react-feather";
 
 export const navigation =  [
   {
@@ -24,12 +35,32 @@ export const navigation =  [
 
   },
   {
-    id: 'accountSettings',
-    title: 'Account Settings',
-    icon: <Circle size={12} />,
-    navLink: '/account-setting',
-    roles:['ADMIN']
-
+    id: "workerDashboard",
+    title: "Dashboard",
+    icon: <Users size={20} />,
+    navLink: "/worker-dashboard",
+    roles:['WORKER']
+  },
+  {
+    id: "workerApproveWork",
+    title: "Approve Work",
+    icon: <CheckCircle size={20} />,
+    navLink: "/worker-approve",
+    roles:['WORKER']
+  },
+  {
+    id: "workerPendingWork",
+    title: "Pending Work",
+    icon: <Clock  size={20} />,
+    navLink: "/worker-PendingWork",
+    roles:['WORKER']
+  },
+  {
+    id: "workerCalender",
+    title: "Calender",
+    icon: <Calendar size={20} />,
+    navLink: "/calender",
+    roles:['WORKER']
   },
   {
     id: "customerDashboard",
@@ -39,10 +70,18 @@ export const navigation =  [
     roles:['CUSTOMER']
   },
   {
-    id: "workerDashboard",
-    title: "Dashboard",
-    icon: <Users size={20} />,
-    navLink: "/worker-dashboard",
-    roles:['WORKER']
+    id: "customerFindWorker",
+    title: "Find Worker",
+    icon: <Search size={20} />,
+    navLink: "/customer-findWorker",
+    roles:['CUSTOMER']
+  },
+  {
+    id: 'accountSettings',
+    title: 'Account Settings',
+    icon: <Circle size={12} />,
+    navLink: '/account-setting',
+    roles:['ADMIN' , 'CUSTOMER' ,'WORKER']
+
   }
-];
+]

@@ -17,9 +17,9 @@ const VerticalLayout = (props) => {
 
     // const userRole = JSON.parse(localStorage.getItem("USER_ROLE"))
     // const userRole = user?.userRole
-    // const userRole = "ADMIN"
+    const userRole = "ADMIN"
     // const userRole = "CUSTOMER"
-    const userRole = "WORKER"
+    // const userRole = "WORKER"
 
     if (userRole) {
       const routes = navigation.filter(route => route.roles.includes(userRole))
