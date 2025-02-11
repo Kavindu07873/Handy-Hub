@@ -6,21 +6,21 @@ export const navigation =  [
     title: "Home",
     icon: <Home size={20} />,
     navLink: "/home",
-    roles:['ADMIN', 'CUSTOMER']
+    roles:['ADMIN']
   },
   {
     id: "secondPage",
     title: "Manage Customers",
     icon: <Users size={20} />,
     navLink: "/second-page",
-    roles:['CUSTOMER']
+    roles:['ADMIN']
   },
   {
     id: "Workers",
     title: "Manage Workers",
     icon: <Briefcase size={20} />,
     navLink: "/third-page",
-    roles:['CUSTOMER']
+    roles:['ADMIN']
 
   },
   {
@@ -30,5 +30,19 @@ export const navigation =  [
     navLink: '/account-setting',
     roles:['ADMIN']
 
+  },
+  {
+    id: "customerDashboard",
+    title: "Dashboard",
+    icon: <Users size={20} />,
+    navLink: "/customer-dashboard",
+    roles:['CUSTOMER']
+  },
+  {
+    id: "workerDashboard",
+    title: "Dashboard",
+    icon: <Users size={20} />,
+    navLink: "/worker-dashboard",
+    roles:['WORKER']
   }
 ];

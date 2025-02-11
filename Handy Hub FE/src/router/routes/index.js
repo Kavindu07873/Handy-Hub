@@ -90,11 +90,11 @@ const Routes = [
     }
   },
   {
-    path: "/customerdashboard",
+    path: "/customer-dashboard",
     element: <CustomerDashboard />
   },
   {
-    path: "/workerdashboard",
+    path: "/worker-dashboard",
     element: <WorkerDashboard />
   }
 ]
