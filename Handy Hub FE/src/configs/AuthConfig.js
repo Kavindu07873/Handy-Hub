@@ -45,3 +45,9 @@ export const getUserRole = () => {
   console.log("userRole authorities " ,tokenData?.authorities?.[0])
   return tokenData?.authorities?.[0] || "GUEST" // Default role: GUEST
 }
+
+export const logout = (navigate) => {
+  localStorage.removeItem("token") // Clear token
+  navigate("/login")// Redirect to login page
+}
+

@@ -64,5 +64,5 @@ const BasicLogin = async () => {
 }
 
 
-export { auth, signInWithGoogle, logout ,BasicLogin }
+export { auth, signInWithGoogle ,BasicLogin }
 export default app

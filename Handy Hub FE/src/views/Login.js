@@ -25,7 +25,7 @@ import illustrationsDark from "@src/assets/images/pages/login-v2-dark.svg"
 // ** Styles
 import "@styles/react/pages/page-authentication.scss"
 import React, { useState } from "react"
-import { signInWithGoogle, logout ,BasicLogin} from "@configs/firebaseConfig"
+import { signInWithGoogle ,BasicLogin} from "@configs/firebaseConfig"
 import { loginWithOAuth} from "@configs/AuthConfig"
 // import axios from "axios"
 import {useNavigate} from "react-router-dom"
