@@ -25,7 +25,7 @@ import illustrationsDark from "@src/assets/images/pages/login-v2-dark.svg"
 // ** Styles
 import "@styles/react/pages/page-authentication.scss"
 import React, { useState } from "react"
-import { signInWithGoogle ,BasicLogin} from "@configs/firebaseConfig"
+import { signInWithGoogle} from "@configs/firebaseConfig"
 import { loginWithOAuth} from "@configs/AuthConfig"
 // import axios from "axios"
 import {useNavigate} from "react-router-dom"
@@ -39,23 +39,11 @@ const Login = () => {
   const source = skin === "dark" ? illustrationsDark : illustrationsLight
 
   const [user, setUser] = useState(null)
-
-  const handleLogin = async () => {
-    try {
-      const loggedInUser = await signInWithGoogle()
-      if (loggedInUser) {
-        setUser(loggedInUser)
-        console.log("User Logged In: ", loggedInUser)
-      }
-    } catch (error) {
-      console.error("Google Sign-In Error: ", error)
-    }
-  }
-
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
 
+  // basic login
   const handleBasicLogin = async (e) => {
     e.preventDefault()
     console.log("username  ",username)
@@ -70,6 +58,20 @@ const Login = () => {
     }
   }
 
+  // Google login
+  const handleGoogleLogin = async () => {
+    try {
+      const loggedInUser = await signInWithGoogle()
+      if (loggedInUser) {
+        setUser(loggedInUser)
+        navigate("/home")
+        console.log("user.role  : ",loggedInUser.role)
+        console.log("User Logged In: ", loggedInUser)
+      }
+    } catch (error) {
+      console.error("Google Sign-In Error: ", error)
+    }
+  }
   // const handleLogout = async () => {
   //   await logout();
   //   setUser(null);
@@ -220,7 +222,7 @@ const Login = () => {
               {/*<Button tag={Link} to="/" color="github">*/}
               {/*  <GitHub size={14} />*/}
               {/*</Button>*/}
-              <Button className="d-flex align-items-center justify-content-center" color="danger" block onClick={handleLogin}>
+              <Button className="d-flex align-items-center justify-content-center" color="danger" block onClick={handleGoogleLogin}>
                 <FaGoogle size={18} className="me-2" />
                 <span>Sign in with Google</span>
               </Button >

@@ -71,9 +71,9 @@ public class UserServiceImpl implements UserService , UserDetailsService {
                 System.out.println("2");
                 System.out.println("customer.get().getEmail(), customer.get().getPassword() : "+customer.get().getEmail()  +" "+  customer.get().getPassword());
                 System.out.println("getAuthority(customer.get().getUserRole().name()) : "+ customer.get().getUserRole());
-//                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//                String encodedPassword = encoder.encode("password123");
-//                System.out.println(encodedPassword);
+                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+                String encodedPassword = encoder.encode("nd2TY4pVvxV2GEvckHsiuPN5dDF3");
+                System.out.println(encodedPassword);
 
                 return new org.springframework.security.core.userdetails.User(
                         customer.get().getEmail(), customer.get().getPassword(),

@@ -2,7 +2,9 @@
 import { initializeApp } from "firebase/app"
 // Import Firebase SDK
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth"
-import axios from "axios";
+import axios from "axios"
+import { loginWithOAuth} from "@configs/AuthConfig"
+
 // Add GoogleAuthProvider, signInWithPopup, signOut
 
 
@@ -26,17 +28,7 @@ const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 const googleProvider = new GoogleAuthProvider()
 
-// Function for Google Login
-const signInWithGoogle = async () => {
-  try {
-    const result = await signInWithPopup(auth, googleProvider)
-    console.log("User Info:", result.user)
-    return result.user
-  } catch (error) {
-    console.error("Google Sign-In Error:", error)
-    return null
-  }
-}
+
 
 // Function for Logout
 const logout = async () => {
@@ -51,18 +43,64 @@ const logout = async () => {
 // normal Login Process
 const API_URL = "http://localhost:8080/api/oauth/"
 
-const BasicLogin = async () => {
+// const BasicLogin = async () => {
+//   try {
+//     let username
+//     let password
+//     const response = await axios.post(`${API_URL  }token` ,{username,password})
+//     localStorage.setItem("token", response.data.token)
+//     console.log("User Logged In: ", response.data)
+//     return response.data
+//   } catch (error) {
+//     console.error("Google Sign-In Error: ", error)
+//     return null
+//   }
+// }
+// Function for Google Login
+const signInWithGoogle = async () => {
   try {
-    const response = await axios.post(API_URL + "token" ,{username,password})
-    localStorage.setItem("token", response.data.token)
-    console.log("User Logged In: ", response.data)
-    return response.data
+    
+    const result = await signInWithPopup(auth, googleProvider)
+    console.log("User Info:", result.user)
+    console.log("User email:", result.user.email)
+    console.log("User uid:", result.user.uid)
+
+    const username = result.user.email
+     const password = result.user.uid
+    console.log("User Password:", password)
+    console.log("User Email:", username)
+    // Correctly structured object
+    // const response = await axios.post(`${API_URL  }token`, {username,password})
+    const response = await loginWithOAuth(username, password)
+
+    // localStorage.setItem("token", response.data.token)
+    console.log("User Logged In:", response)
+    return response
   } catch (error) {
-    console.error("Google Sign-In Error: ", error)
+    console.error("Google Sign-In Error:", error)
     return null
   }
+  // try {
+  //   const result = await signInWithPopup(auth, googleProvider)
+  //   const idToken = await result.user.getIdToken() // Get Firebase ID token
+  //
+  //   console.log("User Info:", result.user)
+  //   console.log("Google ID Token:", idToken)
+  //
+  //   // Send the Google ID token to the backend
+  //   const response = await axios.post(API_URL + "token", {
+  //     token: idToken.
+  //   })
+  //
+  //   localStorage.setItem("token", response.data.token)
+  //   console.log("User Logged In:", response.data)
+  //   return response.data
+  // } catch (error) {
+  //   console.error("Google Sign-In Error:", error)
+  //   return null
+  // }
 }
 
 
-export { auth, signInWithGoogle ,BasicLogin }
+export { auth, signInWithGoogle }
 export default app

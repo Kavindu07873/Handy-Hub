@@ -14,6 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -62,6 +64,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration config = new CorsConfiguration();
 //        config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("http://localhost:3001");
+        config.addAllowedOrigin("http://localhost:3002");
         config.addAllowedOrigin("http://localhost:8080");
         config.addAllowedOrigin("file://");
         config.addAllowedOriginPattern("http://localhost:3000");
