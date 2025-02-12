@@ -5,6 +5,7 @@ import com.dkagroup.handyhub.dto.UserDTO;
 import com.dkagroup.handyhub.entity.UserEntity;
 import com.dkagroup.handyhub.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -34,50 +35,65 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken oAuth2AccessToken, OAuth2Authentication oAuth2Authentication) {
 
-        final Map<String, Object> additionalInfo = new HashMap<>();
-
-        User user = (User) oAuth2Authentication.getPrincipal();
-
-//        Optional<AdminEntity> admin = adminRepo.findByEmail(user.getUsername());
+//        final Map<String, Object> additionalInfo = new HashMap<>();
 //
-//        if (admin.isPresent()) {
-//            UserDTO build = UserDTO.builder()
-//                    .id(admin.get().getId())
-//                    .email(admin.get().getEmail())
-//                    .username(admin.get().getName())
-//                    .userRole(admin.get().getUserRole())
-//                    .build();
-//            additionalInfo.put("user", build);
+//        User user = (User) oAuth2Authentication.getPrincipal();
+//
+////        Optional<AdminEntity> admin = adminRepo.findByEmail(user.getUsername());
+////
+////        if (admin.isPresent()) {
+////            UserDTO build = UserDTO.builder()
+////                    .id(admin.get().getId())
+////                    .email(admin.get().getEmail())
+////                    .username(admin.get().getName())
+////                    .userRole(admin.get().getUserRole())
+////                    .build();
+////            additionalInfo.put("user", build);
+////        }
+//
+//        Optional<UserEntity> customer = userRepo.findByEmail(user.getUsername());
+//        if (customer.isPresent()) {
+//            System.out.println("customer : "+customer.get().getEmail());
+//            UserDTO userDTO = new UserDTO(
+//                    customer.get().getId(),
+//                    customer.get().getEmail(),
+//                    customer.get().getUsername(),
+//                    customer.get().getUserRole()
+//            );
+//            additionalInfo.put("user", userDTO);
+//            System.out.println("Adding userDTO to additionalInfo: " + userDTO);
+//
+//            Map<String, Object> userInfo = new HashMap<>();
+//            userInfo.put("id", customer.get().getId());
+//            userInfo.put("email", customer.get().getEmail());
+//            userInfo.put("username", customer.get().getUsername());
+//            userInfo.put("userRole", customer.get().getUserRole().name());  // Convert enum to string
+//            additionalInfo.put("user", userInfo);
 //        }
+//
+//
+//        // Ensure that you log the additionalInfo map before returning
+//        System.out.println("Enhancing token with additionalInfo: " + additionalInfo);
+//
+//        ((DefaultOAuth2AccessToken) oAuth2AccessToken).setAdditionalInformation(additionalInfo);
+////        System.out.println("super.enhance(oAuth2AccessToken, oAuth2Authentication) : "+super.enhance(oAuth2AccessToken, oAuth2Authentication));
+//
+//        return super.enhance(oAuth2AccessToken, oAuth2Authentication);
+
+        final Map<String, Object> additionalInfo = new HashMap<>();
+        User user = (User) oAuth2Authentication.getPrincipal();
 
         Optional<UserEntity> customer = userRepo.findByEmail(user.getUsername());
         if (customer.isPresent()) {
-            System.out.println("customer : "+customer.get().getEmail());
-            UserDTO userDTO = new UserDTO(
-                    customer.get().getId(),
-                    customer.get().getEmail(),
-                    customer.get().getUsername(),
-                    customer.get().getUserRole()
-            );
-            additionalInfo.put("user", userDTO);
+            Map<String, Object> userInfo = new HashMap<>();
+            userInfo.put("id", customer.get().getId());
+            userInfo.put("email", customer.get().getEmail());
+            userInfo.put("username", customer.get().getUsername());
+            userInfo.put("userRole", customer.get().getUserRole().name());
+            additionalInfo.put("user", userInfo);
         }
 
-//        Optional<StaffEntity> staff = staffRepo.findByEmail(user.getUsername());
-//
-//        if (staff.isPresent()) {
-//            UserDTO build = UserDTO.builder()
-//                    .id(staff.get().getId())
-//                    .email(staff.get().getEmail())
-//                    .username(staff.get().getName())
-//                    .userRole(staff.get().getUserRole())
-//                    .build();
-//            additionalInfo.put("user", build);
-//        }
-
-        // set custom claims
         ((DefaultOAuth2AccessToken) oAuth2AccessToken).setAdditionalInformation(additionalInfo);
-        System.out.println("super.enhance(oAuth2AccessToken, oAuth2Authentication) : "+super.enhance(oAuth2AccessToken, oAuth2Authentication));
-
         return super.enhance(oAuth2AccessToken, oAuth2Authentication);
     }
 }

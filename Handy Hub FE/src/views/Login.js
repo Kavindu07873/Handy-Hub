@@ -1,13 +1,10 @@
 // ** React Imports
-import { useSkin } from "@hooks/useSkin";
-import { Link } from "react-router-dom";
-
+import { useSkin } from "@hooks/useSkin"
+import { Link } from "react-router-dom"
 // ** Icons Imports
-import { Facebook, Twitter, Mail, GitHub, GitMerge } from "react-feather";
-
+import { Facebook, Twitter, Mail, GitHub, GitMerge } from "react-feather"
 // ** Custom Components
-import InputPasswordToggle from "@components/input-password-toggle";
-
+import InputPasswordToggle from "@components/input-password-toggle"
 // ** Reactstrap Imports
 import {
   Row,
@@ -17,43 +14,61 @@ import {
   Form,
   Label,
   Input,
-  Button,
-} from "reactstrap";
-
+  Button
+} from "reactstrap"
 // ** import Google icon
 import { FaGoogle } from "react-icons/fa";
-
 <FaGoogle color="#4285F4" size={32} />;
-
-
 // ** Illustrations Imports
-import illustrationsLight from "@src/assets/images/pages/login-v2.svg";
-import illustrationsDark from "@src/assets/images/pages/login-v2-dark.svg";
-
+import illustrationsLight from "@src/assets/images/pages/login-v2.svg"
+import illustrationsDark from "@src/assets/images/pages/login-v2-dark.svg"
 // ** Styles
-import "@styles/react/pages/page-authentication.scss";
-import React, { useState } from "react";
+import "@styles/react/pages/page-authentication.scss"
+import React, { useState } from "react"
+import { signInWithGoogle ,BasicLogin} from "@configs/firebaseConfig"
+import { loginWithOAuth} from "@configs/AuthConfig"
+// import axios from "axios"
+import {useNavigate} from "react-router-dom"
 
-import { signInWithGoogle, logout } from "@configs/firebaseConfig";
+
+
 
 const Login = () => {
-  const { skin } = useSkin();
+  const { skin } = useSkin()
 
-  const source = skin === "dark" ? illustrationsDark : illustrationsLight;
+  const source = skin === "dark" ? illustrationsDark : illustrationsLight
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null)
 
   const handleLogin = async () => {
     try {
-      const loggedInUser = await signInWithGoogle();
+      const loggedInUser = await signInWithGoogle()
       if (loggedInUser) {
-        setUser(loggedInUser);
-        console.log("User Logged In: ", loggedInUser);
+        setUser(loggedInUser)
+        console.log("User Logged In: ", loggedInUser)
       }
     } catch (error) {
-      console.error("Google Sign-In Error: ", error);
+      console.error("Google Sign-In Error: ", error)
     }
-  };
+  }
+
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const navigate = useNavigate()
+
+  const handleBasicLogin = async (e) => {
+    e.preventDefault()
+    console.log("username  ",username)
+    console.log("password  ",password)
+    const user = await loginWithOAuth(username, password)
+    if (user) {
+      alert("Login successful!")
+      navigate("/home")
+      console.log("user.role  : ",user.role)
+    } else {
+      alert("Invalid credentials")
+    }
+  }
 
   // const handleLogout = async () => {
   //   await logout();
@@ -163,6 +178,7 @@ const Login = () => {
                   id="login-email"
                   placeholder="john@example.com"
                   autoFocus
+                  value={username} onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
               <div className="mb-1">
@@ -177,6 +193,7 @@ const Login = () => {
                 <InputPasswordToggle
                   className="input-group-merge"
                   id="login-password"
+                  value={password} onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <div className="form-check mb-1">
@@ -185,7 +202,7 @@ const Login = () => {
                   Remember Me
                 </Label>
               </div>
-              <Button tag={Link} to="/" color="primary" block>
+              <Button color="primary" block onClick={handleBasicLogin}>
                 Sign in
               </Button>
             </Form>
