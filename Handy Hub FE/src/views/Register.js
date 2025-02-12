@@ -1,14 +1,14 @@
 // ** React Imports
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 
 // ** Custom Hooks
-import { useSkin } from "@hooks/useSkin";
+import { useSkin } from "@hooks/useSkin"
 
 // ** Icons Imports
-import { Facebook, Twitter, Mail, GitHub } from "react-feather";
+import { Facebook, Twitter, Mail, GitHub } from "react-feather"
 
 // ** Custom Components
-import InputPasswordToggle from "@components/input-password-toggle";
+import InputPasswordToggle from "@components/input-password-toggle"
 
 // ** Reactstrap Imports
 import {
@@ -19,22 +19,22 @@ import {
   Form,
   Label,
   Input,
-  Button,
-} from "reactstrap";
+  Button
+} from "reactstrap"
 
 // ** Illustrations Imports
-import illustrationsLight from "@src/assets/images/pages/register-v2.svg";
-import illustrationsDark from "@src/assets/images/pages/register-v2-dark.svg";
+import illustrationsLight from "@src/assets/images/pages/register-v2.svg"
+import illustrationsDark from "@src/assets/images/pages/register-v2-dark.svg"
 
 // ** Styles
-import "@styles/react/pages/page-authentication.scss";
-import { FaGoogle } from "react-icons/fa";
+import "@styles/react/pages/page-authentication.scss"
+import { FaGoogle } from "react-icons/fa"
 
 const Register = () => {
   // ** Hooks
-  const { skin } = useSkin();
+  const { skin } = useSkin()
 
-  const source = skin === "dark" ? illustrationsDark : illustrationsLight;
+  const source = skin === "dark" ? illustrationsDark : illustrationsLight
 
   return (
     <div className="auth-wrapper auth-cover">
@@ -159,6 +159,17 @@ const Register = () => {
                   id="register-password"
                 />
               </div>
+              <div className="mb-1">
+                <Label className="form-label" for="register-role">
+                  Select Role
+                </Label>
+                <Input type="select" id="register-role">
+                  <option value="">Select a role</option>
+                  <option value="admin">WORKER</option>
+                  <option value="user">CUSTOMER</option>
+                </Input>
+              </div>
+
               <div className="form-check mb-1">
                 <Input type="checkbox" id="terms" />
                 <Label className="form-check-label" for="terms">
