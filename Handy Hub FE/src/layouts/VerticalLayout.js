@@ -31,6 +31,7 @@ const VerticalLayout = (props) => {
     }
   }, [])
 
+
   return (
     <Layout menuData={filteredRoutes} {...props}>
       <Outlet />
