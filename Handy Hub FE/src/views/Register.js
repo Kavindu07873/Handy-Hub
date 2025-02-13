@@ -3,13 +3,10 @@ import { Link } from "react-router-dom"
 
 // ** Custom Hooks
 import { useSkin } from "@hooks/useSkin"
-
 // ** Icons Imports
 import { Facebook, Twitter, Mail, GitHub } from "react-feather"
-
 // ** Custom Components
 import InputPasswordToggle from "@components/input-password-toggle"
-
 // ** Reactstrap Imports
 import {
   Row,
@@ -21,20 +18,49 @@ import {
   Input,
   Button
 } from "reactstrap"
-
 // ** Illustrations Imports
 import illustrationsLight from "@src/assets/images/pages/register-v2.svg"
 import illustrationsDark from "@src/assets/images/pages/register-v2-dark.svg"
-
 // ** Styles
 import "@styles/react/pages/page-authentication.scss"
 import { FaGoogle } from "react-icons/fa"
+import { useState } from "react"
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+
 
 const Register = () => {
   // ** Hooks
   const { skin } = useSkin()
 
   const source = skin === "dark" ? illustrationsDark : illustrationsLight
+
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("")
+  const [role, setRole] = useState("")
+
+
+  const handleBasicSignUp = async (e) => {
+    e.preventDefault()
+
+
+    if (username === '') return toast.warning("Please fill userName", {
+      icon: true,
+      hideProgressBar: false,
+      position: "top-right",
+      autoClose: 3000,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    })
+    console.log("username  ",username)
+    console.log("password  ",password)
+    console.log("email  ",email)
+    console.log("role  ",role)
+  }
+
 
   return (
     <div className="auth-wrapper auth-cover">
@@ -138,6 +164,7 @@ const Register = () => {
                   id="register-username"
                   placeholder="johndoe"
                   autoFocus
+                  value={username} onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
               <div className="mb-1">
@@ -148,6 +175,7 @@ const Register = () => {
                   type="email"
                   id="register-email"
                   placeholder="john@example.com"
+                  value={email} onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="mb-1">
@@ -157,16 +185,20 @@ const Register = () => {
                 <InputPasswordToggle
                   className="input-group-merge"
                   id="register-password"
+                  value={password} onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <div className="mb-1">
                 <Label className="form-label" for="register-role">
                   Select Role
                 </Label>
-                <Input type="select" id="register-role">
+                <Input type="select" id="register-role"
+                       onChange={(e) => setRole(e.target.value)}
+                       required
+                >
                   <option value="">Select a role</option>
-                  <option value="admin">WORKER</option>
-                  <option value="user">CUSTOMER</option>
+                  <option value="WORKER">WORKER</option>
+                  <option value="CUSTOMER">CUSTOMER</option>
                 </Input>
               </div>
 
@@ -183,7 +215,7 @@ const Register = () => {
                   </a>
                 </Label>
               </div>
-              <Button tag={Link} to="/" color="primary" block>
+              <Button  color="primary" block onClick={handleBasicSignUp}>
                 Sign up
               </Button>
             </Form>
