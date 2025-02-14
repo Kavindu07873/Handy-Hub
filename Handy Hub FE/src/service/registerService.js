@@ -1,5 +1,5 @@
 import { toast } from "react-toastify"
-import ApiService from "@src/service/ApiService";
+import ApiService from "@src/service/ApiService"
 
 export const registerUserService = async (obj) => {
   console.log("Calling registerUserService")
@@ -9,11 +9,11 @@ export const registerUserService = async (obj) => {
   const apiObject = {
     method: "POST",
     endpoint: "register", // Correct endpoint for user registration
-    body: obj,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
+    body: obj
+    // headers: {
+    //   Authorization: `Bearer ${token}`,
+    //   "Content-Type": "application/json",
+    // }
   }
 
   try {
@@ -28,7 +28,7 @@ export const registerUserService = async (obj) => {
     return response.success
   } catch (error) {
     toast.error("Something went wrong. Please try again!", {
-      position: "top-right",
+      position: "top-right"
     })
     return false
   }

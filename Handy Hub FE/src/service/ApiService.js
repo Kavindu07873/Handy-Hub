@@ -1,6 +1,6 @@
 class ApiService {
   static async callApi({ method, endpoint, body = null, headers = {} }) {
-    const apiUrl = `http://localhost:8080/${endpoint}`
+    const apiUrl = `http://localhost:8080/api/${endpoint}`
     console.log("Calling API:", apiUrl, method)
 
     // Default headers
