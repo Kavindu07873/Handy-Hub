@@ -27,6 +27,8 @@ import { FaGoogle } from "react-icons/fa"
 import { useState } from "react"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import * as registerApi from "../utility/api/registerApi"
+import { registerUserService } from "../utility/api/registerApi";
 
 
 const Register = () => {
@@ -44,21 +46,39 @@ const Register = () => {
   const handleBasicSignUp = async (e) => {
     e.preventDefault()
 
+    if (!username) {
+      return toast.warning("Please fill in the username", {
+        position: "top-right",
+        autoClose: 3000,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      })
+    }
 
-    if (username === '') return toast.warning("Please fill userName", {
-      icon: true,
-      hideProgressBar: false,
-      position: "top-right",
-      autoClose: 3000,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined
-    })
-    console.log("username  ",username)
-    console.log("password  ",password)
-    console.log("email  ",email)
-    console.log("role  ",role)
+    console.log("Username:", username)
+    console.log("Password:", password)
+    console.log("Email:", email)
+    console.log("Role:", role)
+
+    const obj = {
+      username,
+      email,
+      role,
+      password,
+    }
+
+    try {
+      const res = await registerUserService(obj)
+      if (res) {
+        await props.onSuccess()// Call success handler if needed
+      }
+    } catch (error) {
+      toast.error("Registration failed. Please try again!", {
+        position: "top-right",
+        autoClose: 3000,
+      })
+    }
   }
 
 
