@@ -1,9 +1,9 @@
-import { Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button } from "reactstrap";
-import StatsHorizontal from "@components/widgets/stats/StatsHorizontal";
-import { User, UserCheck, UserPlus, UserX } from "react-feather";
-import Table from "@src/views/admin/adminWorkers/list/Table";
-import { Link } from "react-router-dom";
-import React from "react";
+import { Card, CardHeader, CardBody, CardTitle, CardText, Row, Col, Button } from "reactstrap"
+import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
+import { User, UserCheck, UserPlus, UserX } from "react-feather"
+import Table from "@src/views/admin/adminWorkers/list/Table"
+import { Link } from "react-router-dom"
+import React from "react"
 
 const AdminWorkers = () => {
   return (
@@ -60,7 +60,7 @@ const AdminWorkers = () => {
         Sign in
       </Button>
     </div>
-  );
-};
+  )
+}
 
-export default AdminWorkers;
+export default AdminWorkers

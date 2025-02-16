@@ -5,10 +5,10 @@ import {
   CardTitle,
   CardText,
   CardLink, Col, Row
-} from "reactstrap";
+} from "reactstrap"
 
-import CardCongratulations from "../../ui-elements/advance/CardCongratulations";
-import { Fragment } from "react";
+import CardCongratulations from "../../ui-elements/advance/CardCongratulations"
+import { Fragment } from "react"
 
 const DashBoardWorker = () => {
   return (
@@ -62,7 +62,7 @@ const DashBoardWorker = () => {
       {/*  </CardBody>*/}
       {/*</Card>*/}
     </div>
-  );
-};
+  )
+}
 
-export default DashBoardWorker;
+export default DashBoardWorker

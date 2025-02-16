@@ -1,8 +1,8 @@
-import { Card, CardHeader, CardBody, CardTitle, CardText, Col, Row } from "reactstrap";
+import { Card, CardHeader, CardBody, CardTitle, CardText, Col, Row } from "reactstrap"
 import Table from './Table'
-import DataTable from 'react-data-table-component';
-import StatsHorizontal from "@components/widgets/stats/StatsHorizontal";
-import { User, UserCheck, UserPlus, UserX } from "react-feather";
+import DataTable from 'react-data-table-component'
+import StatsHorizontal from "@components/widgets/stats/StatsHorizontal"
+import { User, UserCheck, UserPlus, UserX } from "react-feather"
 
 
 const SecondPage = () => {
@@ -58,7 +58,6 @@ const SecondPage = () => {
     <Table />
   </div>
 )
-  ;
-};
+}
 
-export default SecondPage;
+export default SecondPage

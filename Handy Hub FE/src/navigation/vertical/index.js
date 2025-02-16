@@ -73,7 +73,7 @@ export const navigation =  [
     id: "customerFindWorker",
     title: "Find Worker",
     icon: <Search size={20} />,
-    navLink: "/customer-findWorker",
+    navLink: "/find-worker-shop",
     roles:['ROLE_CUSTOMER']
   },
   {

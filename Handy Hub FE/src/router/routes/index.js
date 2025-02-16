@@ -36,6 +36,7 @@ const Register = lazy(() => import("../../views/Register"))
 const ForgotPassword = lazy(() => import("../../views/ForgotPassword"))
 const CustomerDashboard = lazy(() => import("../../views/customer/dashboard/DashBoardCustomer"))
 const WorkerDashboard = lazy(() => import("../../views/worker/dashboard/DashBoardWorkers"))
+const FindWorkerShop = lazy(() => import("../../views/worker/findWorker/shop"))
 const Error = lazy(() => import("../../views/Error"))
 
 // ** Merge Routes
@@ -96,6 +97,10 @@ const Routes = [
   {
     path: "/worker-dashboard",
     element: <WorkerDashboard />
+  },
+  {
+    path: "/find-worker-shop",
+    element: <FindWorkerShop />
   }
 ]
 

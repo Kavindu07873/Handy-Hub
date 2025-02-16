@@ -1,7 +1,8 @@
 // ** Reducers Imports
-import layout from "./layout";
-import navbar from "./navbar";
+import layout from "./layout"
+import navbar from "./navbar"
 import users from '@src/views/admin/secondPage/store'
+import findWorker from '@src/views/worker/findWorker/store'
 
 // const rootReducer = {
 //   navbar, layout };
@@ -14,12 +15,12 @@ const rootReducer = {
   users,
   // kanban,
   navbar,
-  layout
+  layout,
   // invoice,
   // calendar,
-  // ecommerce,
+  findWorker
   // dataTables,
   // permissions
 }
 
-export default rootReducer;
+export default rootReducer
