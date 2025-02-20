@@ -35,8 +35,10 @@ const Login = lazy(() => import("../../views/Login"))
 const Register = lazy(() => import("../../views/Register"))
 const ForgotPassword = lazy(() => import("../../views/ForgotPassword"))
 const CustomerDashboard = lazy(() => import("../../views/customer/dashboard/DashBoardCustomer"))
+const CustomerFindWorker = lazy(() => import("../../views/customer/findWorker/shop"))
+const CustomerProfile = lazy(() => import("../../views/customer/findWorker/shop"))
 const WorkerDashboard = lazy(() => import("../../views/worker/dashboard/DashBoardWorkers"))
-const FindWorkerShop = lazy(() => import("../../views/worker/findWorker/shop"))
+const WorkerCalender = lazy(() => import("../../views/worker/calendar"))
 const Error = lazy(() => import("../../views/Error"))
 
 // ** Merge Routes
@@ -100,7 +102,11 @@ const Routes = [
   },
   {
     path: "/find-worker-shop",
-    element: <FindWorkerShop />
+    element: <CustomerFindWorker />
+  },
+  {
+    path: "/worker/calender",
+    element: <WorkerCalender />
   }
 ]
 

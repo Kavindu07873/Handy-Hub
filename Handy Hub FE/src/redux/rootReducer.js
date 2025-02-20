@@ -2,7 +2,10 @@
 import layout from "./layout"
 import navbar from "./navbar"
 import users from '@src/views/admin/secondPage/store'
-import findWorker from '@src/views/worker/findWorker/store'
+import customerFindWorker from '@src/views/customer/findWorker/store'
+import customerProfile from '@src/views/customer/customerProfile/store'
+import workerProfile from '@src/views/worker/workerProfile/store'
+import workerCalender from '@src/views/worker/calendar/store'
 
 // const rootReducer = {
 //   navbar, layout };
@@ -18,9 +21,12 @@ const rootReducer = {
   layout,
   // invoice,
   // calendar,
-  findWorker
+  customerFindWorker,
   // dataTables,
-  // permissions
+  // permissions,
+  customerProfile,
+  workerCalender,
+  workerProfile
 }
 
 export default rootReducer

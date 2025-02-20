@@ -59,7 +59,7 @@ export const navigation =  [
     id: "workerCalender",
     title: "Calender",
     icon: <Calendar size={20} />,
-    navLink: "/calender",
+    navLink: "/worker/calender",
     roles:['ROLE_WORKER']
   },
   {
