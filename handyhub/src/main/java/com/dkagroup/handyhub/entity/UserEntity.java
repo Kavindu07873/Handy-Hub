@@ -5,12 +5,10 @@ import com.dkagroup.handyhub.enums.UserStatus;
 import lombok.*;
 import javax.persistence.*;
 
-@Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Entity
 @Table(name = "user")
 public class UserEntity {
     @Id

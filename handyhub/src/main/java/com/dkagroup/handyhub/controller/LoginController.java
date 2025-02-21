@@ -1,37 +1,40 @@
 package com.dkagroup.handyhub.controller;
 
-import com.dkagroup.handyhub.dto.SignInDTO;
+import com.dkagroup.handyhub.dto.RegisterUserRequestDTO;
+import com.dkagroup.handyhub.dto.common.CommonResponseDTO;
+import com.dkagroup.handyhub.service.Oauth2UserService;
+import com.dkagroup.handyhub.service.UserService;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
+import static com.dkagroup.handyhub.constant.ApplicationConstant.OPERATION_SUCCESS;
+import static com.dkagroup.handyhub.constant.ResponseMessages.SUCCESS_RESPONSE;
 
-@Slf4j
+@Log4j2
 @RestController
 @CrossOrigin
-@RequestMapping("/register")
+@RequestMapping("/user")
 public class LoginController {
 
-    @RequestMapping("/")
-    public String home() {
-        return "Hello World";
+    private final UserService userService;
+
+    @Autowired
+    public LoginController(UserService userService) {
+        this.userService = userService;
     }
 
-    @RequestMapping("/user")
-    public Principal user(Principal user) {
-        return user;
+    @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity registerNewUser(@RequestBody RegisterUserRequestDTO registerRequest) {
+
+            System.out.println("Test 1");
+            userService.saveNewUser(registerRequest);
+            System.out.println("Test 2");
+            return new ResponseEntity<>(new CommonResponseDTO(true, "Customer Successfully Registered"), HttpStatus.OK);
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity singInNewUser(@ModelAttribute SignInDTO signInDTO) {
-
-        System.out.println("-----------------------------------------------------------------------");
-        System.out.println("API called successfully");
-        System.out.println("-----------------------------------------------------------------------");
-
-        return new ResponseEntity<>("commonResponse", HttpStatus.OK);
-    }
 }

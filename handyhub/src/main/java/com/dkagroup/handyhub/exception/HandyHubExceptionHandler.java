@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class HandyHubExceptionHandler extends RuntimeException{
+    @Getter
     private int status;
     private String message;
 
@@ -17,12 +18,7 @@ public class HandyHubExceptionHandler extends RuntimeException{
         this.message = message;
     }
 
-    public int getStatus() {
+    public int getStatus() {  // 👈 Explicitly add the getter
         return status;
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
     }
 }

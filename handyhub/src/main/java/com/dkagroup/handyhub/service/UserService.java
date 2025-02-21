@@ -1,8 +1,9 @@
 package com.dkagroup.handyhub.service;
 
-import com.dkagroup.handyhub.entity.UserEntity;
+import com.dkagroup.handyhub.dto.RegisterUserRequestDTO;
 
 public interface UserService {
-//    UserEntity getUserDetailsForLogin(String username);
+
+    void saveNewUser(RegisterUserRequestDTO registerUserRequestDTO);
 
 }

@@ -17,7 +17,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {HandyHubExceptionHandler.class})
-    public ResponseEntity handleABCException(HandyHubExceptionHandler ex, WebRequest webRequest) {
+    public ResponseEntity handleHandyHubException(HandyHubExceptionHandler ex, WebRequest webRequest) {
         return new ResponseEntity<>(
                 new ErrorMessageResponseDTO(false, ex.getStatus(), ex.getMessage()), HttpStatus.OK);
     }

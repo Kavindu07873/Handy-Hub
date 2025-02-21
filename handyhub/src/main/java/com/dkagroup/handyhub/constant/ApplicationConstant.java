@@ -5,7 +5,7 @@ public class ApplicationConstant {
     /**
      * error code
      **/
-
+    public static final int OPERATION_SUCCESS = 0;
     public static final int RESOURCE_NOT_FOUND = 404;
     public static final int INVALID_ENTERED = 609;
     public static final int USER_NOT_FOUND = 404;

@@ -1,11 +1,9 @@
 package com.dkagroup.handyhub.configuration;
 
 
-import com.dkagroup.handyhub.dto.UserDTO;
 import com.dkagroup.handyhub.entity.UserEntity;
 import com.dkagroup.handyhub.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
