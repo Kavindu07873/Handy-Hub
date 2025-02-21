@@ -27,8 +27,7 @@ import { FaGoogle } from "react-icons/fa"
 import { useState } from "react"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import * as registerApi from "../utility/api/registerApi"
-import { registerUserService } from "../utility/api/registerApi";
+import { registerUserService } from "../utility/api/registerApi"
 
 
 const Register = () => {
@@ -52,7 +51,7 @@ const Register = () => {
         autoClose: 3000,
         closeOnClick: true,
         pauseOnHover: true,
-        draggable: true,
+        draggable: true
       })
     }
 
@@ -65,7 +64,7 @@ const Register = () => {
       username,
       email,
       role,
-      password,
+      password
     }
 
     try {
@@ -76,7 +75,7 @@ const Register = () => {
     } catch (error) {
       toast.error("Registration failed. Please try again!", {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 3000
       })
     }
   }
@@ -265,7 +264,7 @@ const Register = () => {
         </Col>
       </Row>
     </div>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register

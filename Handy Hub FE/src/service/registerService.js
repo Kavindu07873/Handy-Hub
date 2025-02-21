@@ -21,6 +21,7 @@ export const registerUserService = async (obj) => {
     const response = await ApiService.callApi(apiObject)
     if (response.success) {
       console.log("User Registered:", obj.username)
+      console.log("response:", response)
       toast.success(response.msg, { position: "top-right" })
     } else {
       toast.error(response.msg, { position: "top-right" })

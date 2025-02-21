@@ -1,18 +1,18 @@
 class ApiService {
   static async callApi({ method, endpoint, body = null, headers = {} }) {
-    const apiUrl = `http://localhost:8080/api/${endpoint}`
+    const apiUrl = `http://localhost:8080/user/${endpoint}`
     console.log("Calling API:", apiUrl, method)
 
     // Default headers
     const defaultHeaders = {
       Accept: "application/json",
       "Content-Type": "application/json",
-      ...headers,
+      ...headers
     }
 
     const options = {
       method,
-      headers: defaultHeaders,
+      headers: defaultHeaders
     }
 
     // Only attach body if method is not GET
