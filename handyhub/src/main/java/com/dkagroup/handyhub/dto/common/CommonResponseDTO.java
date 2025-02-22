@@ -1,14 +1,10 @@
 package com.dkagroup.handyhub.dto.common;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-//@Getter
-//@Setter
+@Data
 @NoArgsConstructor
-@ToString
+@AllArgsConstructor
 public class CommonResponseDTO {
     private boolean success;
     private Object body;
@@ -26,8 +22,8 @@ public class CommonResponseDTO {
 
     public CommonResponseDTO(boolean success, String msg, Object body) {
         this.success = success;
-        this.msg = msg;
         this.body = body;
+        this.msg = msg;
     }
     // Getters and Setters
     public boolean isSuccess() {

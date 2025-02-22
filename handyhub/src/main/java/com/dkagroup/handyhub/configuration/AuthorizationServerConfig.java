@@ -76,7 +76,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .authenticationManager(authenticationManager)
                 .accessTokenConverter(accessTokenConverter())
 
-//                .pathMapping("/oauth/token", "/v1/oauth/token")
+                .pathMapping("/oauth/token", "/v1/oauth/token")
                 .exceptionTranslator(exception -> {
                     if (exception instanceof InvalidGrantException)
                         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)

@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const API_URL = "http://localhost:8080/api/oauth/token"
+const API_URL = "http://localhost:8080/v1/oauth/token"
 
 export const loginWithOAuth = async (username, password) => {
   const params = new URLSearchParams()

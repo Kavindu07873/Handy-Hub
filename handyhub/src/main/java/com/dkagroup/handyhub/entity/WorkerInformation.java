@@ -3,14 +3,17 @@ package com.dkagroup.handyhub.entity;
 import com.dkagroup.handyhub.enums.UserRole;
 import com.dkagroup.handyhub.enums.UserStatus;
 import lombok.*;
+
 import javax.persistence.*;
 
 @Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
-public class UserEntity {
+public class WorkerInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -29,11 +32,7 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    public Long getId() { return id; }
-    public String getEmail() { return email; }
-    public String getUsername() { return username; }
-    public UserStatus getStatus() {return status;}
-    public String getPassword() {return password;}
-    public UserRole getUserRole() {return userRole;}
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Worker worker;
 }

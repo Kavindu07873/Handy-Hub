@@ -12,8 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.dkagroup.handyhub.constant.ApplicationConstant.OPERATION_SUCCESS;
-import static com.dkagroup.handyhub.constant.ResponseMessages.SUCCESS_RESPONSE;
 
 @Log4j2
 @RestController

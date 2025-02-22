@@ -1,10 +1,9 @@
 package com.dkagroup.handyhub.configuration;
 
 
-import com.dkagroup.handyhub.entity.UserEntity;
+import com.dkagroup.handyhub.entity.User;
 import com.dkagroup.handyhub.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -49,7 +48,7 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
 ////            additionalInfo.put("user", build);
 ////        }
 //
-//        Optional<UserEntity> customer = userRepo.findByEmail(user.getUsername());
+//        Optional<User> customer = userRepo.findByEmail(user.getUsername());
 //        if (customer.isPresent()) {
 //            System.out.println("customer : "+customer.get().getEmail());
 //            UserDTO userDTO = new UserDTO(
@@ -79,9 +78,9 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
 //        return super.enhance(oAuth2AccessToken, oAuth2Authentication);
 
         final Map<String, Object> additionalInfo = new HashMap<>();
-        User user = (User) oAuth2Authentication.getPrincipal();
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) oAuth2Authentication.getPrincipal();
 
-        Optional<UserEntity> customer = userRepo.findByEmail(user.getUsername());
+        Optional<User> customer = userRepo.findByEmail(user.getUsername());
         if (customer.isPresent()) {
             Map<String, Object> userInfo = new HashMap<>();
             userInfo.put("id", customer.get().getId());

@@ -1,12 +1,10 @@
 package com.dkagroup.handyhub.service.impl;
 
-import com.dkagroup.handyhub.dto.RegisterUserRequestDTO;
-import com.dkagroup.handyhub.entity.UserEntity;
+import com.dkagroup.handyhub.entity.User;
 import com.dkagroup.handyhub.enums.UserStatus;
 import com.dkagroup.handyhub.exception.CustomOauthException;
 import com.dkagroup.handyhub.repository.UserRepository;
 import com.dkagroup.handyhub.service.Oauth2UserService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,7 +38,7 @@ public class Oauth2UserServiceImpl implements Oauth2UserService, UserDetailsServ
 //    public UserDetails getUserDetailsForLogin(String email) {
 //        log.info("Start function getUserDetailsForLogin @param email : {}", email);
 //        try {
-//            Optional<UserEntity> customer = userRepository.findByEmail(email);
+//            Optional<User> customer = userRepository.findByEmail(email);
 //            System.out.println("1");
 //            if (customer.isPresent() && customer.get().getStatus().equals(UserStatus.ACTIVE)) {
 //                System.out.println("2");
@@ -65,9 +63,11 @@ public class Oauth2UserServiceImpl implements Oauth2UserService, UserDetailsServ
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //        System.out.println("Start function getUserDetailsForLogin @param email : {}"+ username);
         try {
-            Optional<UserEntity> customer = userRepository.findByEmail(username);
+            Optional<User> customer = userRepository.findByEmail(username);
             System.out.println("1");
-            if (customer.isPresent() && customer.get().getStatus().equals(UserStatus.ACTIVE)) {
+            if (customer.isPresent() &&
+                    (customer.get().getStatus().equals(UserStatus.ACTIVE) ||
+                            customer.get().getStatus().equals(UserStatus.DEFAULT))) {
                 System.out.println("2");
                 System.out.println("customer.get().getEmail(), customer.get().getPassword() : "+customer.get().getEmail()  +" "+  customer.get().getPassword());
                 System.out.println("getAuthority(customer.get().getUserRole().name()) : "+ customer.get().getUserRole());

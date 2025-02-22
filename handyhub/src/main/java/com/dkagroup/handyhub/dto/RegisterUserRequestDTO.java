@@ -1,5 +1,6 @@
 package com.dkagroup.handyhub.dto;
 
+import com.dkagroup.handyhub.enums.UserRole;
 import lombok.*;
 
 @Getter
@@ -12,7 +13,7 @@ public class RegisterUserRequestDTO {
 
     private String username;
     private String email;
-    private String role;
+    private UserRole role;
     private String password;
 
 //    // Getter and Setter for username

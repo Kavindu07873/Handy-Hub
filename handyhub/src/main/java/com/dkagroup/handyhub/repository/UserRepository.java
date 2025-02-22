@@ -1,11 +1,11 @@
 package com.dkagroup.handyhub.repository;
 
-import com.dkagroup.handyhub.entity.UserEntity;
+import com.dkagroup.handyhub.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<UserEntity> findByEmail(String email);
+    Optional<User> findByEmail(String email);
 }
