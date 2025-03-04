@@ -36,7 +36,7 @@ const Register = lazy(() => import("../../views/Register"))
 const ForgotPassword = lazy(() => import("../../views/ForgotPassword"))
 const CustomerDashboard = lazy(() => import("../../views/customer/dashboard/DashBoardCustomer"))
 const CustomerFindWorker = lazy(() => import("../../views/customer/findWorker/shop"))
-const CustomerProfile = lazy(() => import("../../views/customer/findWorker/shop"))
+const CustomerProfile = lazy(() => import("../../views/customer/customerProfile/view"))
 const WorkerDashboard = lazy(() => import("../../views/worker/dashboard/DashBoardWorkers"))
 const WorkerCalender = lazy(() => import("../../views/worker/calendar"))
 const Error = lazy(() => import("../../views/Error"))
@@ -107,6 +107,10 @@ const Routes = [
   {
     path: "/worker/calender",
     element: <WorkerCalender />
+  },
+  {
+    path: "/customer/customer-profile",
+    element: <CustomerProfile />
   }
 ]
 

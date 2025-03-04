@@ -4,10 +4,20 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 // ** Axios Imports
 import axios from 'axios'
 
-export const getProducts = createAsyncThunk('appEcommerce/getProducts', async params => {
-  const response = await axios.get('/apps/ecommerce/products', { params })
-  return { params, data: response.data }
+// export const getProducts = createAsyncThunk('appEcommerce/getProducts', async params => {
+//   const response = await axios.get('/apps/ecommerce/products', { params })
+//   return { params, data: response.data }
+// })
+
+export const getProducts = createAsyncThunk('ecommerce/getProducts', async (params, { rejectWithValue }) => {
+  try {
+    const response = await axios.get('http://localhost:8080/worker/all', { params })  // Replace with actual API URL
+    return {params , data:response.data}
+  } catch (error) {
+    return rejectWithValue(error.response.data)
+  }
 })
+console.log("getProducts  : ",getProducts().length)
 
 export const addToCart = createAsyncThunk('appEcommerce/addToCart', async (id, { dispatch, getState }) => {
   const response = await axios.post('/apps/ecommerce/cart', { productId: id })
@@ -61,10 +71,17 @@ export const appEcommerceSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(getProducts.fulfilled, (state, action) => {
-        state.params = action.payload.params
-        state.products = action.payload.data.products
-        state.totalProducts = action.payload.data.total
+        state.status = 'succeeded'
+
+        if (action.payload.success) {
+          state.products = action.payload.body.content // Extract products array
+          state.totalProducts = action.payload.body.totalElements // Extract total number of products
+        } else {
+          state.products = []
+          state.totalProducts = 0
+        }
       })
+
       .addCase(getWishlistItems.fulfilled, (state, action) => {
         state.wishlist = action.payload.products
       })

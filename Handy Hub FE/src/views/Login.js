@@ -18,7 +18,7 @@ import {
 } from "reactstrap"
 // ** import Google icon
 import { FaGoogle } from "react-icons/fa";
-<FaGoogle color="#4285F4" size={32} />;
+<FaGoogle color="#4285F4" size={32} />
 // ** Illustrations Imports
 import illustrationsLight from "@src/assets/images/pages/login-v2.svg"
 import illustrationsDark from "@src/assets/images/pages/login-v2-dark.svg"
@@ -28,6 +28,7 @@ import React, { useState } from "react"
 import { signInWithGoogle} from "@configs/firebaseConfig"
 import { loginWithOAuth} from "@configs/AuthConfig"
 // import axios from "axios"
+// eslint-disable-next-line no-duplicate-imports
 import {useNavigate} from "react-router-dom"
 
 

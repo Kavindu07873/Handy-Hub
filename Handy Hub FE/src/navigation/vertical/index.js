@@ -9,7 +9,7 @@ import {
   MoreHorizontal,
   Calendar,
   Search
-} from "react-feather";
+} from "react-feather"
 
 export const navigation =  [
   {
@@ -75,6 +75,14 @@ export const navigation =  [
     icon: <Search size={20} />,
     navLink: "/find-worker-shop",
     roles:['ROLE_CUSTOMER']
+  },
+  {
+    id: 'accountSettings',
+    title: 'Account Settings',
+    icon: <Circle size={12} />,
+    navLink: '/customer/customer-profile',
+    roles:['ROLE_CUSTOMER']
+
   },
   {
     id: 'accountSettings',

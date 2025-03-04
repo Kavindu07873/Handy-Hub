@@ -36,29 +36,32 @@ const ProductsHeader = props => {
                   <Menu size={14} />
                 </span>
               </button>
-              <span className='search-results'>{store.totalProducts} Results Found</span>
+              {/* Prevent accessing totalProducts if store is undefined */}
+              <span className='search-results'>
+                {store?.totalProducts !== undefined ? `${store.totalProducts} Results Found` : 'Loading...'}
+              </span>
             </div>
             <div className='view-options d-flex'>
               <UncontrolledButtonDropdown className='dropdown-sort'>
                 <DropdownToggle className='text-capitalize me-1' color='primary' outline caret>
-                  {sortToggleText[store.params.sortBy]}
+                  {sortToggleText[store?.params?.sortBy] || 'Sort'}
                 </DropdownToggle>
                 <DropdownMenu>
                   <DropdownItem
                     className='w-100'
-                    onClick={() => dispatch(getProducts({ ...store.params, sortBy: 'featured' }))}
+                    onClick={() => dispatch(getProducts({ ...store?.params, sortBy: 'featured' }))}
                   >
                     Featured
                   </DropdownItem>
                   <DropdownItem
                     className='w-100'
-                    onClick={() => dispatch(getProducts({ ...store.params, sortBy: 'price-asc' }))}
+                    onClick={() => dispatch(getProducts({ ...store?.params, sortBy: 'price-asc' }))}
                   >
                     Lowest
                   </DropdownItem>
                   <DropdownItem
                     className='w-100'
-                    onClick={() => dispatch(getProducts({ ...store.params, sortBy: 'price-desc' }))}
+                    onClick={() => dispatch(getProducts({ ...store?.params, sortBy: 'price-desc' }))}
                   >
                     Highest
                   </DropdownItem>

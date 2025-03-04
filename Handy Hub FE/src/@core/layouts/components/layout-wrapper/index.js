@@ -10,30 +10,30 @@ import {
   handleContentWidth,
   handleMenuCollapsed,
   handleMenuHidden,
-} from "@store/layout";
+} from "@store/layout"
 
 // ** ThemeConfig
-import themeConfig from "@configs/themeConfig";
+import themeConfig from "@configs/themeConfig"
 
 // ** Styles
-import "animate.css/animate.css";
+import "animate.css/animate.css"
 
 const LayoutWrapper = (props) => {
   // ** Props
-  const { children, routeMeta } = props;
+  const { children, routeMeta } = props
 
   // ** Store Vars
-  const dispatch = useDispatch();
-  const store = useSelector((state) => state);
+  const dispatch = useDispatch()
+  const store = useSelector((state) => state)
 
-  const navbarStore = store.navbar;
-  const layoutStored = store.layout.layout;
-  const contentWidth = store.layout.contentWidth;
+  const navbarStore = store.navbar
+  const layoutStored = store.layout.layout
+  const contentWidth = store.layout.contentWidth
   //** Vars
   const appLayoutCondition =
     (layoutStored.layout === "horizontal" && !routeMeta) ||
-    (layoutStored.layout === "horizontal" && routeMeta && !routeMeta.appLayout);
-  const Tag = appLayoutCondition ? "div" : Fragment;
+    (layoutStored.layout === "horizontal" && routeMeta && !routeMeta.appLayout)
+  const Tag = appLayoutCondition ? "div" : Fragment
 
   // ** Clean Up Function
   const cleanUp = () => {
