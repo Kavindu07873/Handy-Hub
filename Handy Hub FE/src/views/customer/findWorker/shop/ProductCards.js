@@ -51,7 +51,7 @@ const ProductCards = props => {
           <Card className='ecommerce-card' key={item.name}>
             <div className='item-img text-center mx-auto'>
               <Link to={`/apps/ecommerce/product-detail/${item.slug}`}>
-                <img className='img-fluid card-img-top' src={item.image} alt={item.name} />
+                <img className='img-fluid card-img-top' src={item.imageUrl} alt={item.name} />
               </Link>
             </div>
             <CardBody>

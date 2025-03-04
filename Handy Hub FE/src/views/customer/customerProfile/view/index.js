@@ -1,118 +1,68 @@
 // ** React Imports
-import { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { Fragment, useState } from 'react'
 
 // ** Reactstrap Imports
-import { Row, Col, Alert, Button, Card, CardBody, FormGroup, Label, Input } from 'reactstrap'
+import { Row, Col, TabContent, TabPane } from 'reactstrap'
 
-// ** User View Components
-import UserTabs from './Tabs'
-import PlanCard from './PlanCard'
-import UserInfoCard from './UserInfoCard'
+// ** Demo Components
+import UserTabs from './UserTabs'
+import Breadcrumbs from '@components/breadcrumbs'
+import UserInfoTab from './UserInfoTab'
+import SecurityTab from './SecurityTab'
+import ActivityTab from './ActivityTab'
+import SettingsTab from './SettingsTab'
 
 // ** Styles
-import '@styles/react/apps/app-users.scss'
+import '@styles/react/libs/flatpickr/flatpickr.scss'
+import '@styles/react/pages/page-account-settings.scss'
 
 const UserView = () => {
-  // ** Hooks
-  const { id } = useParams()
+  // ** State for active tab
+  const [activeTab, setActiveTab] = useState('1')
 
-  // ** Local State
-  const [user, setUser] = useState(null)
-  const [workers, setWorkers] = useState([])
-  const [totalWorkers, setTotalWorkers] = useState(0)
-  const [active, setActive] = useState('1')
-  const [image, setImage] = useState('/images/avatars/avatar-1.png') // Default avatar
+  const toggleTab = tab => setActiveTab(tab)
 
-  // Fetch user details
-  const fetchUserData = async () => {
-    try {
-      const userData = {
-        id: 1,
-        name: "John Doe",
-        email: "john.doe@example.com",
-        role: "Admin",
-        avatar: "/images/avatars/avatar-1.png",
-        status: "Active",
-        company: "TechCorp",
-        phone: "+1234567890",
-        address: "123 Main St, Springfield, IL"
-      }
-      setUser(userData)
-      setImage(userData.avatar)
-
-      const workersData = [
-        { id: 1, name: "Alice Smith", role: "Developer", status: "Active" },
-        { id: 2, name: "Bob Johnson", role: "Designer", status: "Inactive" },
-        { id: 3, name: "Charlie Brown", role: "Manager", status: "Active" }
-      ]
-      setWorkers(workersData)
-      setTotalWorkers(workersData.length)
-    } catch (error) {
-      console.error("Error fetching user or customer details:", error)
-    }
+  // ** Sample User Data
+  const sampleUser = {
+    image: 'https://t3.ftcdn.net/jpg/02/43/12/34/240_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg', // Replace with actual image URL
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    role: 'Admin',
+    status: 'Active',
+    company: 'Tech Corp',
+    phone: '+1 (555) 123-4567',
+    address: '123 Main St, New York, NY',
+    timezone: 'GMT-05:00'
   }
 
-  // Fetch data on component mount
-  useEffect(() => {
-    fetchUserData()
-  }, [id])
 
-  // Handle Profile Image Upload
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0]
-    if (file) {
-      const imageUrl = URL.createObjectURL(file)
-      setImage(imageUrl) // Set preview image
-    }
-  }
+  return (
+    <Fragment>
+      <Breadcrumbs title="User Profile" data={[{ title: 'Users' }, { title: 'User View' }]} />
 
-  // Toggle tab handler
-  const toggleTab = tab => {
-    if (active !== tab) {
-      setActive(tab)
-    }
-  }
-
-  return user ? (
-    <div className='app-user-view'>
       <Row>
-        {/* Left Column: User Info Card and Profile Picture */}
-        <Col xl='4' lg='5' xs={{ order: 1 }} md={{ order: 0, size: 5 }}>
-          <Card className='mb-2'>
-            <CardBody className='text-center'>
-              <div className='mb-2'>
-                <img
-                  src={image}
-                  alt='Profile'
-                  className='rounded-circle'
-                  width='120'
-                  height='120'
-                />
-              </div>
-              <FormGroup>
-                <Label for='upload'>Upload Profile Picture</Label>
-                <Input type='file' id='upload' accept='image/*' onChange={handleImageUpload} />
-              </FormGroup>
-            </CardBody>
-          </Card>
-          <UserInfoCard selectedUser={user} />
-          <PlanCard />
-        </Col>
+        <Col xs={12}>
+          {/* Tabs Navigation */}
+          <UserTabs activeTab={activeTab} toggleTab={toggleTab} />
 
-        {/* Right Column: Tabs */}
-        <Col xl='8' lg='7' xs={{ order: 0 }} md={{ order: 1, size: 7 }}>
-          <UserTabs active={active} toggleTab={toggleTab} workers={workers} totalWorkers={totalWorkers} />
+          {/* Tab Content */}
+          <TabContent activeTab={activeTab}>
+            <TabPane tabId="1">
+              <UserInfoTab userData={sampleUser} />
+            </TabPane>
+            <TabPane tabId="2">
+              <SecurityTab userId={sampleUser.id} />
+            </TabPane>
+            <TabPane tabId="3">
+              <ActivityTab userId={sampleUser.id} />
+            </TabPane>
+            <TabPane tabId="4">
+              <SettingsTab userId={sampleUser.id} />
+            </TabPane>
+          </TabContent>
         </Col>
       </Row>
-    </div>
-  ) : (
-    <Alert color='danger'>
-      <h4 className='alert-heading'>User not found</h4>
-      <div className='alert-body'>
-        User with id: {id} doesn't exist. Check list of all Users: <Link to='/apps/user/list'>Users List</Link>
-      </div>
-    </Alert>
+    </Fragment>
   )
 }
 

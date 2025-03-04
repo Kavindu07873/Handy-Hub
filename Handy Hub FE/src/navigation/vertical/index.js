@@ -78,7 +78,7 @@ export const navigation =  [
   },
   {
     id: 'accountSettings',
-    title: 'Account Settings',
+    title: 'account Settings',
     icon: <Circle size={12} />,
     navLink: '/customer/customer-profile',
     roles:['ROLE_CUSTOMER']
