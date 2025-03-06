@@ -44,8 +44,8 @@ const Shop = () => {
 
   // ** Load Workers on Component Mount or Page Change
   useEffect(() => {
-    loadWorkers();
-  }, [page, size]);
+    loadWorkers()
+  }, [page, size])
 
   return (
     <Fragment>

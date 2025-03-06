@@ -8,8 +8,8 @@ import {
   Clock,
   MoreHorizontal,
   Calendar,
-  Search
-} from "react-feather"
+  Search, Compass
+} from "react-feather";
 
 export const navigation =  [
   {
@@ -45,7 +45,7 @@ export const navigation =  [
     id: "workerApproveWork",
     title: "Approve Work",
     icon: <CheckCircle size={20} />,
-    navLink: "/worker-approve",
+    navLink: "/worker/approve-work",
     roles:['ROLE_WORKER']
   },
   {
@@ -60,6 +60,13 @@ export const navigation =  [
     title: "Calender",
     icon: <Calendar size={20} />,
     navLink: "/worker/calender",
+    roles:['ROLE_WORKER']
+  },
+  {
+    id: "workerProfile",
+    title: "Profile",
+    icon: <Compass size={20} />,
+    navLink: "/worker/worker-profile",
     roles:['ROLE_WORKER']
   },
   {
@@ -82,14 +89,6 @@ export const navigation =  [
     icon: <Circle size={12} />,
     navLink: '/customer/customer-profile',
     roles:['ROLE_CUSTOMER']
-
-  },
-  {
-    id: 'accountSettings',
-    title: 'Account Settings',
-    icon: <Circle size={12} />,
-    navLink: '/account-setting',
-    roles:['ROLE_ADMIN' , 'ROLE_CUSTOMER' ,'ROLE_WORKER']
 
   }
 ]

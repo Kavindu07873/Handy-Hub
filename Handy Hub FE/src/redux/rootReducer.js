@@ -25,8 +25,8 @@ const rootReducer = {
   // dataTables,
   // permissions,
   // customerProfile,
-  workerCalender,
-  workerProfile
+  workerCalender
+  //workerProfile
 }
 
 export default rootReducer

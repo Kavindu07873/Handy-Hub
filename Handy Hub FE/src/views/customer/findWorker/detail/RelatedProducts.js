@@ -20,7 +20,7 @@ import img5 from '@src/assets/images/elements/iphone-x.png'
 // ** Styles
 import '@styles/react/libs/swiper/swiper.scss'
 
-const RelatedProducts = () => {
+const RelatedProducts = ({products}) => {
   SwiperCore.use([Navigation])
 
   // ** Related products Slides
@@ -95,7 +95,7 @@ const RelatedProducts = () => {
         <CardText>People also search for this items</CardText>
       </div>
       <Swiper {...params}>
-        {slides.map(slide => {
+        {products.map(slide => {
           return (
             <SwiperSlide key={slide.name}>
               <a href='/' onClick={e => e.preventDefault()}>

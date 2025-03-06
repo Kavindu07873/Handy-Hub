@@ -9,10 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 @Service
 public class WorkerServiceImpl implements WorkerService {
 
@@ -32,7 +28,7 @@ public class WorkerServiceImpl implements WorkerService {
 
             Page<Worker> workerPage = workerRepository.findAll(pageable);
 
-            responseDTOS = workerPage.map(this::getDropStudentsResponseDTO);
+            responseDTOS = workerPage.map(this::getAllWorkersResponseDTO);
 //            return workerPage.stream().map(WorkerResponseDTO::worker).toList();
             return responseDTOS;
         } catch (Exception e) {
@@ -41,11 +37,11 @@ public class WorkerServiceImpl implements WorkerService {
         }
     }
 
-    public WorkerResponseDTO getDropStudentsResponseDTO(Worker workerPage) {
+    public WorkerResponseDTO getAllWorkersResponseDTO(Worker workerPage) {
         WorkerResponseDTO responseDTO = new WorkerResponseDTO();
         responseDTO.setId(workerPage.getId());
         responseDTO.setName(workerPage.getUsername());
-        responseDTO.setImageUrl("https://m.foolcdn.com/media/dubs/images/smiling_man_in_business_suit_at_laptop_GettyIma.original.jpg");
+        responseDTO.setImageUrl(workerPage.getImageUrl());
         responseDTO.setId(workerPage.getId());
         responseDTO.setPrice(1500.00);
         return responseDTO;

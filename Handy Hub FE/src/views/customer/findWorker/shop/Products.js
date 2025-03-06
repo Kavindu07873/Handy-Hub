@@ -1,16 +1,16 @@
-import { useState } from "react";
-import ProductCards from "./ProductCards";
-import ProductsHeader from "./ProductsHeader";
-import ProductsSearchbar from "./ProductsSearchbar";
-import classnames from "classnames";
-import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-import {
-  addToCart,
-  addToWishlist,
-  deleteCartItem,
-  deleteWishlistItem,
-  getCartItems,
-} from "@src/views/customer/findWorker/store"; // Adjust the path accordingly
+import { useState } from "react"
+import ProductCards from "./ProductCards"
+import ProductsHeader from "./ProductsHeader"
+import ProductsSearchbar from "./ProductsSearchbar"
+import classnames from "classnames"
+import { Pagination, PaginationItem, PaginationLink } from "reactstrap"
+// import {
+//   addToCart,
+//   addToWishlist,
+//   deleteCartItem,
+//   deleteWishlistItem,
+//   getCartItems,
+// } from "@src/views/customer/findWorker/store"; // Adjust the path accordingly
 
 const ProductsPage = ({
                         error,
@@ -22,11 +22,11 @@ const ProductsPage = ({
                         totalProducts,
                         products
                       }) => {
-  const [totalWorkers, setTotalWorkers] = useState(totalProducts); // Initialize with totalProducts
-  const [page, updatePage] = useState(1); // Renamed `setPage` to `updatePage`
-  const [size] = useState(10);
+  const [totalWorkers, setTotalWorkers] = useState(totalProducts) // Initialize with totalProducts
+  const [page, updatePage] = useState(1) // Renamed `setPage` to `updatePage`
+  const [size] = useState(10)
 
-  console.log("totalWorkers  : ", totalWorkers);
+  console.log("totalWorkers  : ", totalWorkers)
 
   const handlePageChange = (val) => {
     if (val === "next" && page < Math.ceil(totalWorkers / size)) {

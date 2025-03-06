@@ -1,151 +1,107 @@
-// ** React Imports
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import classnames from 'classnames';
+import { Star, ShoppingCart, Heart } from 'react-feather';
+import { Card, CardBody, CardText, Button, Badge } from 'reactstrap';
 
-// ** Third Party Components
-import classnames from 'classnames'
-import { Star, ShoppingCart, Heart } from 'react-feather'
+const ProductCards = ({ products, addToCart, addToWishlist, deleteWishlistItem, activeView }) => {
 
-// ** Reactstrap Imports
-import { Card, CardBody, CardText, Button, Badge } from 'reactstrap'
+  const handleCartBtn = (id, isInCart) => {
+    addToCart(id);
+  };
 
-const ProductCards = props => {
-  // ** Props
-  const {
-    store,
-    products,
-    dispatch,
-    addToCart,
-    activeView,
-    getProducts,
-    getCartItems,
-    addToWishlist,
-    deleteWishlistItem
-  } = props
-
-  // ** Handle Move/Add to cart
-  const handleCartBtn = (id, val) => {
-    if (val === false) {
-      dispatch(addToCart(id))
-    }
-    dispatch(getCartItems())
-    dispatch(getProducts(store.params))
-  }
-
-  // ** Handle Wishlist item toggle
-  const handleWishlistClick = (id, val) => {
-    if (val) {
-      dispatch(deleteWishlistItem(id))
+  const handleWishlistClick = (id, isInWishlist) => {
+    if (isInWishlist) {
+      deleteWishlistItem(id);
     } else {
-      dispatch(addToWishlist(id))
+      addToWishlist(id);
     }
-    dispatch(getProducts(store.params))
-  }
+  };
 
-  // ** Renders products
   const renderProducts = () => {
-    if (products.length) {
-      return products.map(item => {
-        const CartBtnTag = item.isInCart ? Link : 'button'
-
-        return (
-          <Card className='ecommerce-card' key={item.name}>
-            <div className='item-img text-center mx-auto'>
-              <Link to={`/apps/ecommerce/product-detail/${item.slug}`}>
-                <img className='img-fluid card-img-top' src={item.imageUrl} alt={item.name} />
-              </Link>
+    return products.map((item, index) => (
+      <Card className="ecommerce-card" key={item.id || index}>
+        <div className="item-img text-center mx-auto">
+          <Link to={`/customer-worker-details/${item.id}`}>
+            <img className="img-fluid card-img-top" src={item.imageUrl} alt={item.name} />
+          </Link>
+        </div>
+        <CardBody>
+          <div className="item-wrapper">
+            <div className="item-rating">
+              <ul className="unstyled-list list-inline">
+                {[...Array(5)].map((_, idx) => (
+                  <li key={`star-${item.id}-${idx}`} className="ratings-list-item me-25">
+                    <Star
+                      className={classnames({
+                        'filled-star': idx + 1 <= item.rating,
+                        'unfilled-star': idx + 1 > item.rating,
+                      })}
+                    />
+                  </li>
+                ))}
+              </ul>
             </div>
-            <CardBody>
-              <div className='item-wrapper'>
-                <div className='item-rating'>
-                  <ul className='unstyled-list list-inline'>
-                    {new Array(5).fill().map((listItem, index) => {
-                      return (
-                        <li key={index} className='ratings-list-item me-25'>
-                          <Star
-                            className={classnames({
-                              'filled-star': index + 1 <= item.rating,
-                              'unfilled-star': index + 1 > item.rating
-                            })}
-                          />
-                        </li>
-                      )
-                    })}
-                  </ul>
-                </div>
-                <div className='item-cost'>
-                  <h6 className='item-price'>${item.price}</h6>
-                </div>
-              </div>
-              <h6 className='item-name'>
-                <Link className='text-body' to={`/apps/ecommerce/product-detail/${item.slug}`}>
-                  {item.name}
-                </Link>
-                <CardText tag='span' className='item-company'>
-                  By{' '}
-                  <a className='company-name' href='/' onClick={e => e.preventDefault()}>
-                    {item.brand}
-                  </a>
+            <div className="item-cost">
+              <h6 className="item-price">${item.price}</h6>
+            </div>
+          </div>
+          <h6 className="item-name">
+            <CardText tag="span" className="item-company">
+              By{' '}
+              <span className="company-name">{item.brand}</span>
+            </CardText>
+          </h6>
+          <CardText className="item-description">{item.description}</CardText>
+        </CardBody>
+        <div className="item-options text-center">
+          <div className="item-wrapper">
+            <div className="item-cost">
+              <h4 className="item-price">${item.price}</h4>
+              {item.hasFreeShipping && (
+                <CardText className="shipping">
+                  <Badge color="light-success">Free Shipping</Badge>
                 </CardText>
-              </h6>
-              <CardText className='item-description'>{item.description}</CardText>
-            </CardBody>
-            <div className='item-options text-center'>
-              <div className='item-wrapper'>
-                <div className='item-cost'>
-                  <h4 className='item-price'>${item.price}</h4>
-                  {item.hasFreeShipping ? (
-                    <CardText className='shipping'>
-                      <Badge color='light-success'>Free Shipping</Badge>
-                    </CardText>
-                  ) : null}
-                </div>
-              </div>
-              <Button
-                className='btn-wishlist'
-                color='light'
-                onClick={() => handleWishlistClick(item.id, item.isInWishlist)}
-              >
-                <Heart
-                  className={classnames('me-50', {
-                    'text-danger': item.isInWishlist
-                  })}
-                  size={14}
-                />
-                <span>Wishlist</span>
-              </Button>
-              <Button
-                color='primary'
-                tag={CartBtnTag}
-                className='btn-cart move-cart'
-                onClick={() => handleCartBtn(item.id, item.isInCart)}
-                /*eslint-disable */
-                {...(item.isInCart
-                  ? {
-                      to: '/apps/ecommerce/checkout'
-                    }
-                  : {})}
-                /*eslint-enable */
-              >
-                <ShoppingCart className='me-50' size={14} />
-                <span>{item.isInCart ? 'View In Cart' : 'Add To Cart'}</span>
-              </Button>
+              )}
             </div>
-          </Card>
-        )
-      })
-    }
-  }
+          </div>
+          <Button
+            className="btn-wishlist"
+            color="light"
+            onClick={() => handleWishlistClick(item.id, item.isInWishlist)}
+          >
+            <Heart
+              className={classnames('me-50', { 'text-danger': item.isInWishlist })}
+              size={14}
+            />
+            <span>Wishlist</span>
+          </Button>
+          {item.isInCart ? (
+            <Link to="/checkout">
+              <Button color="primary" className="btn-cart move-cart">
+                <ShoppingCart className="me-50" size={14} />
+                <span>View In Cart</span>
+              </Button>
+            </Link>
+          ) : (
+            <Button
+              color="primary"
+              className="btn-cart move-cart"
+              onClick={() => handleCartBtn(item.id, item.isInCart)}
+            >
+              <ShoppingCart className="me-50" size={14} />
+              <span>Add To Cart</span>
+            </Button>
+          )}
+        </div>
+      </Card>
+    ));
+  };
 
   return (
-    <div
-      className={classnames({
-        'grid-view': activeView === 'grid',
-        'list-view': activeView === 'list'
-      })}
-    >
+    <div className={classnames({ 'grid-view': activeView === 'grid', 'list-view': activeView === 'list' })}>
       {renderProducts()}
     </div>
-  )
-}
+  );
+};
 
-export default ProductCards
+export default ProductCards;

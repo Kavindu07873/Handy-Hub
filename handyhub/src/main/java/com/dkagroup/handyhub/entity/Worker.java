@@ -26,6 +26,8 @@ public class Worker {
     @Column(length = 255)
     private String mobileNumber;
 
+    private String imageUrl;
+
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
