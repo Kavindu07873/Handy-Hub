@@ -56,9 +56,9 @@ const AdminWorkers = () => {
         </Col>
       </Row>
       <Table />
-      <Button tag={Link} to="/second-page" color="primary" block>
+      {/*<Button tag={Link} to="/second-page" color="primary" block>
         Sign in
-      </Button>
+      </Button>*/}
     </div>
   )
 }

@@ -40,6 +40,8 @@ import {
 // ** Styles
 import '@styles/react/libs/react-select/_react-select.scss'
 import '@styles/react/libs/tables/react-dataTable-component.scss'
+import {fetchWorkers} from "@src/service/workerService"
+import {WorkerTableHeaders} from "@src/constants/TableHeaders";
 
 // ** Table Header
 const CustomHeader = ({ store, toggleSidebar, handlePerPage, rowsPerPage, handleFilter, searchTerm }) => {
@@ -166,7 +168,7 @@ const CustomHeader = ({ store, toggleSidebar, handlePerPage, rowsPerPage, handle
 
 const UsersList = () => {
   // ** Store Vars
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const store = useSelector(state => state.users)
 
   // ** States
@@ -179,28 +181,41 @@ const UsersList = () => {
   const [currentRole, setCurrentRole] = useState({ value: '', label: 'Select Role' })
   const [currentPlan, setCurrentPlan] = useState({ value: '', label: 'Select Plan' })
   const [currentStatus, setCurrentStatus] = useState({ value: '', label: 'Select Status', number: 0 })
+  const [workersData, setWorkersData] = useState([])
+  const [totalElements, setTotalElements] = useState(0)
 
   // ** Function to toggle sidebar
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
 
   // ** Get data on mount
 
+    const fetchAllWorkers = async () => {
+        const res = await fetchWorkers()
+        if (res.success) {
+            setWorkersData(res.body.content)
+            setTotalElements(res.body.totalElements)
+        } else {
+            console.error(res.msg)
+        }
+    }
+
   useEffect(() => {
 
-    dispatch(getAllData())
-    dispatch(
-      getData({
-        sort,
-        sortColumn,
-        q: searchTerm,
-        page: currentPage,
-        perPage: rowsPerPage,
-        role: currentRole.value,
-        status: currentStatus.value,
-        currentPlan: currentPlan.value
-      })
-    )
-  }, [dispatch, store.data.length, sort, sortColumn, currentPage])
+    // dispatch(getAllData())
+    // dispatch(
+    //   getData({
+    //     sort,
+    //     sortColumn,
+    //     q: searchTerm,
+    //     page: currentPage,
+    //     perPage: rowsPerPage,
+    //     role: currentRole.value,
+    //     status: currentStatus.value,
+    //     currentPlan: currentPlan.value
+    //   })
+    // )
+      fetchAllWorkers()
+  }, [])
 
   // ** User filter options
   const roleOptions = [
@@ -229,54 +244,70 @@ const UsersList = () => {
 
   // ** Function in get data on page change
   const handlePagination = page => {
-    dispatch(
-      getData({
-        sort,
-        sortColumn,
-        q: searchTerm,
-        perPage: rowsPerPage,
-        page: page.selected + 1,
-        role: currentRole.value,
-        status: currentStatus.value,
-        currentPlan: currentPlan.value
-      })
-    )
-    setCurrentPage(page.selected + 1)
+    // dispatch(
+    //   getData({
+    //     sort,
+    //     sortColumn,
+    //     q: searchTerm,
+    //     perPage: rowsPerPage,
+    //     page: page.selected + 1,
+    //     role: currentRole.value,
+    //     status: currentStatus.value,
+    //     currentPlan: currentPlan.value
+    //   })
+    // )
+    setCurrentPage(page.selected + 1, async () => {
+        const res = await fetchWorkers(page.selected + 1, rowsPerPage)
+        if (res.success) {
+            setWorkersData(res.body.content)
+            setTotalElements(res.body.totalElements)
+        } else {
+            console.error(res.msg)
+        }
+    })
   }
 
   // ** Function in get data on rows per page
   const handlePerPage = e => {
     const value = parseInt(e.currentTarget.value)
-    dispatch(
-      getData({
-        sort,
-        sortColumn,
-        q: searchTerm,
-        perPage: value,
-        page: currentPage,
-        role: currentRole.value,
-        currentPlan: currentPlan.value,
-        status: currentStatus.value
-      })
-    )
-    setRowsPerPage(value)
+    // dispatch(
+    //   getData({
+    //     sort,
+    //     sortColumn,
+    //     q: searchTerm,
+    //     perPage: value,
+    //     page: currentPage,
+    //     role: currentRole.value,
+    //     currentPlan: currentPlan.value,
+    //     status: currentStatus.value
+    //   })
+    // )
+    setRowsPerPage(value, async () => {
+        const res = await fetchWorkers(currentPage, value)
+        if (res.success) {
+            setWorkersData(res.body.content)
+            setTotalElements(res.body.totalElements)
+        } else {
+            console.error(res.msg)
+        }
+    })
   }
 
   // ** Function in get data on search query change
   const handleFilter = val => {
     setSearchTerm(val)
-    dispatch(
-      getData({
-        sort,
-        q: val,
-        sortColumn,
-        page: currentPage,
-        perPage: rowsPerPage,
-        role: currentRole.value,
-        status: currentStatus.value,
-        currentPlan: currentPlan.value
-      })
-    )
+    // dispatch(
+    //   getData({
+    //     sort,
+    //     q: val,
+    //     sortColumn,
+    //     page: currentPage,
+    //     perPage: rowsPerPage,
+    //     role: currentRole.value,
+    //     status: currentStatus.value,
+    //     currentPlan: currentPlan.value
+    //   })
+    // )
   }
 
   // ** Custom Pagination
@@ -304,41 +335,41 @@ const UsersList = () => {
 
   // ** Table data to render
   const dataToRender = () => {
-    const filters = {
-      role: currentRole.value,
-      currentPlan: currentPlan.value,
-      status: currentStatus.value,
-      q: searchTerm
-    }
-
-    const isFiltered = Object.keys(filters).some(function (k) {
-      return filters[k].length > 0
-    })
-
-    if (store.data.length > 0) {
-      return store.data
-    } else if (store.data.length === 0 && isFiltered) {
-      return []
-    } else {
-      return store.allData.slice(0, rowsPerPage)
-    }
+    // const filters = {
+    //   role: currentRole.value,
+    //   currentPlan: currentPlan.value,
+    //   status: currentStatus.value,
+    //   q: searchTerm
+    // }
+    //
+    // const isFiltered = Object.keys(filters).some(function (k) {
+    //   return filters[k].length > 0
+    // })
+    //
+    // if (store.data.length > 0) {
+    //   return store.data
+    // } else if (store.data.length === 0 && isFiltered) {
+    //   return []
+    // } else {
+    //   return store.allData.slice(0, rowsPerPage)
+    // }
   }
 
   const handleSort = (column, sortDirection) => {
     setSort(sortDirection)
     setSortColumn(column.sortField)
-    dispatch(
-      getData({
-        sort,
-        sortColumn,
-        q: searchTerm,
-        page: currentPage,
-        perPage: rowsPerPage,
-        role: currentRole.value,
-        status: currentStatus.value,
-        currentPlan: currentPlan.value
-      })
-    )
+    // dispatch(
+    //   getData({
+    //     sort,
+    //     sortColumn,
+    //     q: searchTerm,
+    //     page: currentPage,
+    //     perPage: rowsPerPage,
+    //     role: currentRole.value,
+    //     status: currentStatus.value,
+    //     currentPlan: currentPlan.value
+    //   })
+    // )
   }
 
   return (
@@ -360,18 +391,18 @@ const UsersList = () => {
                 theme={selectThemeColors}
                 onChange={data => {
                   setCurrentRole(data)
-                  dispatch(
-                    getData({
-                      sort,
-                      sortColumn,
-                      q: searchTerm,
-                      role: data.value,
-                      page: currentPage,
-                      perPage: rowsPerPage,
-                      status: currentStatus.value,
-                      currentPlan: currentPlan.value
-                    })
-                  )
+                  // dispatch(
+                  //   getData({
+                  //     sort,
+                  //     sortColumn,
+                  //     q: searchTerm,
+                  //     role: data.value,
+                  //     page: currentPage,
+                  //     perPage: rowsPerPage,
+                  //     status: currentStatus.value,
+                  //     currentPlan: currentPlan.value
+                  //   })
+                  // )
                 }}
               />
             </Col>
@@ -386,18 +417,18 @@ const UsersList = () => {
                 value={currentPlan}
                 onChange={data => {
                   setCurrentPlan(data)
-                  dispatch(
-                    getData({
-                      sort,
-                      sortColumn,
-                      q: searchTerm,
-                      page: currentPage,
-                      perPage: rowsPerPage,
-                      role: currentRole.value,
-                      currentPlan: data.value,
-                      status: currentStatus.value
-                    })
-                  )
+                  // dispatch(
+                  //   getData({
+                  //     sort,
+                  //     sortColumn,
+                  //     q: searchTerm,
+                  //     page: currentPage,
+                  //     perPage: rowsPerPage,
+                  //     role: currentRole.value,
+                  //     currentPlan: data.value,
+                  //     status: currentStatus.value
+                  //   })
+                  // )
                 }}
               />
             </Col>
@@ -412,18 +443,18 @@ const UsersList = () => {
                 value={currentStatus}
                 onChange={data => {
                   setCurrentStatus(data)
-                  dispatch(
-                    getData({
-                      sort,
-                      sortColumn,
-                      q: searchTerm,
-                      page: currentPage,
-                      status: data.value,
-                      perPage: rowsPerPage,
-                      role: currentRole.value,
-                      currentPlan: currentPlan.value
-                    })
-                  )
+                  // dispatch(
+                  //   getData({
+                  //     sort,
+                  //     sortColumn,
+                  //     q: searchTerm,
+                  //     page: currentPage,
+                  //     status: data.value,
+                  //     perPage: rowsPerPage,
+                  //     role: currentRole.value,
+                  //     currentPlan: currentPlan.value
+                  //   })
+                  // )
                 }}
               />
             </Col>
@@ -440,12 +471,15 @@ const UsersList = () => {
             pagination
             responsive
             paginationServer
-            columns={columns}
+            columns={WorkerTableHeaders}
             onSort={handleSort}
             sortIcon={<ChevronDown />}
             className='react-dataTable'
             paginationComponent={CustomPagination}
-            data={dataToRender()}
+            data={workersData}
+            onChangeRowsPerPage={handlePerPage}
+            onChangePage={handlePagination}
+            paginationTotalRows={totalElements}
             subHeaderComponent={
               <CustomHeader
                 store={store}

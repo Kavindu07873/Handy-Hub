@@ -181,12 +181,21 @@ const UsersList = () => {
   const [currentRole, setCurrentRole] = useState({ value: '', label: 'Select Role' })
   const [currentPlan, setCurrentPlan] = useState({ value: '', label: 'Select Plan' })
   const [currentStatus, setCurrentStatus] = useState({ value: '', label: 'Select Status', number: 0 })
-  const [customerData, setCustomerData] = useState(10)
+  const [customerData, setCustomerData] = useState([])
 
   // ** Function to toggle sidebar
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
 
   // ** Get data on mount
+
+  const fetchAllCustomers = async () => {
+    const res = await fetchCustomers()
+    if (res.success) {
+      setCustomerData(res.body.content)
+    } else {
+      console.error(res.msg)
+    }
+  }
 
   useEffect(() => {
     //
@@ -203,13 +212,7 @@ const UsersList = () => {
     //     currentPlan: currentPlan.value
     //   })
     // )
-    const res = fetchCustomers()
-    if (res.success) {
-      setCustomerData(res.body)
-    } else {
-      console.error(res.msg)
-    }
-
+    fetchAllCustomers()
   }, [])
 
   // ** User filter options
@@ -251,10 +254,10 @@ const UsersList = () => {
     //     currentPlan: currentPlan.value
     //   })
     // )
-    setCurrentPage(page.selected + 1, () => {
-      const res = fetchCustomers(page.selected + 1, rowsPerPage)
+    setCurrentPage(page.selected + 1, async () => {
+      const res = await fetchCustomers(page.selected + 1, rowsPerPage)
       if (res.success) {
-        setCustomerData(res.body)
+        setCustomerData(res.body.content)
       } else {
         console.error(res.msg)
       }
@@ -276,10 +279,10 @@ const UsersList = () => {
     //     status: currentStatus.value
     //   })
     // )
-    setRowsPerPage(value, () => {
-      const res = fetchCustomers(currentPage, value)
+    setRowsPerPage(value, async () => {
+      const res = await fetchCustomers(currentPage, value)
       if (res.success) {
-        setCustomerData(res.body)
+        setCustomerData(res.body.content)
       } else {
         console.error(res.msg)
       }
