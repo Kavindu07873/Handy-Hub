@@ -41,6 +41,7 @@ import {
 import '@styles/react/libs/react-select/_react-select.scss'
 import '@styles/react/libs/tables/react-dataTable-component.scss'
 import {fetchCustomers} from "@src/service/customerService";
+import {CustomerTableHeaders} from "@src/constants/TableHeaders";
 
 // ** Table Header
 const CustomHeader = ({ store, toggleSidebar, handlePerPage, rowsPerPage, handleFilter, searchTerm }) => {
@@ -180,6 +181,7 @@ const UsersList = () => {
   const [currentRole, setCurrentRole] = useState({ value: '', label: 'Select Role' })
   const [currentPlan, setCurrentPlan] = useState({ value: '', label: 'Select Plan' })
   const [currentStatus, setCurrentStatus] = useState({ value: '', label: 'Select Status', number: 0 })
+  const [customerData, setCustomerData] = useState(10)
 
   // ** Function to toggle sidebar
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
@@ -201,7 +203,13 @@ const UsersList = () => {
     //     currentPlan: currentPlan.value
     //   })
     // )
-      fetchCustomers()
+    const res = fetchCustomers()
+    if (res.success) {
+      setCustomerData(res.body)
+    } else {
+      console.error(res.msg)
+    }
+
   }, [])
 
   // ** User filter options
@@ -244,7 +252,12 @@ const UsersList = () => {
     //   })
     // )
     setCurrentPage(page.selected + 1, () => {
-        fetchCustomers(page.selected + 1, rowsPerPage)
+      const res = fetchCustomers(page.selected + 1, rowsPerPage)
+      if (res.success) {
+        setCustomerData(res.body)
+      } else {
+        console.error(res.msg)
+      }
     })
   }
 
@@ -264,7 +277,12 @@ const UsersList = () => {
     //   })
     // )
     setRowsPerPage(value, () => {
-        fetchCustomers(currentPage, value)
+      const res = fetchCustomers(currentPage, value)
+      if (res.success) {
+        setCustomerData(res.body)
+      } else {
+        console.error(res.msg)
+      }
     })
   }
 
@@ -446,12 +464,12 @@ const UsersList = () => {
             pagination
             responsive
             paginationServer
-            columns={columns}
+            columns={CustomerTableHeaders}
             onSort={handleSort}
             sortIcon={<ChevronDown />}
             className='react-dataTable'
             paginationComponent={CustomPagination}
-            data={dataToRender()}
+            data={customerData}
             subHeaderComponent={
               <CustomHeader
                 store={store}
