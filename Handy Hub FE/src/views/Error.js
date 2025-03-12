@@ -14,6 +14,8 @@ import illustrationsDark from "@src/assets/images/pages/error-dark.svg";
 // ** Styles
 import "@styles/base/pages/page-misc.scss";
 
+
+
 const Error = () => {
   // ** Hooks
   const { skin } = useSkin();
