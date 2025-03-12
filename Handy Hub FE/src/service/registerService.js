@@ -8,7 +8,7 @@ export const registerUserService = async (obj) => {
   console.log(token)
   const apiObject = {
     method: "POST",
-    endpoint: "register", // Correct endpoint for user registration
+    endpoint: "user/register", // Correct endpoint for user registration
     body: obj
     // headers: {
     //   Authorization: `Bearer ${token}`,

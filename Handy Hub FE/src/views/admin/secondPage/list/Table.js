@@ -40,6 +40,7 @@ import {
 // ** Styles
 import '@styles/react/libs/react-select/_react-select.scss'
 import '@styles/react/libs/tables/react-dataTable-component.scss'
+import {fetchCustomers} from "@src/service/customerService";
 
 // ** Table Header
 const CustomHeader = ({ store, toggleSidebar, handlePerPage, rowsPerPage, handleFilter, searchTerm }) => {
@@ -166,7 +167,7 @@ const CustomHeader = ({ store, toggleSidebar, handlePerPage, rowsPerPage, handle
 
 const UsersList = () => {
   // ** Store Vars
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const store = useSelector(state => state.users)
 
   // ** States
@@ -186,21 +187,22 @@ const UsersList = () => {
   // ** Get data on mount
 
   useEffect(() => {
-
-    dispatch(getAllData())
-    dispatch(
-      getData({
-        sort,
-        sortColumn,
-        q: searchTerm,
-        page: currentPage,
-        perPage: rowsPerPage,
-        role: currentRole.value,
-        status: currentStatus.value,
-        currentPlan: currentPlan.value
-      })
-    )
-  }, [dispatch, store.data.length, sort, sortColumn, currentPage])
+    //
+    // dispatch(getAllData())
+    // dispatch(
+    //   getData({
+    //     sort,
+    //     sortColumn,
+    //     q: searchTerm,
+    //     page: currentPage,
+    //     perPage: rowsPerPage,
+    //     role: currentRole.value,
+    //     status: currentStatus.value,
+    //     currentPlan: currentPlan.value
+    //   })
+    // )
+      fetchCustomers()
+  }, [])
 
   // ** User filter options
   const roleOptions = [
@@ -229,54 +231,58 @@ const UsersList = () => {
 
   // ** Function in get data on page change
   const handlePagination = page => {
-    dispatch(
-      getData({
-        sort,
-        sortColumn,
-        q: searchTerm,
-        perPage: rowsPerPage,
-        page: page.selected + 1,
-        role: currentRole.value,
-        status: currentStatus.value,
-        currentPlan: currentPlan.value
-      })
-    )
-    setCurrentPage(page.selected + 1)
+    // dispatch(
+    //   getData({
+    //     sort,
+    //     sortColumn,
+    //     q: searchTerm,
+    //     perPage: rowsPerPage,
+    //     page: page.selected + 1,
+    //     role: currentRole.value,
+    //     status: currentStatus.value,
+    //     currentPlan: currentPlan.value
+    //   })
+    // )
+    setCurrentPage(page.selected + 1, () => {
+        fetchCustomers(page.selected + 1, rowsPerPage)
+    })
   }
 
   // ** Function in get data on rows per page
   const handlePerPage = e => {
     const value = parseInt(e.currentTarget.value)
-    dispatch(
-      getData({
-        sort,
-        sortColumn,
-        q: searchTerm,
-        perPage: value,
-        page: currentPage,
-        role: currentRole.value,
-        currentPlan: currentPlan.value,
-        status: currentStatus.value
-      })
-    )
-    setRowsPerPage(value)
+    // dispatch(
+    //   getData({
+    //     sort,
+    //     sortColumn,
+    //     q: searchTerm,
+    //     perPage: value,
+    //     page: currentPage,
+    //     role: currentRole.value,
+    //     currentPlan: currentPlan.value,
+    //     status: currentStatus.value
+    //   })
+    // )
+    setRowsPerPage(value, () => {
+        fetchCustomers(currentPage, value)
+    })
   }
 
   // ** Function in get data on search query change
   const handleFilter = val => {
     setSearchTerm(val)
-    dispatch(
-      getData({
-        sort,
-        q: val,
-        sortColumn,
-        page: currentPage,
-        perPage: rowsPerPage,
-        role: currentRole.value,
-        status: currentStatus.value,
-        currentPlan: currentPlan.value
-      })
-    )
+    // dispatch(
+    //   getData({
+    //     sort,
+    //     q: val,
+    //     sortColumn,
+    //     page: currentPage,
+    //     perPage: rowsPerPage,
+    //     role: currentRole.value,
+    //     status: currentStatus.value,
+    //     currentPlan: currentPlan.value
+    //   })
+    // )
   }
 
   // ** Custom Pagination
@@ -304,41 +310,41 @@ const UsersList = () => {
 
   // ** Table data to render
   const dataToRender = () => {
-    const filters = {
-      role: currentRole.value,
-      currentPlan: currentPlan.value,
-      status: currentStatus.value,
-      q: searchTerm
-    }
-
-    const isFiltered = Object.keys(filters).some(function (k) {
-      return filters[k].length > 0
-    })
-
-    if (store.data.length > 0) {
-      return store.data
-    } else if (store.data.length === 0 && isFiltered) {
-      return []
-    } else {
-      return store.allData.slice(0, rowsPerPage)
-    }
+  //   const filters = {
+  //     role: currentRole.value,
+  //     currentPlan: currentPlan.value,
+  //     status: currentStatus.value,
+  //     q: searchTerm
+  //   }
+  //
+  //   const isFiltered = Object.keys(filters).some(function (k) {
+  //     return filters[k].length > 0
+  //   })
+  //
+  //   if (store.data.length > 0) {
+  //     return store.data
+  //   } else if (store.data.length === 0 && isFiltered) {
+  //     return []
+  //   } else {
+  //     return store.allData.slice(0, rowsPerPage)
+  //   }
   }
 
   const handleSort = (column, sortDirection) => {
     setSort(sortDirection)
     setSortColumn(column.sortField)
-    dispatch(
-      getData({
-        sort,
-        sortColumn,
-        q: searchTerm,
-        page: currentPage,
-        perPage: rowsPerPage,
-        role: currentRole.value,
-        status: currentStatus.value,
-        currentPlan: currentPlan.value
-      })
-    )
+    // dispatch(
+    //   getData({
+    //     sort,
+    //     sortColumn,
+    //     q: searchTerm,
+    //     page: currentPage,
+    //     perPage: rowsPerPage,
+    //     role: currentRole.value,
+    //     status: currentStatus.value,
+    //     currentPlan: currentPlan.value
+    //   })
+    // )
   }
 
   return (
@@ -360,18 +366,18 @@ const UsersList = () => {
                 theme={selectThemeColors}
                 onChange={data => {
                   setCurrentRole(data)
-                  dispatch(
-                    getData({
-                      sort,
-                      sortColumn,
-                      q: searchTerm,
-                      role: data.value,
-                      page: currentPage,
-                      perPage: rowsPerPage,
-                      status: currentStatus.value,
-                      currentPlan: currentPlan.value
-                    })
-                  )
+                  // dispatch(
+                  //   getData({
+                  //     sort,
+                  //     sortColumn,
+                  //     q: searchTerm,
+                  //     role: data.value,
+                  //     page: currentPage,
+                  //     perPage: rowsPerPage,
+                  //     status: currentStatus.value,
+                  //     currentPlan: currentPlan.value
+                  //   })
+                  // )
                 }}
               />
             </Col>
@@ -386,18 +392,18 @@ const UsersList = () => {
                 value={currentPlan}
                 onChange={data => {
                   setCurrentPlan(data)
-                  dispatch(
-                    getData({
-                      sort,
-                      sortColumn,
-                      q: searchTerm,
-                      page: currentPage,
-                      perPage: rowsPerPage,
-                      role: currentRole.value,
-                      currentPlan: data.value,
-                      status: currentStatus.value
-                    })
-                  )
+                  // dispatch(
+                  //   getData({
+                  //     sort,
+                  //     sortColumn,
+                  //     q: searchTerm,
+                  //     page: currentPage,
+                  //     perPage: rowsPerPage,
+                  //     role: currentRole.value,
+                  //     currentPlan: data.value,
+                  //     status: currentStatus.value
+                  //   })
+                  // )
                 }}
               />
             </Col>
@@ -412,18 +418,18 @@ const UsersList = () => {
                 value={currentStatus}
                 onChange={data => {
                   setCurrentStatus(data)
-                  dispatch(
-                    getData({
-                      sort,
-                      sortColumn,
-                      q: searchTerm,
-                      page: currentPage,
-                      status: data.value,
-                      perPage: rowsPerPage,
-                      role: currentRole.value,
-                      currentPlan: currentPlan.value
-                    })
-                  )
+                  // dispatch(
+                  //   getData({
+                  //     sort,
+                  //     sortColumn,
+                  //     q: searchTerm,
+                  //     page: currentPage,
+                  //     status: data.value,
+                  //     perPage: rowsPerPage,
+                  //     role: currentRole.value,
+                  //     currentPlan: currentPlan.value
+                  //   })
+                  // )
                 }}
               />
             </Col>
