@@ -1,40 +1,40 @@
-import { useState } from "react"
-import ProductCards from "./ProductCards"
-import ProductsHeader from "./ProductsHeader"
-import ProductsSearchbar from "./ProductsSearchbar"
-import classnames from "classnames"
-import { Pagination, PaginationItem, PaginationLink } from "reactstrap"
-// import {
-//   addToCart,
-//   addToWishlist,
-//   deleteCartItem,
-//   deleteWishlistItem,
-//   getCartItems,
-// } from "@src/views/customer/findWorker/store"; // Adjust the path accordingly
+import { useState } from "react";
+import ProductCards from "./ProductCards";
+import ProductsHeader from "./ProductsHeader";
+import ProductsSearchbar from "./ProductsSearchbar";
+import classnames from "classnames";
+// App.js or index.js
+import './App.css'; // Import the global CSS file
+import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 
 const ProductsPage = ({
                         error,
                         loading,
                         setSidebarOpen,
                         sidebarOpen,
-                        activeView,
-                        setActiveView,
                         totalProducts,
                         products
                       }) => {
-  const [totalWorkers, setTotalWorkers] = useState(totalProducts) // Initialize with totalProducts
-  const [page, updatePage] = useState(1) // Renamed `setPage` to `updatePage`
-  const [size] = useState(10)
+  // State for pagination
+  const [page, setPage] = useState(1); // Current page
+  const [size] = useState(10); // Items per page
 
-  console.log("totalWorkers  : ", totalWorkers)
+  // State for active view (grid or list)
+  const [activeView, setActiveView] = useState("grid"); // Default to grid view
 
+  // State for total workers/products
+  const [totalWorkers, setTotalWorkers] = useState(totalProducts);
+
+  console.log("totalWorkers : ", totalWorkers);
+
+  // Handle pagination changes
   const handlePageChange = (val) => {
     if (val === "next" && page < Math.ceil(totalWorkers / size)) {
-      updatePage((prev) => prev + 1);
+      setPage((prev) => prev + 1);
     } else if (val === "prev" && page > 1) {
-      updatePage((prev) => prev - 1);
+      setPage((prev) => prev - 1);
     } else if (typeof val === "number") {
-      updatePage(val);
+      setPage(val);
     }
   };
 
@@ -44,7 +44,7 @@ const ProductsPage = ({
         {/* Header with View Toggle */}
         <ProductsHeader
           activeView={activeView}
-          setActiveView={setActiveView}
+          setActiveView={setActiveView} // Pass setActiveView to toggle views
           setSidebarOpen={setSidebarOpen}
           totalProducts={totalWorkers}
         />
@@ -67,13 +67,8 @@ const ProductsPage = ({
           <>
             {/* Product Cards */}
             <ProductCards
-              // addToCart={addToCart}
-              activeView={activeView}
+              activeView={activeView} // Pass activeView to control layout
               products={products}
-              // getCartItems={getCartItems}
-              // addToWishlist={addToWishlist}
-              // deleteCartItem={deleteCartItem}
-              // deleteWishlistItem={deleteWishlistItem}
             />
 
             {/* Pagination */}
@@ -105,7 +100,7 @@ const ProductsPage = ({
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductsPage
+export default ProductsPage;

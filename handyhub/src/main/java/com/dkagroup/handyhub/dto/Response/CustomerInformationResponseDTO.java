@@ -1,28 +1,17 @@
 package com.dkagroup.handyhub.dto.Response;
 
-import com.dkagroup.handyhub.enums.CustomerRank;
-import com.dkagroup.handyhub.enums.Gender;
 import com.dkagroup.handyhub.enums.UserRole;
 import com.dkagroup.handyhub.enums.UserStatus;
-import lombok.*;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-public class CustomerResponseDTO {
+public class CustomerInformationResponseDTO {
     private long id;
     private String username;
     private String lastName;
     private String email;
     private String mobileNumber;
+    private String password;
     private UserStatus status;
     private UserRole userRole;
-    private Gender gender;
-    private CustomerRank customerRank;
-    private  CustomerInformationResponseDTO customerInformationResponseDTO;
-
 }

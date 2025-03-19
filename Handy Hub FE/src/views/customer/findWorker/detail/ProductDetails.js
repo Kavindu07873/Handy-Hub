@@ -151,7 +151,7 @@ const Product = props => {
                 'text-danger': data.isInWishlist
               })}
             />
-            <span>Wishlist</span>
+            <span>Hire Worker</span>
           </Button>
           <UncontrolledButtonDropdown className='dropdown-icon-wrapper btn-share'>
             <DropdownToggle className='btn-icon hide-arrow' color='secondary' caret outline>

@@ -1,6 +1,7 @@
 package com.dkagroup.handyhub.controller;
 
 import com.dkagroup.handyhub.dto.RegisterUserRequestDTO;
+import com.dkagroup.handyhub.dto.Response.HeaderResponseDTO;
 import com.dkagroup.handyhub.dto.Response.ProductResponseDTO;
 import com.dkagroup.handyhub.dto.Response.WorkerResponseDTO;
 import com.dkagroup.handyhub.dto.common.CommonResponseDTO;
@@ -48,5 +49,26 @@ public class WorkerController {
 
         Page<WorkerResponseDTO> allBatches = workerService.getAllWorkerListWithPagination(category,search,page,size);
         return new ResponseEntity<>(new CommonResponseDTO(true, allBatches, SUCCESS_RESPONSE), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/header", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getAllWorkersHeaderData() {
+
+        System.out.println(":hello world header ");
+
+        HeaderResponseDTO hdr = new HeaderResponseDTO();
+        hdr.setSortBy("Lowest");
+        hdr.setTotalProducts("10");
+//        Page<WorkerResponseDTO> allBatches = workerService.getAllWorkerListWithPagination(category,search,page,size);
+        return new ResponseEntity<>(new CommonResponseDTO(true, hdr, SUCCESS_RESPONSE), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/details/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getAllDetailsOfTheWorker(@PathVariable long id) {
+
+        System.out.println(":hello getAllDetailsOfTheWorker ");
+
+        WorkerResponseDTO workerData = workerService.getAllWorkerDetails(id);
+        return new ResponseEntity<>(new CommonResponseDTO(true, workerData, SUCCESS_RESPONSE), HttpStatus.OK);
     }
 }

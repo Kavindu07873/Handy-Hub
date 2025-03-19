@@ -2,9 +2,9 @@
 import layout from "./layout"
 import navbar from "./navbar"
 import users from '@src/views/admin/secondPage/store'
-import customerFindWorker from '@src/views/customer/findWorker/store'
+// import customerFindWorker from '@src/views/customer/findWorker/store'
 // import customerProfile from '@src/views/customer/customerProfile/store'
-import workerProfile from '@src/views/worker/workerProfile/store'
+// import workerProfile from '@src/views/worker/workerProfile/store'
 import workerCalender from '@src/views/worker/calendar/store'
 
 // const rootReducer = {
@@ -21,7 +21,7 @@ const rootReducer = {
   layout,
   // invoice,
   // calendar,
-  customerFindWorker,
+  // customerFindWorker,
   // dataTables,
   // permissions,
   // customerProfile,
