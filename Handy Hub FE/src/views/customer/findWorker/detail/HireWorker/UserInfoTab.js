@@ -11,25 +11,53 @@ const UserInfoTab = ({ userData }) => {
     dateRange: [],
   });
 
-
   // ** Handle Hire Worker
-  const handleHireWorker = () => {
+  const handleHireWorker = async () => {
+    // Validate description
     if (!hireData.description.trim()) {
       alert('Please provide a description.');
       return;
     }
+
+    // Validate date range
     if (hireData.dateRange.length !== 2) {
       alert('Please select a valid date range.');
       return;
     }
 
-    // Simulate hiring submission
-    console.log('Hiring Request Submitted:', {
+    // Prepare the payload for the API request
+    const hiringRequest = {
       workerId: userData.id,
       description: hireData.description,
-      dateRange: hireData.dateRange,
-    });
-    alert('Hiring request submitted successfully!');
+      dateRange: hireData.dateRange.map((date) => date.toISOString().split('T')[0]), // Format dates as YYYY-MM-DD
+    };
+
+    try {
+      // Send the POST request to the backend API
+      const response = await fetch('http://localhost:8080/worker/hire', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(hiringRequest),
+      });
+
+      // Check if the request was successful
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Hiring Request Submitted:', result);
+        alert('Hiring request submitted successfully!');
+      } else {
+        // Handle errors from the server
+        const errorData = await response.json();
+        console.error('Error submitting hiring request:', errorData);
+        alert(`Error: ${errorData.message || 'Failed to submit hiring request.'}`);
+      }
+    } catch (error) {
+      // Handle network or other errors
+      console.error('Network error:', error);
+      alert('An error occurred while submitting the hiring request. Please try again later.');
+    }
   };
 
   return (
