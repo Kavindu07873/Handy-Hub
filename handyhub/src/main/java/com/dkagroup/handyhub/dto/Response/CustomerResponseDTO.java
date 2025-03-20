@@ -25,4 +25,13 @@ public class CustomerResponseDTO {
     private CustomerRank customerRank;
     private  CustomerInformationResponseDTO customerInformationResponseDTO;
 
+
+    private String image;
+    private String name;
+    private String role;
+    private String company;
+    private String phone;
+    private String address;
+    private String timezone;
+
 }

@@ -1,55 +1,87 @@
-import React from 'react'
-import { Row, Col, Card, CardBody, CardTitle, CardText, Badge, Button, Input, Label } from 'reactstrap'
+import React from 'react';
+import { Row, Col, Card, CardBody, CardTitle, Label, Input, Button } from 'reactstrap';
 
 const UserInfoTab = ({ userData }) => {
   // ** State for Profile Image
-  const [avatar, setAvatar] = React.useState(userData.image || '')
-  const [isEditMode, setIsEditMode] = React.useState(false)// Toggle between view and edit modes
-  const [formData, setFormData] = React.useState({ ...userData }) // Manage form data dynamically
+  const [avatar, setAvatar] = React.useState(userData.image || '');
+  const [isEditMode, setIsEditMode] = React.useState(false); // Toggle between view and edit modes
+  const [formData, setFormData] = React.useState({ ...userData }); // Manage form data dynamically
+
+  // ** Define Enums
+  const genderOptions = ['MALE', 'FEMALE', 'NONE'];
 
   // ** Handle Image Upload
   const onChange = (e) => {
-    const reader = new FileReader()
-    const files = e.target.files
+    const reader = new FileReader();
+    const files = e.target.files;
     reader.onload = () => {
-      setAvatar(reader.result)
-      setFormData((prevData) => ({ ...prevData, image: reader.result }))
-    }
-    reader.readAsDataURL(files[0])
-  }
+      setAvatar(reader.result);
+      setFormData((prevData) => ({ ...prevData, image: reader.result }));
+    };
+    reader.readAsDataURL(files[0]);
+  };
 
   // ** Handle Image Reset
   const handleImgReset = () => {
-    setAvatar('')
-    setFormData((prevData) => ({ ...prevData, image: '' }))
-  }
+    setAvatar('');
+    setFormData((prevData) => ({ ...prevData, image: '' }));
+  };
 
   // ** Handle Form Field Changes
   const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prevData) => ({ ...prevData, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
 
   // ** Handle Edit Mode
   const handleEditClick = () => {
-    setIsEditMode(true)
-  }
+    setIsEditMode(true);
+  };
 
   // ** Handle Update Mode
   const handleUpdateClick = async () => {
     try {
-      // Simulate an API call to update the data
-      console.log('Updating data:', formData)
+      // Prepare the payload to send to the backend
+      const payload = {
+        id: formData.id,
+        email: formData.email,
+        username: formData.username,
+        address: formData.address,
+        role: formData.role,
+        lastName: formData.lastName,
+        mobileNumber: formData.mobileNumber,
+        gender: formData.gender,
+        image: formData.image, // Base64 image string if uploaded
+      };
 
-      // Replace this with your actual API call
-      await new Promise((resolve) => setTimeout(resolve, 1000)) // Mock API delay
+      console.log('Updating data:', payload);
+
+      // Send the POST request to the backend API
+      const response = await fetch('http://localhost:8080/customer/profile/update', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`, // Include the token in the headers
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      // Check if the request was successful
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to update user data.');
+      }
+
+      const result = await response.json();
+      console.log('User data updated successfully:', result);
 
       // Switch back to view mode after successful update
-      setIsEditMode(false)
+      setIsEditMode(false);
     } catch (error) {
-      console.error('Error updating data:', error)
+      console.error('Error updating data:', error);
+      alert(`Error: ${error.message || 'Failed to update user data.'}`);
     }
-  }
+  };
 
   return (
     <Card className="shadow-lg border-0 rounded">
@@ -58,11 +90,7 @@ const UserInfoTab = ({ userData }) => {
           {/* Profile Image */}
           <Col md="3" className="text-center">
             <img
-              src={
-                avatar ||
-                formData.image
-                // 'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'
-              }
+              src={avatar || formData.image || 'https://via.placeholder.com/120'}
               alt="User Profile"
               className="rounded-circle img-fluid"
               style={{ width: '120px', height: '120px', objectFit: 'cover', border: '3px solid #ddd' }}
@@ -101,61 +129,27 @@ const UserInfoTab = ({ userData }) => {
                   </Label>
                   <Input
                     id="email"
+                    name="email"
                     type="email"
                     placeholder="Email"
                     defaultValue={formData.email || ''}
+                    onChange={handleInputChange} // Allow editing in edit mode
                     readOnly={!isEditMode} // Read-only in view mode
                   />
                 </Col>
 
-                {/* Role */}
+                {/* Username */}
                 <Col sm="6" className="mb-1">
-                  <Label className="form-label" for="role">
-                    <strong>Role:</strong>
+                  <Label className="form-label" for="username">
+                    <strong>Username:</strong>
                   </Label>
                   <Input
-                    id="role"
-                    placeholder="Role"
-                    defaultValue={formData.role || ''}
-                    readOnly={!isEditMode} // Read-only in view mode
-                  />
-                </Col>
-
-                {/* Status */}
-                <Col sm="6" className="mb-1">
-                  <Label className="form-label" for="status">
-                    <strong>Status:</strong>
-                  </Label>
-                  <Input
-                    id="status"
-                    placeholder="Status"
-                    defaultValue={formData.status || ''}
-                    readOnly={!isEditMode} // Read-only in view mode
-                  />
-                </Col>
-
-                {/* Company */}
-                <Col sm="6" className="mb-1">
-                  <Label className="form-label" for="company">
-                    <strong>Company:</strong>
-                  </Label>
-                  <Input
-                    id="company"
-                    placeholder="Company"
-                    defaultValue={formData.company || ''}
-                    readOnly={!isEditMode} // Read-only in view mode
-                  />
-                </Col>
-
-                {/* Phone */}
-                <Col sm="6" className="mb-1">
-                  <Label className="form-label" for="phone">
-                    <strong>Phone:</strong>
-                  </Label>
-                  <Input
-                    id="phone"
-                    placeholder="Phone"
-                    defaultValue={formData.phone || ''}
+                    id="username"
+                    name="username"
+                    type="text"
+                    placeholder="Username"
+                    defaultValue={formData.username || ''}
+                    onChange={handleInputChange} // Allow editing in edit mode
                     readOnly={!isEditMode} // Read-only in view mode
                   />
                 </Col>
@@ -168,6 +162,7 @@ const UserInfoTab = ({ userData }) => {
                   <Input
                     id="address"
                     name="address"
+                    type="text"
                     placeholder="Address"
                     defaultValue={formData.address || ''}
                     onChange={handleInputChange} // Allow editing in edit mode
@@ -175,17 +170,74 @@ const UserInfoTab = ({ userData }) => {
                   />
                 </Col>
 
-                {/* Timezone */}
+                {/* Role */}
                 <Col sm="6" className="mb-1">
-                  <Label className="form-label" for="timezone">
-                    <strong>Timezone:</strong>
+                  <Label className="form-label" for="role">
+                    <strong>Role:</strong>
                   </Label>
                   <Input
-                    id="timezone"
-                    placeholder="Timezone"
-                    defaultValue={formData.timezone || ''}
+                    id="role"
+                    name="role"
+                    type="text"
+                    placeholder="Role"
+                    defaultValue={formData.role || ''}
+                    onChange={handleInputChange} // Allow editing in edit mode
                     readOnly={!isEditMode} // Read-only in view mode
                   />
+                </Col>
+
+                {/* Last Name */}
+                <Col sm="6" className="mb-1">
+                  <Label className="form-label" for="lastName">
+                    <strong>Last Name:</strong>
+                  </Label>
+                  <Input
+                    id="lastName"
+                    name="lastName"
+                    type="text"
+                    placeholder="Last Name"
+                    defaultValue={formData.lastName || ''}
+                    onChange={handleInputChange} // Allow editing in edit mode
+                    readOnly={!isEditMode} // Read-only in view mode
+                  />
+                </Col>
+
+                {/* Mobile Number */}
+                <Col sm="6" className="mb-1">
+                  <Label className="form-label" for="mobileNumber">
+                    <strong>Mobile Number:</strong>
+                  </Label>
+                  <Input
+                    id="mobileNumber"
+                    name="mobileNumber"
+                    type="text"
+                    placeholder="Mobile Number"
+                    defaultValue={formData.mobileNumber || ''}
+                    onChange={handleInputChange} // Allow editing in edit mode
+                    readOnly={!isEditMode} // Read-only in view mode
+                  />
+                </Col>
+
+                {/* Gender */}
+                <Col sm="6" className="mb-1">
+                  <Label className="form-label" for="gender">
+                    <strong>Gender:</strong>
+                  </Label>
+                  <Input
+                    id="gender"
+                    name="gender"
+                    type="select"
+                    defaultValue={formData.gender || ''}
+                    onChange={handleInputChange} // Allow editing in edit mode
+                    disabled={!isEditMode} // Disabled in view mode
+                  >
+                    <option value="">Select Gender</option>
+                    {genderOptions.map((gender) => (
+                      <option key={gender} value={gender}>
+                        {gender}
+                      </option>
+                    ))}
+                  </Input>
                 </Col>
               </Row>
 
@@ -211,7 +263,7 @@ const UserInfoTab = ({ userData }) => {
         </Row>
       </CardBody>
     </Card>
-  )
-}
+  );
+};
 
-export default UserInfoTab
+export default UserInfoTab;
