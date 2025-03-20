@@ -1,11 +1,10 @@
 package com.dkagroup.handyhub.controller;
 
-import com.dkagroup.handyhub.dto.RegisterUserRequestDTO;
 import com.dkagroup.handyhub.dto.Response.HeaderResponseDTO;
-import com.dkagroup.handyhub.dto.Response.ProductResponseDTO;
 import com.dkagroup.handyhub.dto.Response.WorkerResponseDTO;
 import com.dkagroup.handyhub.dto.common.CommonResponseDTO;
-import com.dkagroup.handyhub.service.UserService;
+import com.dkagroup.handyhub.dto.Request.HireDataRequestDTO;
+
 import com.dkagroup.handyhub.service.WorkerService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,12 +41,12 @@ public class WorkerController {
             @RequestParam(required = false) Integer size
     ) {
 
-        if(page == 1 ){
+        if (page == 1) {
             page = 0;
         }
         System.out.println(":hello world ");
 
-        Page<WorkerResponseDTO> allBatches = workerService.getAllWorkerListWithPagination(category,search,page,size);
+        Page<WorkerResponseDTO> allBatches = workerService.getAllWorkerListWithPagination(category, search, page, size);
         return new ResponseEntity<>(new CommonResponseDTO(true, allBatches, SUCCESS_RESPONSE), HttpStatus.OK);
     }
 
@@ -70,5 +69,15 @@ public class WorkerController {
 
         WorkerResponseDTO workerData = workerService.getAllWorkerDetails(id);
         return new ResponseEntity<>(new CommonResponseDTO(true, workerData, SUCCESS_RESPONSE), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/hire", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity hireWorker(@RequestBody HireDataRequestDTO hireDataRequestDTO) {
+        System.out.println(":hello hireWorker ");
+
+        System.out.println("hireDataRequestDTO : "+hireDataRequestDTO.getDateRange().size());
+        System.out.println("hireDataRequestDTO : "+hireDataRequestDTO.getDescription());
+
+        return new ResponseEntity<>(new CommonResponseDTO(true, "Worker Successfully register"), HttpStatus.OK);
     }
 }
