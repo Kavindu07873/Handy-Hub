@@ -1,40 +1,19 @@
-// ** React Imports
-import { Fragment, useState } from 'react'
-
-// ** Reactstrap Imports
-import { Row, Col, TabContent, TabPane } from 'reactstrap'
-
-// ** Demo Components
-import UserTabs from './UserTabs'
-import Breadcrumbs from '@components/breadcrumbs'
-import UserInfoTab from './UserInfoTab'
-import SecurityTab from './SecurityTab'
-import SkillsTab from './SkillsTab'
-import SettingsTab from './SettingsTab'
-
-// ** Styles
-import '@styles/react/libs/flatpickr/flatpickr.scss'
-import '@styles/react/pages/page-account-settings.scss'
-import WorkerInfoTab from "@src/views/worker/workerProfile/view/WorkerInfoTab";
+import { Fragment, useState, useEffect } from 'react';
+import { Row, Col, TabContent, TabPane } from 'reactstrap';
+import UserTabs from './UserTabs';
+import Breadcrumbs from '@components/breadcrumbs';
+import UserInfoTab from './UserInfoTab';
+import SecurityTab from './SecurityTab';
+import SkillsTab from './SkillsTab';
+import SettingsTab from './SettingsTab';
+import WorkerInfoTab from '@src/views/worker/workerProfile/view/WorkerInfoTab';
 
 const UserView = () => {
   // ** State for active tab
-  const [activeTab, setActiveTab] = useState('1')
+  const [activeTab, setActiveTab] = useState('1');
+  const [userData, setUserData] = useState(null); // State to store fetched user data
+  const toggleTab = (tab) => setActiveTab(tab);
 
-  const toggleTab = tab => setActiveTab(tab)
-
-  // ** Sample User Data
-  // const sampleUser = {
-  //   image: 'https://t3.ftcdn.net/jpg/02/43/12/34/240_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg', // Replace with actual image URL
-  //   name: 'John Doe',
-  //   email: 'john.doe@example.com',
-  //   role: 'Admin',
-  //   status: 'Active',
-  //   company: 'Tech Corp',
-  //   phone: '+1 (555) 123-4567',
-  //   address: '123 Main St, New York, NY',
-  //   timezone: 'GMT-05:00'
-  // }
   const sampleUser = {
     id: 1,
     image: 'https://t3.ftcdn.net/jpg/02/43/12/34/240_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg',
@@ -79,37 +58,82 @@ const UserView = () => {
     }
   }
 
+  // Fetch user data from the backend
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/worker/profile', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`, // Send the token from localStorage
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+
+        // Extract the `body` object from the API response
+        const { body } = responseData;
+
+        // Log the response data for debugging
+        console.log('API Response:', responseData);
+
+        // Set the fetched user data into state
+        setUserData(body);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData(); // Call the function to fetch user data
+  }, []); // Empty dependency array ensures this runs only once on component mount
+
+  // If user data is not yet fetched, show a loading message
+  if (!userData) {
+    return <div>Loading user data...</div>;
+  }
+
+  console.log("education  : ", userData.education)
+  console.log("education  : ", userData.softSkills)
+  console.log("skills : ", userData.professionalSkills)
   return (
     <Fragment>
       <Breadcrumbs title="User Profile" data={[{ title: 'Users' }, { title: 'User View' }]} />
-
       <Row>
         <Col xs={12}>
           {/* Tabs Navigation */}
           <UserTabs activeTab={activeTab} toggleTab={toggleTab} />
-
           {/* Tab Content */}
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <UserInfoTab userData={sampleUser} />
+              <UserInfoTab userData={userData} />
             </TabPane>
             <TabPane tabId="2">
-              <SecurityTab userId={sampleUser.id} />
+              <SecurityTab userId={userData.id} />
             </TabPane>
             <TabPane tabId="3">
+              {/*<SkillsTab*/}
+              {/*  professionalSkills={sampleUser.professionalSkills}*/}
+              {/*  softSkills={sampleUser.softSkills}*/}
+              {/*/>*/}
               <SkillsTab userData={sampleUser} />
+
             </TabPane>
             <TabPane tabId="4">
-              <SettingsTab userId={sampleUser.id} />
+              <SettingsTab userId={userData.id} />
             </TabPane>
             <TabPane tabId="5">
-              <WorkerInfoTab workerData={sampleUser.worker} />
+              <WorkerInfoTab workerData={userData.worker} />
             </TabPane>
           </TabContent>
         </Col>
       </Row>
     </Fragment>
-  )
-}
+  );
+};
 
-export default UserView
+export default UserView;

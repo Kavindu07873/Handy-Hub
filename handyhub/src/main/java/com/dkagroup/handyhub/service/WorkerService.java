@@ -1,5 +1,6 @@
 package com.dkagroup.handyhub.service;
 
+import com.dkagroup.handyhub.dto.Response.WorkerInformationResponseDTO;
 import com.dkagroup.handyhub.dto.Response.WorkerResponseDTO;
 import org.springframework.data.domain.Page;
 
@@ -8,4 +9,6 @@ public interface WorkerService {
 
 
     WorkerResponseDTO getAllWorkerDetails(long id);
+
+    WorkerInformationResponseDTO getWorkerdetails();
 }

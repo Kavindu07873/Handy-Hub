@@ -48,13 +48,13 @@ export const navigation =  [
     navLink: "/worker/approve-work",
     roles:['ROLE_WORKER']
   },
-  {
-    id: "workerPendingWork",
-    title: "Pending Work",
-    icon: <Clock  size={20} />,
-    navLink: "/worker-PendingWork",
-    roles:['ROLE_WORKER']
-  },
+  // {
+  //   id: "workerPendingWork",
+  //   title: "Pending Work",
+  //   icon: <Clock  size={20} />,
+  //   navLink: "/worker-PendingWork",
+  //   roles:['ROLE_WORKER']
+  // },
   {
     id: "workerCalender",
     title: "Calender",

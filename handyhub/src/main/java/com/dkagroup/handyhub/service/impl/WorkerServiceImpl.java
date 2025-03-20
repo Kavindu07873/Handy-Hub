@@ -1,8 +1,12 @@
 package com.dkagroup.handyhub.service.impl;
 
+import com.dkagroup.handyhub.dto.DocumentsDTO;
+import com.dkagroup.handyhub.dto.ProfessionalSkillsDTO;
 import com.dkagroup.handyhub.dto.Response.RelatedProductDTO;
+import com.dkagroup.handyhub.dto.Response.WorkerInformationResponseDTO;
 import com.dkagroup.handyhub.dto.Response.WorkerResponseDTO;
 import com.dkagroup.handyhub.entity.Worker;
+import com.dkagroup.handyhub.enums.*;
 import com.dkagroup.handyhub.repository.WorkerRepository;
 import com.dkagroup.handyhub.service.WorkerService;
 import org.springframework.data.domain.Page;
@@ -10,7 +14,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -79,6 +85,78 @@ public class WorkerServiceImpl implements WorkerService {
             dto.setRelatedProducts(Arrays.asList(relatedProduct1, relatedProduct2));
 
             return dto;
+        } catch (Exception e) {
+            // Log the exception properly
+            System.err.println("Error in getAllWorkerDetails: " + e.getMessage());
+            e.printStackTrace(); // Print stack trace for debugging purposes
+            throw e; // Re-throw the exception to propagate it
+        }
+    }
+
+    @Override
+    public WorkerInformationResponseDTO getWorkerdetails() {
+        try {
+
+            WorkerInformationResponseDTO workerInfo = new WorkerInformationResponseDTO();
+            workerInfo.setId(1);
+            workerInfo.setImage("https://example.com/image.jpg");
+            workerInfo.setName("John Doe");
+            workerInfo.setEmail("john.doe@example.com");
+            workerInfo.setRole("Admin");
+            workerInfo.setStatus(UserStatus.ACTIVE);
+            workerInfo.setCompany("Tech Corp");
+            workerInfo.setPhone("+1 (555) 123-4567");
+            workerInfo.setAddress("123 Main St, New York, NY");
+            workerInfo.setTimezone("GMT-05:00");
+            workerInfo.setEducation("Bachelor of Science in Computer Engineering\nStanford University (2015-2019)");
+
+            // Professional skills
+
+            ProfessionalSkillsDTO professionalSkillsDTO = new ProfessionalSkillsDTO();
+            professionalSkillsDTO.setImage("https://example.com/cloud.jpg");
+            professionalSkillsDTO.setText("Cloud Architecture");
+
+            List<ProfessionalSkillsDTO> skillsList = new ArrayList<>();
+            skillsList.add(professionalSkillsDTO);
+
+            workerInfo.setProfessionalSkills(skillsList);
+
+
+            // Soft skills
+            workerInfo.setSoftSkills(Collections.singletonList("Team leadership\nCommunication\nProblem-solving"));
+
+
+            DocumentsDTO documentsDTO = new DocumentsDTO();
+            documentsDTO.setImage("resume.pdf");
+            documentsDTO.setText("application/pdf");
+
+            List<DocumentsDTO> documentsList = new ArrayList<>();
+            documentsList.add(documentsDTO);
+
+            workerInfo.setDocuments(documentsList);
+
+
+            // Documents
+//            workerInfo.setDocuments((com.dkagroup.handyhub.dto.DocumentsDTO) Arrays.asList("resume.pdf",
+//                    "application/pdf", "...", "portfolio.docx", "application/msword", "..."));
+
+            // Worker-specific details
+            WorkerResponseDTO worker = new WorkerResponseDTO();
+            worker.setId(1);
+            worker.setUsername("worker_john");
+            worker.setLastName("Doe");
+            worker.setEmail("worker.john@example.com");
+            worker.setMobileNumber("+1 (555) 987-6543");
+            worker.setImageUrl("data:image/jpeg;base64,...");
+            worker.setStatus(UserStatus.ACTIVE);
+            worker.setUserRole(UserRole.WORKER);
+            worker.setWorkerType(WorkerType.TRAINEE);
+            worker.setGender(Gender.MALE);
+            worker.setWorkerRank(WorkerRank.EXPERT);
+
+            workerInfo.setWorker(worker);
+            return workerInfo;
+
         } catch (Exception e) {
             // Log the exception properly
             System.err.println("Error in getAllWorkerDetails: " + e.getMessage());
