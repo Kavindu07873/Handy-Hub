@@ -1,80 +1,58 @@
 // src/views/worker/WorkerApproveWork.js
-import React, { useState, useEffect } from 'react'
-import { Container, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap'
-import PendingTasksTab from '../approveWorks/PendingTasksTab'
-import ApprovedTasksTab from '../approveWorks/ApprovedTasksTab'
-import '~@fortawesome/fontawesome-free/css/all.min.css'
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
+import PendingTasksTab from '../approveWorks/PendingTasksTab';
+import ApprovedTasksTab from '../approveWorks/ApprovedTasksTab';
+import '~@fortawesome/fontawesome-free/css/all.min.css';
 
 const WorkerApproveWork = () => {
-  const [activeTab, setActiveTab] = useState('1')
-  const [works, setWorks] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [activeTab, setActiveTab] = useState('1'); // Active tab state
+  const [works, setWorks] = useState([]); // State to store fetched works
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
 
-  const sampleWorks = [
-    {
-      id: 1,
-      title: "Office Renovation",
-      description: "Complete interior renovation",
-      address: "123 Business St, NY",
-      price: 14500,
-      status: "pending",
-      dueDate: "2024-01-25",
-      completion: 65
-    },
-    {
-      id: 2,
-      title: "HVAC Maintenance",
-      description: "Monthly system check",
-      address: "456 Park Ave, NY",
-      price: 850,
-      status: "approved",
-      dueDate: "2024-01-15",
-      completion: 100
-    },
-    {
-      id: 3,
-      title: "HVAC Maintenance",
-      description: "Monthly system check",
-      address: "456 Park Ave, NY",
-      price: 850,
-      status: "approved",
-      dueDate: "2024-01-15",
-      completion: 100
-    },
-    {
-      id: 1,
-      title: "Office Renovation",
-      description: "Complete interior renovation",
-      address: "123 Business St, NY",
-      price: 14500,
-      status: "pending",
-      dueDate: "2024-01-25",
-      completion: 65
-    }
-  ]
-
+  // Fetch works from the backend API
   useEffect(() => {
     const fetchWorks = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        setWorks(sampleWorks)
-      } catch (err) {
-        setError('Failed to load works')
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchWorks()
-  }, [])
+        const response = await fetch('http://localhost:8080/worker/involveTask', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`, // Include token for authentication
+          },
+        });
 
-  if (loading) return <div className="p-5">Loading...</div>
-  if (error) return <div className="p-5 text-danger">{error}</div>
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setWorks(data); // Assuming the API returns an array of works
+      } catch (err) {
+        console.error('Error fetching works:', err);
+        setError('Failed to load works. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWorks(); // Call the fetch function
+  }, []); // Empty dependency array ensures this runs only once on mount
+
+  // Filter works based on status for each tab
+  const pendingWorks = works.filter((work) => work.status === 'pending');
+  const approvedWorks = works.filter((work) => work.status === 'approved');
+
+  // Handle loading and error states
+  if (loading) return <div className="p-5">Loading...</div>;
+  if (error) return <div className="p-5 text-danger">{error}</div>;
 
   return (
     <Container fluid className="py-4">
       <Row>
+        {/* Sidebar Navigation */}
         <Col md={3}>
           <Nav vertical pills>
             <NavItem>
@@ -96,19 +74,23 @@ const WorkerApproveWork = () => {
           </Nav>
         </Col>
 
+        {/* Main Content */}
         <Col md={9}>
           <TabContent activeTab={activeTab}>
+            {/* Pending Tasks Tab */}
             <TabPane tabId="1">
-              <PendingTasksTab works={works} />
+              <PendingTasksTab works={pendingWorks} />
             </TabPane>
+
+            {/* Approved Tasks Tab */}
             <TabPane tabId="2">
-              <ApprovedTasksTab works={works} />
+              <ApprovedTasksTab works={approvedWorks} />
             </TabPane>
           </TabContent>
         </Col>
       </Row>
     </Container>
-  )
-}
+  );
+};
 
-export default WorkerApproveWork
+export default WorkerApproveWork;

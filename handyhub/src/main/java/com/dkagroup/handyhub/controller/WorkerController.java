@@ -1,6 +1,7 @@
 package com.dkagroup.handyhub.controller;
 
 import com.dkagroup.handyhub.dto.Response.HeaderResponseDTO;
+import com.dkagroup.handyhub.dto.Response.HireWorkeResponseDTO;
 import com.dkagroup.handyhub.dto.Response.WorkerInformationResponseDTO;
 import com.dkagroup.handyhub.dto.Response.WorkerResponseDTO;
 import com.dkagroup.handyhub.dto.common.CommonResponseDTO;
@@ -92,6 +93,17 @@ public class WorkerController {
 
         WorkerInformationResponseDTO workerInfo = workerService.getWorkerdetails();
         return new ResponseEntity<>(new CommonResponseDTO(true, workerInfo, SUCCESS_RESPONSE), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/involveTask", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getAllTask() {
+
+        System.out.println(":hello getAllDetailsOfTheWorker ");
+
+        HireWorkeResponseDTO hireWorkeResponseDTO = new HireWorkeResponseDTO();
+
+
+        return new ResponseEntity<>(new CommonResponseDTO(true, hireWorkeResponseDTO, SUCCESS_RESPONSE), HttpStatus.OK);
     }
 
 }
