@@ -1,50 +1,46 @@
-import { useEffect, useRef, memo } from 'react'
+import { useEffect, useRef } from 'react';
 // ** Full Calendar & its Plugins
-import '@fullcalendar/react/dist/vdom'
-import FullCalendar from '@fullcalendar/react'
-import listPlugin from '@fullcalendar/list'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin from '@fullcalendar/interaction'
+import '@fullcalendar/react/dist/vdom';
+import FullCalendar from '@fullcalendar/react';
+import listPlugin from '@fullcalendar/list';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
 // ** Third Party Components
-import toast from 'react-hot-toast'
-import { Menu } from 'react-feather'
-import { Card, CardBody } from 'reactstrap'
+import toast from 'react-hot-toast';
+import { Menu } from 'react-feather';
+import { Card, CardBody } from 'reactstrap';
 
-const Calendar = props => {
-  // ** Refs
-  const calendarRef = useRef(null)
+const Calendar = ({ isRtl, events, calendarsColor, calendarApi, setCalendarApi, handleAddEventSidebar, highlightDays }) => {
+  const calendarRef = useRef(null);
 
-  // ** Props
-  const {
-    store,
-    isRtl,
-    dispatch,
-    calendarsColor,
-    calendarApi,
-    setCalendarApi,
-    handleAddEventSidebar,
-    blankEvent,
-    toggleSidebar,
-    selectEvent,
-    updateEvent
-  } = props
+  // ** Handle Event Add/Edit/Delete
+  const handleAddEvent = (newEvent) => {
+    toast.success('Event Added');
+  };
 
-  // ** UseEffect checks for CalendarAPI Update
-  useEffect(() => {
-    if (calendarApi === null) {
-      setCalendarApi(calendarRef.current.getApi())
-    }
-  }, [calendarApi])
+  const handleUpdateEvent = (updatedEvent) => {
+    toast.success('Event Updated');
+  };
 
-  // ** calendarOptions(Props)
+  const handleDeleteEvent = (eventId) => {
+    toast.success('Event Deleted');
+  };
+
+  // ** Check if a Day Should Be Highlighted
+  const isHighlightedDay = (date) => {
+    const day = date.getDate();
+    return highlightDays.includes(day);
+  };
+
+  // ** Calendar Options
   const calendarOptions = {
-    events: store?.events || [], // Optional chaining and fallback to empty array
+    events, // Use local events state
     plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin],
     initialView: 'dayGridMonth',
     headerToolbar: {
       start: 'sidebarToggle, prev,next, title',
-      end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+      end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth',
     },
     editable: true,
     eventResizableFromStart: true,
@@ -52,54 +48,50 @@ const Calendar = props => {
     dayMaxEvents: 2,
     navLinks: true,
     eventClassNames({ event: calendarEvent }) {
-      const colorName = calendarsColor[calendarEvent._def.extendedProps.calendar]
-      return [`bg-light-${colorName}`]
+      const colorName = calendarEvent.extendedProps.calendar || 'primary'; // Default color
+      return [`bg-light-${colorName}`];
     },
     eventClick({ event: clickedEvent }) {
-      dispatch(selectEvent(clickedEvent))
-      handleAddEventSidebar()
+      console.log('Event clicked:', clickedEvent);
     },
     customButtons: {
       sidebarToggle: {
-        text: <Menu className='d-xl-none d-block' />,
+        text: <Menu className="d-xl-none d-block" />,
         click() {
-          toggleSidebar(true)
-        }
-      }
+          console.log('Sidebar toggled');
+        },
+      },
     },
     dateClick(info) {
-      const ev = blankEvent
-      ev.start = info.date
-      ev.end = info.date
-      dispatch(selectEvent(ev))
-      handleAddEventSidebar()
+      console.log('Date clicked:', info.date);
     },
     eventDrop({ event: droppedEvent }) {
-      dispatch(updateEvent(droppedEvent))
-      toast.success('Event Updated')
+      handleUpdateEvent(droppedEvent.toPlainObject());
     },
     eventResize({ event: resizedEvent }) {
-      dispatch(updateEvent(resizedEvent))
-      toast.success('Event Updated')
+      handleUpdateEvent(resizedEvent.toPlainObject());
     },
-    ref: calendarRef,
-    direction: isRtl ? 'rtl' : 'ltr'
-  }
+    dayCellClassNames: (arg) => {
+      // Check if the day should be highlighted
+      if (isHighlightedDay(arg.date)) {
+        return 'highlight-day'; // Add custom CSS class
+      }
+      return '';
+    },
+    ref: (calendar) => {
+      if (calendar) {
+        setCalendarApi(calendar);
+      }
+    },
+  };
 
   return (
-    <Card className='shadow-none border-0 mb-0 rounded-0'>
-      <CardBody className='pb-0'>
+    <Card className="shadow-none border-0 mb-0 rounded-0">
+      <CardBody className="pb-0">
         <FullCalendar {...calendarOptions} />
       </CardBody>
     </Card>
-  )
-}
+  );
+};
 
-// Set default props
-Calendar.defaultProps = {
-  store: {
-    events: []
-  }
-}
-
-export default memo(Calendar)
+export default Calendar;

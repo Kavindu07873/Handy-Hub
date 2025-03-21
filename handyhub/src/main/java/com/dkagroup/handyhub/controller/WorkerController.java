@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -95,15 +96,32 @@ public class WorkerController {
         return new ResponseEntity<>(new CommonResponseDTO(true, workerInfo, SUCCESS_RESPONSE), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/involveTask", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/involvetask", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getAllTask() {
 
-        System.out.println(":hello getAllDetailsOfTheWorker ");
+        System.out.println(":hello getAllTask ");
 
+        List<HireWorkeResponseDTO> hireWorkeResponseDTOList = new ArrayList<>();
         HireWorkeResponseDTO hireWorkeResponseDTO = new HireWorkeResponseDTO();
+        hireWorkeResponseDTO.setId(1);
+        hireWorkeResponseDTO.setPrice("12000");
+        hireWorkeResponseDTO.setDescription("Complete interior renovation");
+        hireWorkeResponseDTO.setAddress("12000");
+        hireWorkeResponseDTO.setCompletion("12000");
+        hireWorkeResponseDTO.setStatus("APPROVED");
+        hireWorkeResponseDTO.setTitle("Office Renovation");
+        hireWorkeResponseDTOList.add(hireWorkeResponseDTO);
+        HireWorkeResponseDTO hireWorkeResponseDTO2 = new HireWorkeResponseDTO();
+        hireWorkeResponseDTO2.setId(2);
+        hireWorkeResponseDTO2.setTitle("Office Renovation");
+        hireWorkeResponseDTO2.setPrice("12000");
+        hireWorkeResponseDTO2.setDescription("12000");
+        hireWorkeResponseDTO2.setAddress("12000");
+        hireWorkeResponseDTO2.setCompletion("12000");
+        hireWorkeResponseDTO2.setStatus("PENDING");
+        hireWorkeResponseDTOList.add(hireWorkeResponseDTO2);
 
-
-        return new ResponseEntity<>(new CommonResponseDTO(true, hireWorkeResponseDTO, SUCCESS_RESPONSE), HttpStatus.OK);
+        return new ResponseEntity<>(new CommonResponseDTO(true, hireWorkeResponseDTOList, SUCCESS_RESPONSE), HttpStatus.OK);
     }
 
 }

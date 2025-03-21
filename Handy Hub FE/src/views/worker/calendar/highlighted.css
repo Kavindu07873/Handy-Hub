@@ -1,0 +1,7 @@
+/* Styles for highlighted days */
+.highlight-day {
+    background-color: #ffeb3b !important; /* Yellow background */
+    border-radius: 50%; /* Circular highlight */
+    color: #000; /* Dark text for contrast */
+    font-weight: bold; /* Bold text */
+}
