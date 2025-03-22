@@ -5,22 +5,27 @@ import com.dkagroup.handyhub.dto.ProfessionalSkillsDTO;
 import com.dkagroup.handyhub.dto.Response.RelatedProductDTO;
 import com.dkagroup.handyhub.dto.Response.WorkerInformationResponseDTO;
 import com.dkagroup.handyhub.dto.Response.WorkerResponseDTO;
+import com.dkagroup.handyhub.entity.User;
 import com.dkagroup.handyhub.entity.Worker;
+import com.dkagroup.handyhub.entity.WorkerInformation;
 import com.dkagroup.handyhub.enums.*;
 import com.dkagroup.handyhub.repository.WorkerRepository;
 import com.dkagroup.handyhub.service.WorkerService;
+import com.dkagroup.handyhub.utill.AccessTokenValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import javax.persistence.EntityNotFoundException;
+import java.util.*;
 
 @Service
 public class WorkerServiceImpl implements WorkerService {
+
+    @Autowired
+    AccessTokenValidator accessTokenValidator;
 
     private final WorkerRepository workerRepository;
 
@@ -50,41 +55,56 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public WorkerResponseDTO getAllWorkerDetails(long id) {
         try {
-            // Create the main DTO object
-            WorkerResponseDTO dto = new WorkerResponseDTO();
 
-            // Set worker details
-            dto.setId(id); // Use the provided `id` parameter instead of hardcoding it
-            dto.setName("ABCD");
-            dto.setPrice(149.99);
-            dto.setDescription("High-quality wireless headphones with 20-hour battery life and noise cancellation");
+            Optional<Worker> workerOptional = workerRepository.findById(id);
+            if (workerOptional.isPresent()) {
+                Worker worker = workerOptional.get();
+                WorkerResponseDTO workerResponseDTO = new WorkerResponseDTO();
 
-            // Use Arrays.asList() instead of List.of()
-            dto.setImages(Arrays.asList("https://i5.walmartimages.com/asr/de03acff-5b8a-40c6-b30e-472ccac63b1a_1.d1d018fe917627a1cd9f46142c001bcc.jpeg"));
-            dto.setFeatures(Arrays.asList("Noise cancellation", "20h battery", "Bluetooth 5.0"));
-            dto.setRating(4.5);
-            dto.setInWishlist(false);
-            dto.setColorOptions(Arrays.asList("#007bff", "#28a745", "#dc3545"));
-            dto.setBrand("AudioTech");
-            dto.setHasFreeShipping(true);
+                // Set worker details from the database
+                workerResponseDTO.setId(worker.getId());
+                workerResponseDTO.setName(worker.getUsername());
+                workerResponseDTO.setPrice(worker.getPrice());
+                workerResponseDTO.setDescription(worker.getDescription());
+                workerResponseDTO.setWorkerType(worker.getWorkerType());
 
-            // Add related products
-            RelatedProductDTO relatedProduct1 = new RelatedProductDTO();
-            relatedProduct1.setId(2L); // Use `long` (or `Long`) for IDs to match the type
-            relatedProduct1.setName("Smart Fitness Tracker");
-            relatedProduct1.setPrice(59.99);
-            relatedProduct1.setImage("/images/fitness-tracker.jpg");
+                // Convert worker images from entity format to DTO format
+//                List<String> images = worker.getImageUrl().stream()
+//                        .map(Image::getUrl) // Assuming Image entity has a getUrl() method
+//                        .collect(Collectors.toList());
+                workerResponseDTO.setImages(Collections.singletonList(worker.getImageUrl()));
 
-            RelatedProductDTO relatedProduct2 = new RelatedProductDTO();
-            relatedProduct2.setId(3L); // Use `long` (or `Long`) for IDs to match the type
-            relatedProduct2.setName("Wireless Earbuds");
-            relatedProduct2.setPrice(79.99);
-            relatedProduct2.setImage("/images/earbuds.jpg");
+                // Convert worker features from entity format to DTO format
+//                List<String> features = worker.getFeatures().stream()
+//                        .map(Feature::getName) // Assuming Feature entity has a getName() method
+//                        .collect(Collectors.toList());
+//                workerResponseDTO.setFeatures(features);
 
-            // Use Arrays.asList() for related products
-            dto.setRelatedProducts(Arrays.asList(relatedProduct1, relatedProduct2));
+                workerResponseDTO.setRating(worker.getRating());
+//                workerResponseDTO.setInWishlist(worker.isInWishlist());
+//                workerResponseDTO.setColorOptions(worker.getColorOptions()); // Assuming this is stored as a list
+//                workerResponseDTO.setBrand(worker.getBrand());
+//                workerResponseDTO.setHasFreeShipping(worker.isHasFreeShipping());
 
-            return dto;
+                // Fetch related products from the database
+//                List<RelatedProductDTO> relatedProducts = worker.getWorkerInformation().stream()
+//                        .map(product -> {
+//                            RelatedProductDTO dto = new RelatedProductDTO();
+//                            dto.setId(product.getId());
+//                            dto.setName(product.getName());
+//                            dto.setPrice(product.getPrice());
+//                            dto.setImage(product.getImageUrl()); // Assuming Product entity has a getImageUrl() method
+//                            return dto;
+//                        })
+//                        .collect(Collectors.toList());
+
+//                workerResponseDTO.setRelatedProducts(relatedProducts);
+
+                return workerResponseDTO;
+            } else {
+                throw new EntityNotFoundException("Worker not found with ID: " + id);
+            }
+
         } catch (Exception e) {
             // Log the exception properly
             System.err.println("Error in getAllWorkerDetails: " + e.getMessage());
@@ -96,65 +116,155 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public WorkerInformationResponseDTO getWorkerdetails() {
         try {
+            // Retrieve user information from authentication
+            User user = accessTokenValidator.retrieveUserInformationFromAuthentication();
 
+            // Fetch worker details from the repository
+            Worker worker = (Worker) workerRepository.findByUserId(user.getId())
+                    .orElseThrow(() -> new RuntimeException("Worker not found with ID: " + user.getId()));
+
+            // Create the WorkerInformationResponseDTO
             WorkerInformationResponseDTO workerInfo = new WorkerInformationResponseDTO();
-            workerInfo.setId(1);
-            workerInfo.setImage("https://example.com/image.jpg");
-            workerInfo.setName("John Doe");
-            workerInfo.setEmail("john.doe@example.com");
-            workerInfo.setRole("Admin");
-            workerInfo.setStatus(UserStatus.ACTIVE);
-            workerInfo.setCompany("Tech Corp");
-            workerInfo.setPhone("+1 (555) 123-4567");
-            workerInfo.setAddress("123 Main St, New York, NY");
-            workerInfo.setTimezone("GMT-05:00");
-            workerInfo.setEducation("Bachelor of Science in Computer Engineering\nStanford University (2015-2019)");
+            workerInfo.setId(worker.getId());
+            workerInfo.setImage(worker.getImageUrl());
+            workerInfo.setName(worker.getUsername() + " " + worker.getLastName());
+            workerInfo.setEmail(worker.getEmail());
+            workerInfo.setRole(worker.getUserRole().name()); // Assuming it's an enum
+            workerInfo.setStatus(worker.getStatus());
+//            workerInfo.setCompany(worker.getCompanyName()); // Assuming there's a company field
+            workerInfo.setPhone(worker.getMobileNumber());
+            workerInfo.setAddress(worker.getAddress());
+//            workerInfo.setTimezone(worker.getTimezone());
+            workerInfo.setEducation(worker.getEducation());
 
             // Professional skills
-
-            ProfessionalSkillsDTO professionalSkillsDTO = new ProfessionalSkillsDTO();
-            professionalSkillsDTO.setImage("https://example.com/cloud.jpg");
-            professionalSkillsDTO.setText("Cloud Architecture");
-
-            List<ProfessionalSkillsDTO> skillsList = new ArrayList<>();
-            skillsList.add(professionalSkillsDTO);
-
-            workerInfo.setProfessionalSkills(skillsList);
-
+//            if (worker.getProfessionalSkills() != null) {
+//                List<ProfessionalSkillsDTO> skillsList = worker.getProfessionalSkills().stream()
+//                        .map(skill -> {
+//                            ProfessionalSkillsDTO skillDTO = new ProfessionalSkillsDTO();
+//                            skillDTO.setImage(skill.getImageUrl());
+//                            skillDTO.setText(skill.getName());
+//                            return skillDTO;
+//                        })
+//                        .collect(Collectors.toList());
+//                workerInfo.setProfessionalSkills(skillsList);
+//            }
 
             // Soft skills
-            workerInfo.setSoftSkills(Collections.singletonList("Team leadership\nCommunication\nProblem-solving"));
-
-
-            DocumentsDTO documentsDTO = new DocumentsDTO();
-            documentsDTO.setImage("resume.pdf");
-            documentsDTO.setText("application/pdf");
-
-            List<DocumentsDTO> documentsList = new ArrayList<>();
-            documentsList.add(documentsDTO);
-
-            workerInfo.setDocuments(documentsList);
-
+//            if (worker.getSoftSkills() != null) {
+//                workerInfo.setSoftSkills(new ArrayList<>(worker.getSoftSkills()));
+//            }
 
             // Documents
-//            workerInfo.setDocuments((com.dkagroup.handyhub.dto.DocumentsDTO) Arrays.asList("resume.pdf",
-//                    "application/pdf", "...", "portfolio.docx", "application/msword", "..."));
+//            if (worker.getDocuments() != null) {
+//                List<DocumentsDTO> documentsList = worker.getDocuments().stream()
+//                        .map(doc -> {
+//                            DocumentsDTO docDTO = new DocumentsDTO();
+//                            docDTO.setImage(doc.getFileName());
+//                            docDTO.setText(doc.getFileType());
+//                            return docDTO;
+//                        })
+//                        .collect(Collectors.toList());
+//                workerInfo.setDocuments(documentsList);
+//            }
 
             // Worker-specific details
-            WorkerResponseDTO worker = new WorkerResponseDTO();
-            worker.setId(1);
-            worker.setUsername("worker_john");
-            worker.setLastName("Doe");
-            worker.setEmail("worker.john@example.com");
-            worker.setMobileNumber("+1 (555) 987-6543");
-            worker.setImageUrl("data:image/jpeg;base64,...");
-            worker.setStatus(UserStatus.ACTIVE);
-            worker.setUserRole(UserRole.WORKER);
-            worker.setWorkerType(WorkerType.TRAINEE);
-            worker.setGender(Gender.MALE);
-            worker.setWorkerRank(WorkerRank.EXPERT);
+            WorkerResponseDTO workerResponseDTO = new WorkerResponseDTO();
+            workerResponseDTO.setId(worker.getId());
+            workerResponseDTO.setUsername(worker.getUsername());
+            workerResponseDTO.setLastName(worker.getLastName());
+            workerResponseDTO.setEmail(worker.getEmail());
+            workerResponseDTO.setMobileNumber(worker.getMobileNumber());
+            workerResponseDTO.setImageUrl(worker.getImageUrl());
+            workerResponseDTO.setStatus(worker.getStatus());
+            workerResponseDTO.setUserRole(worker.getUserRole());
+            workerResponseDTO.setWorkerType(worker.getWorkerType());
+            workerResponseDTO.setGender(worker.getGender());
+            workerResponseDTO.setWorkerRank(worker.getWorkerRank());
 
-            workerInfo.setWorker(worker);
+            workerInfo.setWorker(workerResponseDTO);
+
+            return workerInfo;
+
+        } catch (Exception e) {
+            // Log the exception properly
+            System.err.println("Error in getAllWorkerDetails: " + e.getMessage());
+            e.printStackTrace(); // Print stack trace for debugging purposes
+            throw e; // Re-throw the exception to propagate it
+        }
+    }
+
+    @Override
+    public WorkerInformationResponseDTO getWorkerdetailsById(long id) {
+        try {
+            // Retrieve user information from authentication
+//            User user = accessTokenValidator.retrieveUserInformationFromAuthentication();
+
+            // Fetch worker details from the repository
+            Worker worker = workerRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Worker not found with ID: " + id));
+
+            // Create the WorkerInformationResponseDTO
+            WorkerInformationResponseDTO workerInfo = new WorkerInformationResponseDTO();
+            workerInfo.setId(worker.getId());
+            workerInfo.setImage(worker.getImageUrl());
+            workerInfo.setName(worker.getUsername() + " " + worker.getLastName());
+            workerInfo.setEmail(worker.getEmail());
+            workerInfo.setRole(worker.getUserRole().name()); // Assuming it's an enum
+            workerInfo.setStatus(worker.getStatus());
+//            workerInfo.setCompany(worker.getCompanyName()); // Assuming there's a company field
+            workerInfo.setPhone(worker.getMobileNumber());
+            workerInfo.setAddress(worker.getAddress());
+//            workerInfo.setTimezone(worker.getTimezone());
+            workerInfo.setEducation(worker.getEducation());
+
+            // Professional skills
+//            if (worker.getProfessionalSkills() != null) {
+//                List<ProfessionalSkillsDTO> skillsList = worker.getProfessionalSkills().stream()
+//                        .map(skill -> {
+//                            ProfessionalSkillsDTO skillDTO = new ProfessionalSkillsDTO();
+//                            skillDTO.setImage(skill.getImageUrl());
+//                            skillDTO.setText(skill.getName());
+//                            return skillDTO;
+//                        })
+//                        .collect(Collectors.toList());
+//                workerInfo.setProfessionalSkills(skillsList);
+//            }
+
+            // Soft skills
+//            if (worker.getSoftSkills() != null) {
+//                workerInfo.setSoftSkills(new ArrayList<>(worker.getSoftSkills()));
+//            }
+
+            // Documents
+//            if (worker.getDocuments() != null) {
+//                List<DocumentsDTO> documentsList = worker.getDocuments().stream()
+//                        .map(doc -> {
+//                            DocumentsDTO docDTO = new DocumentsDTO();
+//                            docDTO.setImage(doc.getFileName());
+//                            docDTO.setText(doc.getFileType());
+//                            return docDTO;
+//                        })
+//                        .collect(Collectors.toList());
+//                workerInfo.setDocuments(documentsList);
+//            }
+
+            // Worker-specific details
+            WorkerResponseDTO workerResponseDTO = new WorkerResponseDTO();
+            workerResponseDTO.setId(worker.getId());
+            workerResponseDTO.setUsername(worker.getUsername());
+            workerResponseDTO.setLastName(worker.getLastName());
+            workerResponseDTO.setEmail(worker.getEmail());
+            workerResponseDTO.setMobileNumber(worker.getMobileNumber());
+            workerResponseDTO.setImageUrl(worker.getImageUrl());
+            workerResponseDTO.setStatus(worker.getStatus());
+            workerResponseDTO.setUserRole(worker.getUserRole());
+            workerResponseDTO.setWorkerType(worker.getWorkerType());
+            workerResponseDTO.setGender(worker.getGender());
+            workerResponseDTO.setWorkerRank(worker.getWorkerRank());
+
+            workerInfo.setWorker(workerResponseDTO);
+
             return workerInfo;
 
         } catch (Exception e) {
@@ -167,11 +277,52 @@ public class WorkerServiceImpl implements WorkerService {
 
     public WorkerResponseDTO getAllWorkersResponseDTO(Worker workerPage) {
         WorkerResponseDTO responseDTO = new WorkerResponseDTO();
+
+        // Set worker details
         responseDTO.setId(workerPage.getId());
-//        responseDTO.setName(workerPage.getUsername());
+        responseDTO.setName(workerPage.getUsername()); // Assuming there's a 'name' field
         responseDTO.setImageUrl(workerPage.getImageUrl());
-        responseDTO.setId(workerPage.getId());
-//        responseDTO.setPrice(1500.00);
+        responseDTO.setPrice(workerPage.getPrice()); // Assuming the Worker entity has a price field
+        responseDTO.setDescription(workerPage.getDescription()); // Assuming there's a description
+
+        // Convert features list
+//            if (workerPage.getFeatures() != null) {
+//                responseDTO.setFeatures(workerPage.getFeatures().stream()
+//                        .map(Feature::getName) // Assuming Feature entity has a 'getName()' method
+//                        .collect(Collectors.toList()));
+//            }
+
+        // Convert images list
+//            if (workerPage.getImages() != null) {
+//                responseDTO.setImages(workerPage.getImages().stream()
+//                        .map(Image::getUrl) // Assuming Image entity has a 'getUrl()' method
+//                        .collect(Collectors.toList()));
+//            }
+        responseDTO.setImages(Collections.singletonList(workerPage.getImageUrl()));
+        // Set additional attributes
+        responseDTO.setRating(workerPage.getRating()); // Assuming Worker has a rating field
+//            responseDTO.setInWishlist(workerPage.isInWishlist()); // Assuming boolean field
+//            responseDTO.setColorOptions(workerPage.getColorOptions()); // Assuming a list of color options
+//            responseDTO.setBrand(workerPage.getBrand()); // Assuming there's a brand field
+//            responseDTO.setHasFreeShipping(workerPage.isHasFreeShipping()); // Boolean field
+
+        // Convert related products
+//            if (workerPage.getRelatedProducts() != null) {
+//                List<RelatedProductDTO> relatedProducts = workerPage.getRelatedProducts().stream()
+//                        .map(product -> {
+//                            RelatedProductDTO dto = new RelatedProductDTO();
+//                            dto.setId(product.getId());
+//                            dto.setName(product.getName());
+//                            dto.setPrice(product.getPrice());
+//                            dto.setImage(product.getImageUrl()); // Assuming Product entity has an image URL
+//                            return dto;
+//                        })
+//                        .collect(Collectors.toList());
+//                responseDTO.setRelatedProducts(relatedProducts);
+//            }
+
         return responseDTO;
     }
+
+
 }

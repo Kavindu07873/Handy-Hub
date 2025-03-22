@@ -4,6 +4,7 @@ import com.dkagroup.handyhub.enums.*;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Getter
@@ -28,6 +29,12 @@ public class Worker {
 
     private String imageUrl;
 
+    private String description;
+    private String address;
+    private String education;
+    private double price;
+
+    private double rating;
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
@@ -48,4 +55,7 @@ public class Worker {
 
     @OneToOne(cascade = CascadeType.ALL)
     private User user;
+
+    @OneToMany(mappedBy = "worker" , cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
+    private List<Hire> hires;
 }

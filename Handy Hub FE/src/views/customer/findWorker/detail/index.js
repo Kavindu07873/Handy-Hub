@@ -40,6 +40,8 @@ const Details = () => {
     const fetchProductDetails = async () => {
       try {
         const response = await fetch(`http://localhost:8080/worker/details/${id}`); // Replace with your API endpoint
+        // const response = await fetch(`http://localhost:8080/worker/profile/${id}`); // Replace with your API endpoint
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -118,7 +120,7 @@ const Details = () => {
               {/* Product Details */}
               <Col md="7">
                 <h2>{product.name}</h2>
-                <CardText>by {product.brand}</CardText>
+                <CardText>by {product.workerType}</CardText>
 
                 {/* Star Rating */}
                 <div className="d-flex align-items-center mb-2">
@@ -153,7 +155,7 @@ const Details = () => {
                             height: 30,
                             borderRadius: "50%",
                             border: "2px solid #ddd",
-                            cursor: "pointer",
+                            cursor: "pointer"
                           }}
                           onClick={() => setSelectedColor(color)}
                         />
@@ -215,7 +217,7 @@ const Details = () => {
         </Card>
       </div>
     </Fragment>
-  );
-};
+  )
+}
 
-export default Details;
+export default Details

@@ -49,7 +49,7 @@ const UserInfoTab = ({ userData }) => {
         address: formData.address,
         role: formData.role,
         lastName: formData.lastName,
-        mobileNumber: formData.mobileNumber,
+        mobileNumber: formData.phone,
         gender: formData.gender,
         image: formData.image, // Base64 image string if uploaded
       };
@@ -212,7 +212,7 @@ const UserInfoTab = ({ userData }) => {
                     name="mobileNumber"
                     type="text"
                     placeholder="Mobile Number"
-                    defaultValue={formData.mobileNumber || ''}
+                    defaultValue={formData.phone || ''}
                     onChange={handleInputChange} // Allow editing in edit mode
                     readOnly={!isEditMode} // Read-only in view mode
                   />

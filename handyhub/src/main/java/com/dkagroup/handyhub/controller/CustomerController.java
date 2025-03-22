@@ -5,7 +5,10 @@ import com.dkagroup.handyhub.dto.Request.HireDataRequestDTO;
 import com.dkagroup.handyhub.dto.Response.CustomerResponseDTO;
 import com.dkagroup.handyhub.dto.common.CommonResponseDTO;
 import com.dkagroup.handyhub.enums.UserStatus;
+import com.dkagroup.handyhub.service.CustomerService;
+import com.dkagroup.handyhub.service.WorkerService;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,24 +22,26 @@ import static com.dkagroup.handyhub.constant.ResponseMessages.SUCCESS_RESPONSE;
 @RequestMapping("/customer")
 public class CustomerController {
 
+    @Autowired
+    private final WorkerService workerService;
+
+
+    @Autowired
+    private final CustomerService customerService;
+
+
+    public CustomerController(WorkerService workerService, CustomerService customerService) {
+        this.workerService = workerService;
+        this.customerService = customerService;
+    }
+
+
     @GetMapping(value = "/profile", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getAllWorkers() {
+    public ResponseEntity getCustomersProfile() {
         System.out.println(":hello world ");
 
-// Assuming CustomerResponseDTO is a class with appropriate fields and setters/getters
-        CustomerResponseDTO customerResponseDTO = new CustomerResponseDTO();
-// Set the fields using the setter methods
-        customerResponseDTO.setImage("https://t3.ftcdn.net/jpg/02/43/12/34/240_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg");
-        customerResponseDTO.setName("John Doe");
-        customerResponseDTO.setEmail("john.doe@example.com");
-        customerResponseDTO.setRole("Admin");
-        customerResponseDTO.setStatus(UserStatus.ACTIVE);
-        customerResponseDTO.setCompany("Tech Corp");
-        customerResponseDTO.setPhone("+1 (555) 123-4567");
-        customerResponseDTO.setAddress("123 Main St, New York, NY");
-        customerResponseDTO.setTimezone("GMT-05:00");
-// If you want to print or use the object
-        System.out.println(customerResponseDTO);
+        CustomerResponseDTO customerResponseDTO = customerService.getCustomerProfile();
+
         return new ResponseEntity<>(new CommonResponseDTO(true, customerResponseDTO, SUCCESS_RESPONSE), HttpStatus.OK);
     }
 
@@ -45,8 +50,10 @@ public class CustomerController {
     public ResponseEntity hireWorker(@RequestBody CustomerUpdateRequestDTO customerUpdateRequestDTO) {
         System.out.println("Customer Successfully update");
 
-        System.out.println("hireDataRequestDTO : " + customerUpdateRequestDTO.getAddress());
-        System.out.println("hireDataRequestDTO : " + customerUpdateRequestDTO.getName());
+//        System.out.println("hireDataRequestDTO : " + customerUpdateRequestDTO.getAddress());
+//        System.out.println("hireDataRequestDTO : " + customerUpdateRequestDTO.getName());
+        customerService.updateCustomerProfile(customerUpdateRequestDTO);
+
 
         return new ResponseEntity<>(new CommonResponseDTO(true, "Customer Successfully update"), HttpStatus.OK);
     }

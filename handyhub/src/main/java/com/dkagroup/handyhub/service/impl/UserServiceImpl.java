@@ -95,4 +95,15 @@ public class UserServiceImpl implements UserService {
             throw e;
         }
     }
+
+    @Override
+    public User getUserByEmail(String name) {
+        log.info("Execute method getUserByEmail : {}", name);
+        try {
+            Optional<User> userEntityOptional = userRepository.findByEmail(name);
+            return userEntityOptional.orElse(null);
+        } catch (Exception e) {
+            log.error("getUserByEmail : {}", e.getMessage(), e);
+            throw e;
+        }    }
 }

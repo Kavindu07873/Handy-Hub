@@ -11,4 +11,6 @@ public interface WorkerService {
     WorkerResponseDTO getAllWorkerDetails(long id);
 
     WorkerInformationResponseDTO getWorkerdetails();
+
+    WorkerInformationResponseDTO getWorkerdetailsById(long id);
 }

@@ -77,15 +77,6 @@ public class WorkerController {
         return new ResponseEntity<>(new CommonResponseDTO(true, workerData, SUCCESS_RESPONSE), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/hire", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity hireWorker(@RequestBody HireDataRequestDTO hireDataRequestDTO) {
-        System.out.println(":hello hireWorker ");
-
-        System.out.println("hireDataRequestDTO : "+hireDataRequestDTO.getDateRange().size());
-        System.out.println("hireDataRequestDTO : "+hireDataRequestDTO.getDescription());
-
-        return new ResponseEntity<>(new CommonResponseDTO(true, "Worker Successfully register"), HttpStatus.OK);
-    }
 
     @GetMapping(value = "/profile", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getAllDetailsOfTheWorkerProfile() {
@@ -93,6 +84,15 @@ public class WorkerController {
         System.out.println(":hello getAllDetailsOfTheWorker ");
 
         WorkerInformationResponseDTO workerInfo = workerService.getWorkerdetails();
+        return new ResponseEntity<>(new CommonResponseDTO(true, workerInfo, SUCCESS_RESPONSE), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/profile/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getAllDetailsOfTheWorkerProfileById(@PathVariable long id) {
+
+        System.out.println(":hello getAllDetailsOfTheWorker ");
+
+        WorkerInformationResponseDTO workerInfo = workerService.getWorkerdetailsById(id);
         return new ResponseEntity<>(new CommonResponseDTO(true, workerInfo, SUCCESS_RESPONSE), HttpStatus.OK);
     }
 
