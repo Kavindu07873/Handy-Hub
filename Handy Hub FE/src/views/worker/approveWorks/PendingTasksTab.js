@@ -31,22 +31,29 @@ const PendingTasksTab = ({ works }) => {
         method: "PATCH", // Using PATCH for status updates
         headers: {
           "Content-Type": "application/json",
-          Authorization: TOKEN,
+          Authorization: localStorage.getItem("authToken"), // Ensure correct key
         },
         body: JSON.stringify({ status }),
       });
 
-      if (!response.ok) throw new Error("Failed to update task");
+      const data = await response.json(); // Parse JSON response
 
-      // Update UI only after successful API response
-      setWorkData((prevWorks) =>
-        prevWorks.filter((_, i) => i !== index) // Remove approved/rejected task
-      );
+      if (!response.ok) throw new Error(data.msg || "Failed to update task");
+
+      alert("✅ Task Status Change!"); // Show success message
+
+      // Refresh the page on successful update
+      window.location.reload();
+
+      // OR, update the UI without refreshing
+      // setWorkData((prevWorks) => prevWorks.filter((_, i) => i !== index));
+
     } catch (error) {
       console.error(`Error updating task ${taskId}:`, error);
-      alert("Error updating task. Please try again.");
+      alert("❌ Error updating task. Please try again.");
     }
   };
+
 
   if (workData.length === 0) {
     return (

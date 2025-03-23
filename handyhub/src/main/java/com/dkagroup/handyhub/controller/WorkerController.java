@@ -4,11 +4,13 @@ import com.dkagroup.handyhub.dto.Response.HeaderResponseDTO;
 import com.dkagroup.handyhub.dto.Response.HireWorkeResponseDTO;
 import com.dkagroup.handyhub.dto.Response.WorkerInformationResponseDTO;
 import com.dkagroup.handyhub.dto.Response.WorkerResponseDTO;
+import com.dkagroup.handyhub.dto.TaskStatusDTO;
 import com.dkagroup.handyhub.dto.common.CommonResponseDTO;
 import com.dkagroup.handyhub.dto.Request.HireDataRequestDTO;
 
 import com.dkagroup.handyhub.entity.Worker;
 import com.dkagroup.handyhub.enums.*;
+import com.dkagroup.handyhub.service.HireService;
 import com.dkagroup.handyhub.service.WorkerService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +35,12 @@ public class WorkerController {
 
     @Autowired
     private final WorkerService workerService;
+    @Autowired
+    private final HireService hireService;
 
-
-    public WorkerController(WorkerService workerService) {
+    public WorkerController(WorkerService workerService, HireService hireService) {
         this.workerService = workerService;
+        this.hireService = hireService;
     }
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -98,30 +102,21 @@ public class WorkerController {
 
     @GetMapping(value = "/involvetask", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getAllTask() {
-
         System.out.println(":hello getAllTask ");
-
-        List<HireWorkeResponseDTO> hireWorkeResponseDTOList = new ArrayList<>();
-        HireWorkeResponseDTO hireWorkeResponseDTO = new HireWorkeResponseDTO();
-        hireWorkeResponseDTO.setId(1);
-        hireWorkeResponseDTO.setPrice("12000");
-        hireWorkeResponseDTO.setDescription("Complete interior renovation");
-        hireWorkeResponseDTO.setAddress("12000");
-        hireWorkeResponseDTO.setCompletion("12000");
-        hireWorkeResponseDTO.setStatus("APPROVED");
-        hireWorkeResponseDTO.setTitle("Office Renovation");
-        hireWorkeResponseDTOList.add(hireWorkeResponseDTO);
-        HireWorkeResponseDTO hireWorkeResponseDTO2 = new HireWorkeResponseDTO();
-        hireWorkeResponseDTO2.setId(2);
-        hireWorkeResponseDTO2.setTitle("Office Renovation");
-        hireWorkeResponseDTO2.setPrice("12000");
-        hireWorkeResponseDTO2.setDescription("12000");
-        hireWorkeResponseDTO2.setAddress("12000");
-        hireWorkeResponseDTO2.setCompletion("12000");
-        hireWorkeResponseDTO2.setStatus("PENDING");
-        hireWorkeResponseDTOList.add(hireWorkeResponseDTO2);
+        List<HireWorkeResponseDTO> hireWorkeResponseDTOList = hireService.findAllTaskByWorker();
 
         return new ResponseEntity<>(new CommonResponseDTO(true, hireWorkeResponseDTOList, SUCCESS_RESPONSE), HttpStatus.OK);
+    }
+
+    @PatchMapping(value = "/task/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity taskStatusChange(
+            @PathVariable long id,
+            @RequestBody TaskStatusDTO taskStatusdto
+    ) {
+        System.out.println(":hello getAllTask ");
+        hireService.updateTaskStatus(id,taskStatusdto);
+
+        return new ResponseEntity<>(new CommonResponseDTO(true, "Task Status Successfully updated"), HttpStatus.OK);
     }
 
 }
