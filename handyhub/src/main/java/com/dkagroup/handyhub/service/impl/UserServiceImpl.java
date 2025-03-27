@@ -60,8 +60,6 @@ public class UserServiceImpl implements UserService {
             user.setUserRole(registerUserRequestDTO.getRole());
             user.setStatus(UserStatus.DEFAULT);
             user = userRepository.save(user);
-
-
             if (registerUserRequestDTO.getRole().equals(UserRole.CUSTOMER)) {
                 System.out.println(registerUserRequestDTO.getRole());
                 Customer customer = new Customer();
@@ -72,8 +70,6 @@ public class UserServiceImpl implements UserService {
                 customer.setStatus(UserStatus.DEFAULT);
                 customer.setCustomerRank(CustomerRank.NEWBIE);
                 customerRepository.save(customer);
-
-
             } else if (registerUserRequestDTO.getRole().equals(UserRole.WORKER)) {
                 System.out.println(registerUserRequestDTO.getRole());
                 Worker worker = new Worker();

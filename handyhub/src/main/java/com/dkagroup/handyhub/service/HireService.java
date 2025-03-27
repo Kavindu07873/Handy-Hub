@@ -1,7 +1,9 @@
 package com.dkagroup.handyhub.service;
 
 import com.dkagroup.handyhub.dto.Request.HireDataRequestDTO;
+import com.dkagroup.handyhub.dto.Response.CustomerCountResponseDTO;
 import com.dkagroup.handyhub.dto.Response.HireWorkeResponseDTO;
+import com.dkagroup.handyhub.dto.Response.WorkerCountResponseDTO;
 import com.dkagroup.handyhub.dto.TaskStatusDTO;
 
 import java.util.List;
@@ -12,4 +14,8 @@ public interface HireService {
     List<HireWorkeResponseDTO> findAllTaskByWorker();
 
     void updateTaskStatus(long id, TaskStatusDTO taskStatusdto);
+
+    WorkerCountResponseDTO findAllWorkerCount();
+
+    CustomerCountResponseDTO findAllCustomerCount();
 }

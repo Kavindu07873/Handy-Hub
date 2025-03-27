@@ -32,6 +32,6 @@ public class HireController {
         System.out.println("hireDataRequestDTO : "+hireDataRequestDTO.getDateRange().size());
         System.out.println("hireDataRequestDTO : "+hireDataRequestDTO.getDescription());
         hireService.hireWorkerByCustomer(hireDataRequestDTO);
-        return new ResponseEntity<>(new CommonResponseDTO(true, "Worker Successfully register"), HttpStatus.OK);
+        return new ResponseEntity<>(new CommonResponseDTO(true, "Worker Successfully hired"), HttpStatus.OK);
     }
 }

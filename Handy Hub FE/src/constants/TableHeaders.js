@@ -7,16 +7,16 @@ export const CustomerTableHeaders = [
         sortable: true,
         minWidth: '300px',
         sortField: 'fullName',
-        selector: row => row.fullName,
+        // selector: row => row.fullName,
         cell: row => (
             <div className='d-flex justify-content-left align-items-center'>
                 <div className='d-flex flex-column'>
                     <Link
                         // to={`/apps/user/view/${row.id}`}
-                        to={`/admin/secondPage/view/${row.id}`}
+                        // to={`/admin/secondPage/view/${row.id}`}
                         className='user_name text-truncate text-body'
                     >
-                        <span className='fw-bolder'>{row.fullName}</span>
+                        <span className='fw-bolder'>{row.name}</span>
                     </Link>
                     <small className='text-truncate text-muted mb-0'>{row.email}</small>
                 </div>

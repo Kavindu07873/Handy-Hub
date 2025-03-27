@@ -60,26 +60,22 @@ public class WorkerServiceImpl implements WorkerService {
             if (workerOptional.isPresent()) {
                 Worker worker = workerOptional.get();
                 WorkerResponseDTO workerResponseDTO = new WorkerResponseDTO();
-
                 // Set worker details from the database
                 workerResponseDTO.setId(worker.getId());
                 workerResponseDTO.setName(worker.getUsername());
                 workerResponseDTO.setPrice(worker.getPrice());
                 workerResponseDTO.setDescription(worker.getDescription());
                 workerResponseDTO.setWorkerType(worker.getWorkerType());
-
                 // Convert worker images from entity format to DTO format
 //                List<String> images = worker.getImageUrl().stream()
 //                        .map(Image::getUrl) // Assuming Image entity has a getUrl() method
 //                        .collect(Collectors.toList());
                 workerResponseDTO.setImages(Collections.singletonList(worker.getImageUrl()));
-
                 // Convert worker features from entity format to DTO format
 //                List<String> features = worker.getFeatures().stream()
 //                        .map(Feature::getName) // Assuming Feature entity has a getName() method
 //                        .collect(Collectors.toList());
-//                workerResponseDTO.setFeatures(features);
-
+//                workerResponseDTO.setFeatures(features)
                 workerResponseDTO.setRating(worker.getRating());
 //                workerResponseDTO.setInWishlist(worker.isInWishlist());
 //                workerResponseDTO.setColorOptions(worker.getColorOptions()); // Assuming this is stored as a list
@@ -99,7 +95,6 @@ public class WorkerServiceImpl implements WorkerService {
 //                        .collect(Collectors.toList());
 
 //                workerResponseDTO.setRelatedProducts(relatedProducts);
-
                 return workerResponseDTO;
             } else {
                 throw new EntityNotFoundException("Worker not found with ID: " + id);
@@ -199,11 +194,9 @@ public class WorkerServiceImpl implements WorkerService {
         try {
             // Retrieve user information from authentication
 //            User user = accessTokenValidator.retrieveUserInformationFromAuthentication();
-
             // Fetch worker details from the repository
             Worker worker = workerRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Worker not found with ID: " + id));
-
             // Create the WorkerInformationResponseDTO
             WorkerInformationResponseDTO workerInfo = new WorkerInformationResponseDTO();
             workerInfo.setId(worker.getId());
@@ -217,39 +210,6 @@ public class WorkerServiceImpl implements WorkerService {
             workerInfo.setAddress(worker.getAddress());
 //            workerInfo.setTimezone(worker.getTimezone());
             workerInfo.setEducation(worker.getEducation());
-
-            // Professional skills
-//            if (worker.getProfessionalSkills() != null) {
-//                List<ProfessionalSkillsDTO> skillsList = worker.getProfessionalSkills().stream()
-//                        .map(skill -> {
-//                            ProfessionalSkillsDTO skillDTO = new ProfessionalSkillsDTO();
-//                            skillDTO.setImage(skill.getImageUrl());
-//                            skillDTO.setText(skill.getName());
-//                            return skillDTO;
-//                        })
-//                        .collect(Collectors.toList());
-//                workerInfo.setProfessionalSkills(skillsList);
-//            }
-
-            // Soft skills
-//            if (worker.getSoftSkills() != null) {
-//                workerInfo.setSoftSkills(new ArrayList<>(worker.getSoftSkills()));
-//            }
-
-            // Documents
-//            if (worker.getDocuments() != null) {
-//                List<DocumentsDTO> documentsList = worker.getDocuments().stream()
-//                        .map(doc -> {
-//                            DocumentsDTO docDTO = new DocumentsDTO();
-//                            docDTO.setImage(doc.getFileName());
-//                            docDTO.setText(doc.getFileType());
-//                            return docDTO;
-//                        })
-//                        .collect(Collectors.toList());
-//                workerInfo.setDocuments(documentsList);
-//            }
-
-            // Worker-specific details
             WorkerResponseDTO workerResponseDTO = new WorkerResponseDTO();
             workerResponseDTO.setId(worker.getId());
             workerResponseDTO.setUsername(worker.getUsername());
@@ -262,11 +222,8 @@ public class WorkerServiceImpl implements WorkerService {
             workerResponseDTO.setWorkerType(worker.getWorkerType());
             workerResponseDTO.setGender(worker.getGender());
             workerResponseDTO.setWorkerRank(worker.getWorkerRank());
-
             workerInfo.setWorker(workerResponseDTO);
-
             return workerInfo;
-
         } catch (Exception e) {
             // Log the exception properly
             System.err.println("Error in getAllWorkerDetails: " + e.getMessage());
@@ -284,6 +241,10 @@ public class WorkerServiceImpl implements WorkerService {
         responseDTO.setImageUrl(workerPage.getImageUrl());
         responseDTO.setPrice(workerPage.getPrice()); // Assuming the Worker entity has a price field
         responseDTO.setDescription(workerPage.getDescription()); // Assuming there's a description
+        responseDTO.setEmail(workerPage.getEmail());
+        responseDTO.setMobileNumber(workerPage.getMobileNumber());
+        responseDTO.setWorkerType(workerPage.getWorkerType());
+
 
         // Convert features list
 //            if (workerPage.getFeatures() != null) {

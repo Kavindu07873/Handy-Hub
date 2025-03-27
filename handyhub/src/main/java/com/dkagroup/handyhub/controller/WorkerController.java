@@ -1,9 +1,6 @@
 package com.dkagroup.handyhub.controller;
 
-import com.dkagroup.handyhub.dto.Response.HeaderResponseDTO;
-import com.dkagroup.handyhub.dto.Response.HireWorkeResponseDTO;
-import com.dkagroup.handyhub.dto.Response.WorkerInformationResponseDTO;
-import com.dkagroup.handyhub.dto.Response.WorkerResponseDTO;
+import com.dkagroup.handyhub.dto.Response.*;
 import com.dkagroup.handyhub.dto.TaskStatusDTO;
 import com.dkagroup.handyhub.dto.common.CommonResponseDTO;
 import com.dkagroup.handyhub.dto.Request.HireDataRequestDTO;
@@ -119,4 +116,12 @@ public class WorkerController {
         return new ResponseEntity<>(new CommonResponseDTO(true, "Task Status Successfully updated"), HttpStatus.OK);
     }
 
+
+    @GetMapping(value = "/workerCount", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getAllWorkerCount() {
+        System.out.println(":hello getAllTask ");
+
+        WorkerCountResponseDTO workerCountResponseDTO = hireService.findAllWorkerCount();
+        return new ResponseEntity<>(new CommonResponseDTO(true, workerCountResponseDTO, SUCCESS_RESPONSE), HttpStatus.OK);
+    }
 }
