@@ -101,20 +101,20 @@ const CalendarComponent = () => {
       <div className="app-calendar overflow-hidden border">
         <Row className="g-0">
           {/* Sidebar */}
-          <Col
-            id="app-calendar-sidebar"
-            className={classnames('col app-calendar-sidebar flex-grow-0 overflow-hidden d-flex flex-column', {
-              show: leftSidebarOpen
-            })}
-          >
-            {/*<SidebarLeft*/}
-            {/*  selectedCalendars={selectedCalendars}*/}
-            {/*  updateFilter={updateFilter}*/}
-            {/*  toggleSidebar={toggleSidebar}*/}
-            {/*  updateAllFilters={updateAllFilters}*/}
-            {/*  handleAddEventSidebar={handleAddEventSidebar}*/}
-            {/*/>*/}
-          </Col>
+          {/*<Col*/}
+          {/*  id="app-calendar-sidebar"*/}
+          {/*  className={classnames('col app-calendar-sidebar flex-grow-0 overflow-hidden d-flex flex-column', {*/}
+          {/*    show: leftSidebarOpen*/}
+          {/*  })}*/}
+          {/*>*/}
+          {/*  <SidebarLeft*/}
+          {/*    selectedCalendars={selectedCalendars}*/}
+          {/*    updateFilter={updateFilter}*/}
+          {/*    toggleSidebar={toggleSidebar}*/}
+          {/*    updateAllFilters={updateAllFilters}*/}
+          {/*    handleAddEventSidebar={handleAddEventSidebar}*/}
+          {/*  />*/}
+          {/*</Col>*/}
 
           {/* Calendar */}
           <Col className="position-relative">

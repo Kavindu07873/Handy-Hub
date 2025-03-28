@@ -54,6 +54,8 @@ const UserInfoTab = ({ userData }) => {
         image: avatar || formData.image, // Include the image URL
       }
 
+      console.log('Sending payload:', payload)
+
       // Send the API request to update the profile
       const response = await fetch('http://localhost:8080/worker/UpdateProfile', {
         method: 'POST', // or 'PUT' depending on your backend implementation
@@ -76,8 +78,8 @@ const UserInfoTab = ({ userData }) => {
       // Switch back to view mode after successful update
       setIsEditMode(false)
 
-      // Refresh the page to reflect the updated data
-      window.location.reload()
+      // Optionally refresh the page to reflect the updated data
+      // window.location.reload()
     } catch (error) {
       console.error('Error updating profile:', error)
       alert('An error occurred while updating the profile. Please try again.')
@@ -134,9 +136,11 @@ const UserInfoTab = ({ userData }) => {
                   </Label>
                   <Input
                     id="email"
+                    name="email"
                     type="email"
                     placeholder="Email"
-                    defaultValue={formData.email || ''}
+                    value={formData.email || ''}
+                    onChange={handleInputChange} // Update state dynamically
                     readOnly={!isEditMode} // Read-only in view mode
                   />
                 </Col>
@@ -148,8 +152,10 @@ const UserInfoTab = ({ userData }) => {
                   </Label>
                   <Input
                     id="role"
+                    name="role"
                     placeholder="Role"
-                    defaultValue={formData.role || ''}
+                    value={formData.role || ''}
+                    onChange={handleInputChange} // Update state dynamically
                     readOnly={!isEditMode} // Read-only in view mode
                   />
                 </Col>
@@ -161,8 +167,10 @@ const UserInfoTab = ({ userData }) => {
                   </Label>
                   <Input
                     id="status"
+                    name="status"
                     placeholder="Status"
-                    defaultValue={formData.status || ''}
+                    value={formData.status || ''}
+                    onChange={handleInputChange} // Update state dynamically
                     readOnly={!isEditMode} // Read-only in view mode
                   />
                 </Col>
@@ -196,8 +204,10 @@ const UserInfoTab = ({ userData }) => {
                   </Label>
                   <Input
                     id="company"
+                    name="company"
                     placeholder="Company"
-                    defaultValue={formData.company || ''}
+                    value={formData.company || ''}
+                    onChange={handleInputChange} // Update state dynamically
                     readOnly={!isEditMode} // Read-only in view mode
                   />
                 </Col>
@@ -209,8 +219,10 @@ const UserInfoTab = ({ userData }) => {
                   </Label>
                   <Input
                     id="phone"
+                    name="phone"
                     placeholder="Phone"
-                    defaultValue={formData.phone || ''}
+                    value={formData.phone || ''}
+                    onChange={handleInputChange} // Update state dynamically
                     readOnly={!isEditMode} // Read-only in view mode
                   />
                 </Col>
@@ -224,8 +236,8 @@ const UserInfoTab = ({ userData }) => {
                     id="address"
                     name="address"
                     placeholder="Address"
-                    defaultValue={formData.address || ''}
-                    onChange={handleInputChange} // Allow editing in edit mode
+                    value={formData.address || ''}
+                    onChange={handleInputChange} // Update state dynamically
                     readOnly={!isEditMode} // Read-only in view mode
                   />
                 </Col>

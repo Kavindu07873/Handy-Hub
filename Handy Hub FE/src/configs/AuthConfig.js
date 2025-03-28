@@ -16,8 +16,9 @@ export const loginWithOAuth = async (username, password) => {
       }
     })
 
-    console.log("Access Token:", response.data.access_token)
+    console.log("Access Token:", response)
     localStorage.setItem("token", response.data.access_token)
+    localStorage.setItem("user", JSON.stringify(response.data.user))
     return response.data
   } catch (error) {
     console.error("OAuth Login Error:", error.response ? error.response.data : error)

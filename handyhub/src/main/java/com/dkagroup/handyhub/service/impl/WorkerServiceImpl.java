@@ -127,7 +127,7 @@ public class WorkerServiceImpl implements WorkerService {
             WorkerInformationResponseDTO workerInfo = new WorkerInformationResponseDTO();
             workerInfo.setId(worker.getId());
             workerInfo.setImage(worker.getImageUrl());
-            workerInfo.setName(worker.getUsername() + " " + worker.getLastName());
+            workerInfo.setName(worker.getUsername());
             workerInfo.setEmail(worker.getEmail());
             workerInfo.setRole(worker.getUserRole().name()); // Assuming it's an enum
             workerInfo.setStatus(worker.getStatus());
@@ -247,9 +247,9 @@ public class WorkerServiceImpl implements WorkerService {
                     .orElseThrow(() -> new RuntimeException("Worker not found for ID: " + workerUpdateRequestDTO.getId()));
 
             // Update worker fields if they are provided in the DTO
-            if (workerUpdateRequestDTO.getName() != null) {
-                worker.setUsername(workerUpdateRequestDTO.getName());
-            }
+//            if (workerUpdateRequestDTO.getName() != null) {
+//                worker.setUsername(workerUpdateRequestDTO.getName());
+//            }
             if (workerUpdateRequestDTO.getEmail() != null) {
                 worker.setEmail(workerUpdateRequestDTO.getEmail());
             }
