@@ -1,5 +1,7 @@
 package com.dkagroup.handyhub.controller;
 
+import com.dkagroup.handyhub.dto.Request.CustomerUpdateRequestDTO;
+import com.dkagroup.handyhub.dto.Request.WorkerUpdateRequestDTO;
 import com.dkagroup.handyhub.dto.Response.*;
 import com.dkagroup.handyhub.dto.TaskStatusDTO;
 import com.dkagroup.handyhub.dto.common.CommonResponseDTO;
@@ -124,4 +126,19 @@ public class WorkerController {
         WorkerCountResponseDTO workerCountResponseDTO = hireService.findAllWorkerCount();
         return new ResponseEntity<>(new CommonResponseDTO(true, workerCountResponseDTO, SUCCESS_RESPONSE), HttpStatus.OK);
     }
+
+
+    @PostMapping(value = "/UpdateProfile", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateWorkerProfile(@RequestBody WorkerUpdateRequestDTO workerUpdateRequestDTO) {
+        System.out.println("Customer Successfully update");
+
+        System.out.println("hireDataRequestDTO : " + workerUpdateRequestDTO.getAddress());
+        System.out.println("hireDataRequestDTO : " + workerUpdateRequestDTO.getName());
+        System.out.println("hireDataRequestDTO : " + workerUpdateRequestDTO.getId());
+        workerService.updateWorkerProfile(workerUpdateRequestDTO);
+
+
+        return new ResponseEntity<>(new CommonResponseDTO(true, "Customer Successfully update"), HttpStatus.OK);
+    }
+
 }

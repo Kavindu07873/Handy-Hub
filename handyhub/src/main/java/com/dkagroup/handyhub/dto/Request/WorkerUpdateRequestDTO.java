@@ -1,25 +1,24 @@
-package com.dkagroup.handyhub.dto.Response;
+package com.dkagroup.handyhub.dto.Request;
 
 import com.dkagroup.handyhub.dto.DocumentsDTO;
 import com.dkagroup.handyhub.dto.ProfessionalSkillsDTO;
-import com.dkagroup.handyhub.dto.SoftSkillsDTO;
+import com.dkagroup.handyhub.dto.Response.WorkerResponseDTO;
 import com.dkagroup.handyhub.enums.UserRole;
 import com.dkagroup.handyhub.enums.UserStatus;
 import com.dkagroup.handyhub.enums.WorkerType;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.*;
 import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ToString
-public class WorkerInformationResponseDTO {
+public class WorkerUpdateRequestDTO {
     private long id;
-    private String image;
+    private MultipartFile image;
     private String name;
     private String email;
     private String role;
@@ -34,7 +33,7 @@ public class WorkerInformationResponseDTO {
     private WorkerType workerType;
 
     private List<ProfessionalSkillsDTO> professionalSkills;
-//    private SoftSkillsDTO softSkills;
+    //    private SoftSkillsDTO softSkills;
     private List<DocumentsDTO> documents;
     private WorkerResponseDTO worker;
 }

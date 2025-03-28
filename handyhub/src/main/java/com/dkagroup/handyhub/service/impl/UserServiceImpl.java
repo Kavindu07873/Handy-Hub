@@ -79,7 +79,8 @@ public class UserServiceImpl implements UserService {
                 worker.setUserRole(registerUserRequestDTO.getRole());
                 worker.setWorkerType(WorkerType.TRAINEE);
                 worker.setStatus(UserStatus.DEFAULT);
-                worker.setWorkerRank(WorkerRank.TRAINEE);
+                worker.setWorkerRank(WorkerRank.JUNIOR);
+                worker.setGender(registerUserRequestDTO.getGender());
                 workerRepository.save(worker);
             } else {
                 System.out.println(registerUserRequestDTO.getRole());

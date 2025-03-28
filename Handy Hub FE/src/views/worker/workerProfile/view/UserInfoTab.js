@@ -4,8 +4,18 @@ import { Row, Col, Card, CardBody, CardTitle, CardText, Badge, Button, Input, La
 const UserInfoTab = ({ userData }) => {
   // ** State for Profile Image
   const [avatar, setAvatar] = React.useState(userData.image || '')
-  const [isEditMode, setIsEditMode] = React.useState(false)// Toggle between view and edit modes
+  const [isEditMode, setIsEditMode] = React.useState(false) // Toggle between view and edit modes
   const [formData, setFormData] = React.useState({ ...userData }) // Manage form data dynamically
+
+  // ** List of Worker Types
+  const workerTypes = [
+    { value: 'ELECTRICIAN', label: 'Electrician' },
+    { value: 'PLUMBER', label: 'Plumber' },
+    { value: 'MESHAN_BASS', label: 'Meshan_bass' },
+    { value: 'PAINTER', label: 'Painter' },
+    { value: 'LABORER', label: 'Laborer' },
+    { value: 'TRAINEE', label: 'Trainee' },
+  ]
 
   // ** Handle Image Upload
   const onChange = (e) => {
@@ -38,16 +48,39 @@ const UserInfoTab = ({ userData }) => {
   // ** Handle Update Mode
   const handleUpdateClick = async () => {
     try {
-      // Simulate an API call to update the data
-      console.log('Updating data:', formData)
+      // Prepare the payload to send to the backend
+      const payload = {
+        ...formData,
+        image: avatar || formData.image, // Include the image URL
+      }
 
-      // Replace this with your actual API call
-      await new Promise((resolve) => setTimeout(resolve, 1000)) // Mock API delay
+      // Send the API request to update the profile
+      const response = await fetch('http://localhost:8080/worker/UpdateProfile', {
+        method: 'POST', // or 'PUT' depending on your backend implementation
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to update profile')
+      }
+
+      const result = await response.json()
+      console.log('Profile updated successfully:', result)
+
+      // Show success message
+      alert('Profile updated successfully')
 
       // Switch back to view mode after successful update
       setIsEditMode(false)
+
+      // Refresh the page to reflect the updated data
+      window.location.reload()
     } catch (error) {
-      console.error('Error updating data:', error)
+      console.error('Error updating profile:', error)
+      alert('An error occurred while updating the profile. Please try again.')
     }
   }
 
@@ -60,8 +93,8 @@ const UserInfoTab = ({ userData }) => {
             <img
               src={
                 avatar ||
-                formData.image
-                // 'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'
+                formData.image ||
+                'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'
               }
               alt="User Profile"
               className="rounded-circle img-fluid"
@@ -134,6 +167,28 @@ const UserInfoTab = ({ userData }) => {
                   />
                 </Col>
 
+                {/* Worker Type Dropdown */}
+                <Col sm="6" className="mb-1">
+                  <Label className="form-label" for="workerType">
+                    <strong>Worker Type:</strong>
+                  </Label>
+                  <Input
+                    id="workerType"
+                    name="workerType"
+                    type="select"
+                    value={formData.workerType || ''} // Set default value from formData
+                    onChange={handleInputChange} // Update state dynamically
+                    disabled={!isEditMode} // Disable in view mode
+                  >
+                    <option value="">Select Worker Type</option>
+                    {workerTypes.map((type) => (
+                      <option key={type.value} value={type.value}>
+                        {type.label}
+                      </option>
+                    ))}
+                  </Input>
+                </Col>
+
                 {/* Company */}
                 <Col sm="6" className="mb-1">
                   <Label className="form-label" for="company">
@@ -171,19 +226,6 @@ const UserInfoTab = ({ userData }) => {
                     placeholder="Address"
                     defaultValue={formData.address || ''}
                     onChange={handleInputChange} // Allow editing in edit mode
-                    readOnly={!isEditMode} // Read-only in view mode
-                  />
-                </Col>
-
-                {/* Timezone */}
-                <Col sm="6" className="mb-1">
-                  <Label className="form-label" for="timezone">
-                    <strong>Timezone:</strong>
-                  </Label>
-                  <Input
-                    id="timezone"
-                    placeholder="Timezone"
-                    defaultValue={formData.timezone || ''}
                     readOnly={!isEditMode} // Read-only in view mode
                   />
                 </Col>

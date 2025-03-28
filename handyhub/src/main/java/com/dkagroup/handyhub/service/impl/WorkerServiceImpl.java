@@ -2,9 +2,11 @@ package com.dkagroup.handyhub.service.impl;
 
 import com.dkagroup.handyhub.dto.DocumentsDTO;
 import com.dkagroup.handyhub.dto.ProfessionalSkillsDTO;
+import com.dkagroup.handyhub.dto.Request.WorkerUpdateRequestDTO;
 import com.dkagroup.handyhub.dto.Response.RelatedProductDTO;
 import com.dkagroup.handyhub.dto.Response.WorkerInformationResponseDTO;
 import com.dkagroup.handyhub.dto.Response.WorkerResponseDTO;
+import com.dkagroup.handyhub.entity.Customer;
 import com.dkagroup.handyhub.entity.User;
 import com.dkagroup.handyhub.entity.Worker;
 import com.dkagroup.handyhub.entity.WorkerInformation;
@@ -12,6 +14,7 @@ import com.dkagroup.handyhub.enums.*;
 import com.dkagroup.handyhub.repository.WorkerRepository;
 import com.dkagroup.handyhub.service.WorkerService;
 import com.dkagroup.handyhub.utill.AccessTokenValidator;
+import com.dkagroup.handyhub.utill.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +30,8 @@ public class WorkerServiceImpl implements WorkerService {
     @Autowired
     AccessTokenValidator accessTokenValidator;
 
+    @Autowired
+    private FileService fileService;
     private final WorkerRepository workerRepository;
 
     public WorkerServiceImpl(WorkerRepository workerRepository) {
@@ -131,6 +136,7 @@ public class WorkerServiceImpl implements WorkerService {
             workerInfo.setAddress(worker.getAddress());
 //            workerInfo.setTimezone(worker.getTimezone());
             workerInfo.setEducation(worker.getEducation());
+            workerInfo.setWorkerType(worker.getWorkerType());
 
             // Professional skills
 //            if (worker.getProfessionalSkills() != null) {
@@ -229,6 +235,59 @@ public class WorkerServiceImpl implements WorkerService {
             System.err.println("Error in getAllWorkerDetails: " + e.getMessage());
             e.printStackTrace(); // Print stack trace for debugging purposes
             throw e; // Re-throw the exception to propagate it
+        }
+    }
+
+    @Override
+    public void updateWorkerProfile(WorkerUpdateRequestDTO workerUpdateRequestDTO) {
+        try {
+
+            // Fetch the worker by ID
+            Worker worker = workerRepository.findById(workerUpdateRequestDTO.getId())
+                    .orElseThrow(() -> new RuntimeException("Worker not found for ID: " + workerUpdateRequestDTO.getId()));
+
+            // Update worker fields if they are provided in the DTO
+            if (workerUpdateRequestDTO.getName() != null) {
+                worker.setUsername(workerUpdateRequestDTO.getName());
+            }
+            if (workerUpdateRequestDTO.getEmail() != null) {
+                worker.setEmail(workerUpdateRequestDTO.getEmail());
+            }
+//            if (workerUpdateRequestDTO.getRole() != null) {
+//                worker.setUserRole(workerUpdateRequestDTO.getRole());
+//            }
+            if (workerUpdateRequestDTO.getStatus() != null) {
+                worker.setStatus(workerUpdateRequestDTO.getStatus());
+            }
+            if (workerUpdateRequestDTO.getWorker().getWorkerType() != null) {
+                System.out.println("setWorkerType : "+workerUpdateRequestDTO.getWorkerType());
+                worker.setWorkerType(workerUpdateRequestDTO.getWorkerType());
+            }
+//            if (workerUpdateRequestDTO.getCompany() != null) {
+//                worker.setCompany(workerUpdateRequestDTO.getCompany());
+//            }
+            if (workerUpdateRequestDTO.getPhone() != null) {
+                worker.setMobileNumber(workerUpdateRequestDTO.getPhone());
+            }
+            if (workerUpdateRequestDTO.getAddress() != null) {
+                worker.setAddress(workerUpdateRequestDTO.getAddress());
+            }
+//            if (workerUpdateRequestDTO.getTimezone() != null) {
+//                worker.setTimezone(workerUpdateRequestDTO.getTimezone());
+//            }
+
+            // Handle image update
+            if (workerUpdateRequestDTO.getImage() != null && !workerUpdateRequestDTO.getImage().isEmpty()) {
+                String imageUrl = fileService.saveMultipartFile(workerUpdateRequestDTO.getImage(), workerUpdateRequestDTO.getImage().getContentType());
+                worker.setImageUrl(imageUrl);
+            }
+
+            // Save the updated worker entity
+            workerRepository.save(worker);
+        } catch (Exception e) {
+            // Log the exception properly
+            System.err.println("Error updating customer profile: " + e.getMessage());
+            throw new RuntimeException("Failed to update customer profile", e);
         }
     }
 

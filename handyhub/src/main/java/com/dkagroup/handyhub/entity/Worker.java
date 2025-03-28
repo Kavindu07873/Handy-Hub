@@ -31,6 +31,7 @@ public class Worker {
 
     private String description;
     private String address;
+    private String company;
     private String education;
     private double price;
 

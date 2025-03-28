@@ -1,5 +1,6 @@
 package com.dkagroup.handyhub.dto;
 
+import com.dkagroup.handyhub.enums.Gender;
 import com.dkagroup.handyhub.enums.UserRole;
 import lombok.*;
 
@@ -15,6 +16,7 @@ public class RegisterUserRequestDTO {
     private String email;
     private UserRole role;
     private String password;
+    private Gender gender;
 
 //    // Getter and Setter for username
 //    public String getUsername() {
