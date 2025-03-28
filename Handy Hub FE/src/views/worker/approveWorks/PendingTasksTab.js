@@ -85,7 +85,7 @@ const PendingTasksTab = ({ works }) => {
                       <i className="fas fa-toolbox fa-2x text-warning"></i>
                     </div>
                     <div>
-                      <h5 className="mt-0">{work.title}</h5>
+                      <h5 className="mt-0">{work.description}</h5>
                       <CardText className="text-muted mb-1">
                         <i className="fas fa-map-marker-alt me-2"></i>
                         {work.address || "No Address Provided"}
@@ -98,6 +98,9 @@ const PendingTasksTab = ({ works }) => {
                           : "Not Specified"}
                       </CardText>
                       <div className="mt-2">
+                        <Badge color="information">Special Details  : {work.title}</Badge>
+                      </div>
+                      <div className="mt-2">
                         <Badge color="warning">PENDING</Badge>
                       </div>
                     </div>
@@ -105,17 +108,17 @@ const PendingTasksTab = ({ works }) => {
                 </Col>
 
                 <Col md={4} className="text-md-right mt-3 mt-md-0">
-                  <h4 className="text-primary mb-2">${work.price || "N/A"}</h4>
-                  <div className="mb-3">
-                    <Progress
-                      value={work.completion || 0}
-                      color="info"
-                      className="mb-2"
-                    />
-                    <small className="text-muted">
-                      {work.completion || 0}% Complete
-                    </small>
-                  </div>
+                <h4 className="text-primary mb-2">${work.price || "N/A"}</h4>
+                  {/*<div className="mb-3">*/}
+                  {/*  <Progress*/}
+                  {/*    value={work.completion || 0}*/}
+                  {/*    color="info"*/}
+                  {/*    className="mb-2"*/}
+                  {/*  />*/}
+                  {/*  <small className="text-muted">*/}
+                  {/*    {work.completion || 0}% Complete*/}
+                  {/*  </small>*/}
+                  {/*</div>*/}
 
                   <div className="d-flex justify-content-end">
                     <Button

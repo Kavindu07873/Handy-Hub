@@ -404,7 +404,7 @@ html {
         float: right;
         margin-left: -$sidebar-width;
         .content-body {
-          margin-left: calc(#{$sidebar-width} + #{$content-padding});
+          //margin-left: calc(#{$sidebar-width} + #{$content-padding});
         }
       }
       &.content-left {

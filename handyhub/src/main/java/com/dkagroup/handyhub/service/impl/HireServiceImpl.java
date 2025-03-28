@@ -103,7 +103,7 @@ public class HireServiceImpl implements HireService {
                 hireWorkeResponseDTO.setAddress(hire.getAddress());
                 hireWorkeResponseDTO.setCompletion("12000");
                 hireWorkeResponseDTO.setStatus(hire.getTaskType());
-                hireWorkeResponseDTO.setTitle("Office Renovation");
+                hireWorkeResponseDTO.setTitle(hire.getComment());
                 hireWorkeResponseDTO.setDueDate(hire.getStartDate());
                 hireWorkeResponseDTOList.add(hireWorkeResponseDTO);
             }

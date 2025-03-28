@@ -137,6 +137,9 @@ public class WorkerServiceImpl implements WorkerService {
 //            workerInfo.setTimezone(worker.getTimezone());
             workerInfo.setEducation(worker.getEducation());
             workerInfo.setWorkerType(worker.getWorkerType());
+            workerInfo.setGender(worker.getGender());
+            workerInfo.setCompany(worker.getCompany());
+            workerInfo.setPrice(String.valueOf(worker.getPrice()));
 
             // Professional skills
 //            if (worker.getProfessionalSkills() != null) {
@@ -214,6 +217,9 @@ public class WorkerServiceImpl implements WorkerService {
 //            workerInfo.setCompany(worker.getCompanyName()); // Assuming there's a company field
             workerInfo.setPhone(worker.getMobileNumber());
             workerInfo.setAddress(worker.getAddress());
+            workerInfo.setCompany(worker.getCompany());
+            workerInfo.setPrice(String.valueOf(worker.getPrice()));
+
 //            workerInfo.setTimezone(worker.getTimezone());
             workerInfo.setEducation(worker.getEducation());
             WorkerResponseDTO workerResponseDTO = new WorkerResponseDTO();
@@ -263,24 +269,27 @@ public class WorkerServiceImpl implements WorkerService {
                 System.out.println("setWorkerType : "+workerUpdateRequestDTO.getWorkerType());
                 worker.setWorkerType(workerUpdateRequestDTO.getWorkerType());
             }
-//            if (workerUpdateRequestDTO.getCompany() != null) {
-//                worker.setCompany(workerUpdateRequestDTO.getCompany());
-//            }
+            if (workerUpdateRequestDTO.getCompany() != null) {
+                worker.setCompany(workerUpdateRequestDTO.getCompany());
+            }
             if (workerUpdateRequestDTO.getPhone() != null) {
                 worker.setMobileNumber(workerUpdateRequestDTO.getPhone());
             }
             if (workerUpdateRequestDTO.getAddress() != null) {
                 worker.setAddress(workerUpdateRequestDTO.getAddress());
             }
+            if (workerUpdateRequestDTO.getPrice() != null) {
+                worker.setPrice(Double.parseDouble(workerUpdateRequestDTO.getPrice()));
+            }
 //            if (workerUpdateRequestDTO.getTimezone() != null) {
 //                worker.setTimezone(workerUpdateRequestDTO.getTimezone());
 //            }
 
             // Handle image update
-            if (workerUpdateRequestDTO.getImage() != null && !workerUpdateRequestDTO.getImage().isEmpty()) {
-                String imageUrl = fileService.saveMultipartFile(workerUpdateRequestDTO.getImage(), workerUpdateRequestDTO.getImage().getContentType());
-                worker.setImageUrl(imageUrl);
-            }
+//            if (workerUpdateRequestDTO.getImage() != null && !workerUpdateRequestDTO.getImage().isEmpty()) {
+//                String imageUrl = fileService.saveMultipartFile(workerUpdateRequestDTO.getImage(), workerUpdateRequestDTO.getImage().getContentType());
+//                worker.setImageUrl(imageUrl);
+//            }
 
             // Save the updated worker entity
             workerRepository.save(worker);

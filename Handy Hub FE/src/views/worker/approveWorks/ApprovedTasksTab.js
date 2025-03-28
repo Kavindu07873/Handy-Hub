@@ -43,13 +43,19 @@ const ApprovedTasksTab = ({ works }) => {
                   <i className="fas fa-clipboard-check fa-2x text-success"></i>
                 </div>
                 <div>
-                  <h5 className="mt-0">{work.title}</h5>
+                  <h5 className="mt-0">{work.description}</h5>
+
+                  <h4 className="text-primary mb-2">${work.price || "N/A"}</h4>
+
                   <p className="text-muted mb-1">
                     <i className="fas fa-map-marker-alt me-2"></i> {work.address}
                   </p>
                   <p className="mb-1">
                     <i className="fas fa-calendar-alt me-2"></i> Due: {new Date(work.dueDate).toLocaleDateString()}
                   </p>
+                  <div className="mt-2">
+                    <Badge color="information">Special Details : {work.title}</Badge>
+                  </div>
                   <div className="mt-2">
                     <Badge color="success">APPROVED</Badge>
                   </div>

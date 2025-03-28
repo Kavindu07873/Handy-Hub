@@ -33,6 +33,7 @@ public class Worker {
     private String address;
     private String company;
     private String education;
+
     private double price;
 
     private double rating;

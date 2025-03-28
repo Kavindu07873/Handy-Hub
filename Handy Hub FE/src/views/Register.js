@@ -100,13 +100,18 @@ const Register = () => {
       const res = await registerUserService(obj)
       if (res) {
         console.log("Registration successful:", res)
-        toast.success("Registration successful!", {
-          position: "top-right",
-          autoClose: 3000,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true
-        })
+
+        // Show success alert
+        alert("Registration successful!")
+
+        // // Show success toast notification
+        // toast.success("Registration successful!", {
+        //   position: "top-right",
+        //   autoClose: 3000,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true
+        // })
 
         // Redirect to the login page after 3 seconds
         setTimeout(() => {

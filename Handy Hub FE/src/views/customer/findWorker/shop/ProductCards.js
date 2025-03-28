@@ -23,10 +23,11 @@ const ProductCards = ({ products, addToCart, addToWishlist, deleteWishlistItem, 
           <h6 className="item-name">
             <CardText tag="span" className="item-company">
               By{" "}
-              <span className="company-name">{`${item.username} ${item.lastName}`}</span>
+              <span className="company-name">{`${item.name} `}</span>
             </CardText>
           </h6>
           <CardText className="item-description">{item.email}</CardText>
+          <CardText className="item-description">{item.workerType}</CardText>
         </CardBody>
         <div className="item-options text-center">
           <Button
@@ -35,7 +36,7 @@ const ProductCards = ({ products, addToCart, addToWishlist, deleteWishlistItem, 
             onClick={() => addToCart(item.id)}
           >
             <ShoppingCart className="me-50" size={14} />
-            <span>Add To Cart</span>
+            <span>View Worker</span>
           </Button>
         </div>
       </Card>

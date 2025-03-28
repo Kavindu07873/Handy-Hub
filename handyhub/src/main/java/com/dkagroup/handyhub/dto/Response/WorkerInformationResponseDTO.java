@@ -3,6 +3,7 @@ package com.dkagroup.handyhub.dto.Response;
 import com.dkagroup.handyhub.dto.DocumentsDTO;
 import com.dkagroup.handyhub.dto.ProfessionalSkillsDTO;
 import com.dkagroup.handyhub.dto.SoftSkillsDTO;
+import com.dkagroup.handyhub.enums.Gender;
 import com.dkagroup.handyhub.enums.UserRole;
 import com.dkagroup.handyhub.enums.UserStatus;
 import com.dkagroup.handyhub.enums.WorkerType;
@@ -32,6 +33,8 @@ public class WorkerInformationResponseDTO {
     private List<String> softSkills;
     private UserRole userRole;
     private WorkerType workerType;
+    private Gender gender;
+    private String price;
 
     private List<ProfessionalSkillsDTO> professionalSkills;
 //    private SoftSkillsDTO softSkills;

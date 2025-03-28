@@ -7,6 +7,14 @@ const UserInfoTab = ({ userData }) => {
   const [isEditMode, setIsEditMode] = React.useState(false) // Toggle between view and edit modes
   const [formData, setFormData] = React.useState({ ...userData }) // Manage form data dynamically
 
+  // ** Gender-specific Default Profile Images
+  const maleFallbackImage =
+    'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'
+  const femaleFallbackImage =
+    'https://th.bing.com/th/id/OIP.MVJcYEbxpX4e2MAmqWtXAwHaHa?rs=1&pid=ImgDetMain'
+  const genericFallbackImage =
+    'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'
+
   // ** List of Worker Types
   const workerTypes = [
     { value: 'ELECTRICIAN', label: 'Electrician' },
@@ -96,7 +104,11 @@ const UserInfoTab = ({ userData }) => {
               src={
                 avatar ||
                 formData.image ||
-                'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg'
+                (formData.gender === 'MALE'
+                  ? maleFallbackImage
+                  : formData.gender === 'FEMALE'
+                    ? femaleFallbackImage
+                    : genericFallbackImage)
               }
               alt="User Profile"
               className="rounded-circle img-fluid"
@@ -237,6 +249,22 @@ const UserInfoTab = ({ userData }) => {
                     name="address"
                     placeholder="Address"
                     value={formData.address || ''}
+                    onChange={handleInputChange} // Update state dynamically
+                    readOnly={!isEditMode} // Read-only in view mode
+                  />
+                </Col>
+
+                {/* Price */}
+                <Col sm="6" className="mb-1">
+                  <Label className="form-label" for="price">
+                    <strong>Price:</strong>
+                  </Label>
+                  <Input
+                    id="price"
+                    name="price"
+                    type="number"
+                    placeholder="Enter price"
+                    value={formData.price || ''}
                     onChange={handleInputChange} // Update state dynamically
                     readOnly={!isEditMode} // Read-only in view mode
                   />

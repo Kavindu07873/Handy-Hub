@@ -69,6 +69,12 @@ public class UserServiceImpl implements UserService {
                 customer.setUserRole(registerUserRequestDTO.getRole());
                 customer.setStatus(UserStatus.DEFAULT);
                 customer.setCustomerRank(CustomerRank.NEWBIE);
+                customer.setGender(registerUserRequestDTO.getGender());
+                if(registerUserRequestDTO.getGender().equals(Gender.MALE)) {
+                    customer.setImageUrl("https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg");
+                }else {
+                    customer.setImageUrl("https://th.bing.com/th/id/OIP.MVJcYEbxpX4e2MAmqWtXAwHaHa?rs=1&pid=ImgDetMain");
+                }
                 customerRepository.save(customer);
             } else if (registerUserRequestDTO.getRole().equals(UserRole.WORKER)) {
                 System.out.println(registerUserRequestDTO.getRole());
@@ -81,6 +87,12 @@ public class UserServiceImpl implements UserService {
                 worker.setStatus(UserStatus.DEFAULT);
                 worker.setWorkerRank(WorkerRank.JUNIOR);
                 worker.setGender(registerUserRequestDTO.getGender());
+                if(registerUserRequestDTO.getGender().equals(Gender.MALE)) {
+                    worker.setImageUrl("https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg");
+                }else {
+                    worker.setImageUrl("https://th.bing.com/th/id/OIP.MVJcYEbxpX4e2MAmqWtXAwHaHa?rs=1&pid=ImgDetMain");
+
+                }
                 workerRepository.save(worker);
             } else {
                 System.out.println(registerUserRequestDTO.getRole());

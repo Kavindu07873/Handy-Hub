@@ -91,6 +91,8 @@ const UserInfoTab = ({ userData }) => {
         console.error('Error submitting hiring request:', errorData);
         alert(`Error: ${errorData.message || 'Failed to submit hiring request.'}`);
       }
+      window.location.reload();
+
     } catch (error) {
       // Handle network or other errors
       console.error('Network error:', error);

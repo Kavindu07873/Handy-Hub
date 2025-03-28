@@ -1,8 +1,8 @@
 // ** React Imports
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 
 // ** Custom Components
-import Avatar from "@components/avatar";
+import Avatar from "@components/avatar"
 
 // ** Third Party Components
 import {
@@ -13,21 +13,35 @@ import {
   Settings,
   CreditCard,
   HelpCircle,
-  Power,
-} from "react-feather";
+  Power
+} from "react-feather"
 
 // ** Reactstrap Imports
 import {
   UncontrolledDropdown,
   DropdownMenu,
   DropdownToggle,
-  DropdownItem,
-} from "reactstrap";
+  DropdownItem
+} from "reactstrap"
 
 // ** Default Avatar Image
-import defaultAvatar from "@src/assets/images/portrait/small/avatar-s-11.jpg";
+import defaultAvatar from "@src/assets/images/portrait/small/avatar-s-11.jpg"
+import { useEffect, useState } from "react"
 
 const UserDropdown = () => {
+
+  const [name, setName] = useState('')
+  const [role, setRole] = useState('')
+
+  useEffect(() => {
+
+    if (localStorage.getItem("user") !== null) {
+      setName(localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")).username : '')
+      setRole(localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")).userRole : '')
+    }
+  })
+
+
   return (
     <UncontrolledDropdown tag="li" className="dropdown-user nav-item">
       <DropdownToggle
@@ -37,8 +51,8 @@ const UserDropdown = () => {
         onClick={(e) => e.preventDefault()}
       >
         <div className="user-nav d-sm-flex d-none">
-          <span className="user-name fw-bold">John Doe</span>
-          <span className="user-status">Admin</span>
+          <span className="user-name fw-bold">{name}</span>
+          <span className="user-status">{role}</span>
         </div>
         <Avatar
           img={defaultAvatar}
@@ -87,7 +101,7 @@ const UserDropdown = () => {
         </DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>
-  );
-};
+  )
+}
 
-export default UserDropdown;
+export default UserDropdown

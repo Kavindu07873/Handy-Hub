@@ -18,7 +18,7 @@ import java.util.List;
 @ToString
 public class WorkerUpdateRequestDTO {
     private long id;
-    private MultipartFile image;
+    private String image;
     private String name;
     private String email;
     private String role;
@@ -31,6 +31,7 @@ public class WorkerUpdateRequestDTO {
     private List<String> softSkills;
     private UserRole userRole;
     private WorkerType workerType;
+    private String price;
 
     private List<ProfessionalSkillsDTO> professionalSkills;
     //    private SoftSkillsDTO softSkills;
